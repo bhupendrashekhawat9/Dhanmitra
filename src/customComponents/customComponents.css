@@ -1,0 +1,24 @@
+#progress-bar {
+    
+    height: 3.5rem;
+    background-color: #0c0b0c41;
+    
+    overflow: hidden;
+    position: relative;
+    position: absolute;
+    filter: blur(1px);
+  }
+
+  #progress {
+    height:3.5rem;
+    width: 100%;
+    background-color:#ac3e3e; /* Blue with 60% opacity */
+    border-radius: 10px;
+    transition: width 0.5s ease, background-color 0.3s ease;
+    position: relative;
+    height: 3.5rem;
+    margin:0 0 .5rem 0;
+    box-shadow: 1px 1px 5px 1px rgba(128, 128, 128, 0.555);
+    overflow: hidden;
+    color: #ffffff;
+  }
