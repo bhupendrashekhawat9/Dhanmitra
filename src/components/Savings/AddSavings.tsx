@@ -1,16 +1,13 @@
 import { Button, FormControl, FormLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
-import React, { useRef, useState } from 'react'
-import styled from 'styled-components'
+import { useState } from 'react'
 import { AddSavingsPayloadType } from '../../types/Savings'
 import { months } from '../../variables/dropdowns'
-import { useStaticVariable } from '../../hooks/StaticVariable'
-import { green } from '@mui/material/colors'
 import { savingsQuotes } from '../../variables/Variables'
-import { addData, addSavings } from '../../indexDB/database'
+import { addData } from '../../indexDB/database'
 
 const AddSavings = ({handleClose}) => {
     const [savings, setSavings] = useState<AddSavingsPayloadType>({
-        amount: 0,
+        amount: "0",
         transactionType: "CREDIT",
         createdDate: new Date(),
         month: (new Date).getMonth(),

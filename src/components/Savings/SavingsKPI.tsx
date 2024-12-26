@@ -1,12 +1,15 @@
 import { Stack, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toLocal } from '../../commonMethods/adapters'
 import { SavingsType } from '../../types/Savings'
 import { getAllData } from '../../indexDB/database'
-import { months, monthsToWeigth } from '../../variables/dropdowns'
+import { monthsToWeigth } from '../../variables/dropdowns'
 import { SectionTypes } from '../../types/types'
-
-const SavingsKPI = (refresh:SectionTypes[]) => {
+interface SavingsKPIProps{
+  refresh:SectionTypes[]
+}
+const SavingsKPI = (props: SavingsKPIProps) => {
+  let {refresh} = props;
   const [savings, setSavings] = useState({
     totalSavings: 0,
     month: (new Date()).getMonth(),
@@ -24,7 +27,7 @@ const SavingsKPI = (refresh:SectionTypes[]) => {
     data.forEach((i:SavingsType)=>{
       totalSavings+=parseInt(i.amount)
       if(currentMonth == i.month && i.year == currentYear){
-        thisMonthContribution+=parseInt(i.amount);
+        thisMonthContribution+=(parseInt(i.amount) as number);
       }
   })
   setSavings((prev)=>({
@@ -39,7 +42,7 @@ const SavingsKPI = (refresh:SectionTypes[]) => {
     getAllSavingsData()
   }, [refresh])
   
-  let totalSavings = toLocal(savings.totalSavings,'currency')
+  let totalSavings = toLocal(savings.totalSavings,'currency') as string
   let thisMonthContribution = toLocal(savings.thisMonthContribution,'currency')
   return (
     <Stack direction={'column'} height={'100%'}>

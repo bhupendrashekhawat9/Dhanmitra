@@ -1,6 +1,8 @@
-import React from 'react'
 
-const AddGoals = () => {
+interface AddGoalsProps{
+  handleClose:()=>void
+}
+const AddGoals = (props:AddGoalsProps) => {
   return (
     <div>AddGoals</div>
   )

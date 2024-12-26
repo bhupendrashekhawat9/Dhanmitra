@@ -1,6 +1,5 @@
 import { Button, FormControl, FormLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
-import styled from 'styled-components'
 import { AddIncomePayloadType } from '../../types/Income'
 import { months } from '../../variables/dropdowns'
 import { incomeQuotes } from '../../variables/Variables'
@@ -9,7 +8,7 @@ import { addData } from '../../indexDB/database'
 
 const AddIncome = ({handleClose}) => {
     const [income, setIncome] = useState<AddIncomePayloadType>({
-        amount: 0,
+        amount: "0",
         source: "",
         createdDate: new Date(),
         month: (new Date).getMonth(),

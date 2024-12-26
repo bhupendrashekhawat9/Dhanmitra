@@ -106,7 +106,7 @@ useEffect(() => {
 
       <Stack padding={'1rem'} direction={'row'}>
     <Typography variant='h6'>
-     Finoguide
+     Dhan-Mitra
     </Typography>
         <Icon>
 
@@ -118,32 +118,32 @@ useEffect(() => {
         </p>
       </ProgressCard> */}
       <div className='kpiContainer' >
-        <div className='kpiContainer-element' onClick={()=>handleOnKpiClick("INCOME")}>
+        <div className='kpiContainer-element' onTouchStart={()=>handleOnKpiClick("INCOME")} onClick={()=>handleOnKpiClick("INCOME")}>
           <KPICard>
 
             <IncomeKPI refresh={refresh} />
 
           </KPICard>
         </div>
-                <div className='kpiContainer-element' id="ExpenditureKPI" ref={targetRef} onClick={()=>handleOnKpiClick("EXPENDITURE")}>
+                <div className='kpiContainer-element' id="ExpenditureKPI" ref={targetRef} onTouchStart={()=>handleOnKpiClick("EXPENDITURE")} onClick={()=>handleOnKpiClick("EXPENDITURE")}>
 
           <KPICard>
             <ExpenditureKPI refresh={refresh}/>
           </KPICard>
         </div>
-                <div className='kpiContainer-element' onClick={()=>handleOnKpiClick("SAVINGS")}>
+                <div className='kpiContainer-element' onTouchStart={()=>handleOnKpiClick("SAVINGS")} onClick={()=>handleOnKpiClick("SAVINGS")}>
 
           <KPICard>
             <SavingsKPI refresh={refresh} />
           </KPICard>
         </div>
-                <div className='kpiContainer-element' onClick={()=>handleOnKpiClick("EMI")}>
+                <div className='kpiContainer-element' onTouchStart={()=>handleOnKpiClick("EMI")} onClick={()=>handleOnKpiClick("EMI")}>
 
           <KPICard>
             <EmiKPI refresh={refresh} />
           </KPICard>
         </div>
-                <div className='kpiContainer-element' onClick={()=>handleOnKpiClick("GOAL")}>
+                <div className='kpiContainer-element' onTouchStart={()=>handleOnKpiClick("GOAL")} onClick={()=>handleOnKpiClick("GOAL")}>
 
           <KPICard>
             <GoalKPI />
@@ -152,12 +152,12 @@ useEffect(() => {
 
       </div>
           {/* Extended KPI Card*/}
-          {/* <Stack>
+          <Stack>
 
           <Button onClick={toggleDrawer} sx={{marginLeft:"auto"}}>
             Add +
           </Button>
-          </Stack> */}
+          </Stack>
         <div style={{
           height:'40vh',
           

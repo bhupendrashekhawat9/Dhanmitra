@@ -1,24 +1,26 @@
 #progress-bar {
     
     height: 3.5rem;
-    background-color: #0c0b0c41;
+    background-color: #0655034b;
     
     overflow: hidden;
     position: relative;
     position: absolute;
     filter: blur(1px);
+    color: white ;
   }
 
   #progress {
-    height:3.5rem;
+    min-height:3.5rem;
+    max-height: max-content;
     width: 100%;
-    background-color:#ac3e3e; /* Blue with 60% opacity */
+    background-color:#daa95f; /* Blue with 60% opacity */
     border-radius: 10px;
     transition: width 0.5s ease, background-color 0.3s ease;
     position: relative;
-    height: 3.5rem;
+    transition-behavior: smooth;
     margin:0 0 .5rem 0;
-    box-shadow: 1px 1px 5px 1px rgba(128, 128, 128, 0.555);
+    /* box-shadow: 1px 1px 5px 1px rgba(128, 128, 128, 0.555); */
     overflow: hidden;
-    color: #ffffff;
+    color: #000000;
   }

@@ -1,14 +1,14 @@
 export interface IncomeType {
-    amount: number;
+    amount: string;
     createdDate: Date;
-    source: String;
+    source: string;
     month:number;
     year:number;
     incomeId: number;
 }
 export interface AddIncomePayloadType{
-    amount: number;
-    source: String;
+    amount: string;
+    source: string;
     year :number;
     month: number;
     userId:number;

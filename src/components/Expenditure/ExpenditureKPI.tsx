@@ -1,25 +1,16 @@
-import { Box, Stack, Typography } from '@mui/material'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
-import styled from 'styled-components'
+import { Stack, Typography } from '@mui/material'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { toLocal } from '../../commonMethods/adapters'
 import { getAllData } from '../../indexDB/database'
 import { ExpenditureType } from '../../types/Expenditure'
-import { months, monthsToWeigth } from '../../variables/dropdowns'
-import {
-  LinePlot,
-  MarkPlot,
-  lineElementClasses,
-  markElementClasses,
-} from '@mui/x-charts/LineChart';
-import { ChartContainer } from '@mui/x-charts'
+import { monthsToWeigth } from '../../variables/dropdowns'
 
 const ExpenditureKPI = (refresh) => {
   const [expenditureData, setexpenditureData] = useState({
     totalExpenditure:0
   })
-  let totalExpenditure = toLocal(expenditureData.totalExpenditure,'currency')
+  let totalExpenditure = toLocal(expenditureData.totalExpenditure,'currency') as string
 
-  let hasExpenceIncreased = true;
   let getAllExpenditureData = async ()=>{
     let data: ExpenditureType[] = await getAllData("Expenditures") as ExpenditureType[]
     let totalExpenditure = 0
@@ -40,26 +31,16 @@ const ExpenditureKPI = (refresh) => {
   }
 
   useLayoutEffect(()=>{
-    let canvas:HTMLElement|null = document.getElementById("ExpenditureCanvas");
-    if(canvas){
-     let ctx = canvas.getContext("2d");
-      ctx.moveTo(10,12)
-      ctx.fill()
-    }
+    // let canvas:HTMLElement|null = document.getElementById("ExpenditureCanvas");
+    // if(canvas){
+    //  let ctx = canvas.getContext("2d");
+    //   ctx.moveTo(10,12)
+    //   ctx.fill()
+    // }
   },[])
 useEffect(() => {
     getAllExpenditureData()
 }, [refresh])
-const pData = [2400, 1398, 9800, 3908, 4800, 3800, 4300];
-const xLabels = [
-  'Page A',
-  'Page B',
-  'Page C',
-  'Page D',
-  'Page E',
-  'Page F',
-  'Page G',
-];
 
   return (
     <Stack height={'100%'} direction={"column"} alignContent={"space-between"}>

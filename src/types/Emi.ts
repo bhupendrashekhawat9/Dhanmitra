@@ -1,22 +1,24 @@
 export interface EmiType{
+    loanAmount: string;
     id: number;
     loanName: string;
     startDate: Date;
     endDate: Date;
     duration: number;
     durationType: AddEmiPayloadType["durationType"];
-    installmentAmount: number;
-    installmentType: String;
+    installmentAmount: string;
+    installmentType: string;
     createdDate: Date;
 
 }
 export interface AddEmiPayloadType{
+    endDate: string | number | Date;
     loanName: string;
-    startDate: Date;
+  
     duration: number;
     durationType: "DAY"|"MONTH"|"YEAR"
     installmentAmount: number;
-    installmentType: String;
+    installmentType: string;
     createdDate: Date;
     userId:number,
     loanAmount:number

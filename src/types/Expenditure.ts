@@ -1,14 +1,14 @@
 export interface ExpenditureType{
     id: number;
     name : string;
-    amount:number;
+    amount:string;
     createdDate: Date;
     month:number;
     year:number;
 }
 export interface AddExpenditurePayloadType{
     name:string;
-    amount: number;
+    amount: string;
     month:number;
     year:number;
     userId: number;

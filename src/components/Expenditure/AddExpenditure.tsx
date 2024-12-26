@@ -1,15 +1,14 @@
 import { Stack, Typography, FormControl, FormLabel, TextField, Select, MenuItem, Button } from '@mui/material'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { addData } from '../../indexDB/database'
-import { AddSavingsPayloadType } from '../../types/Savings'
 import { savingsQuotes } from '../../variables/Variables'
 import { months } from '../../variables/dropdowns'
 import { AddExpenditurePayloadType } from '../../types/Expenditure'
 
 const AddExpenditure = ({handleClose}) => {
   const [expenditure, setExpenditure] = useState<AddExpenditurePayloadType>({
-      amount: 0,
+      amount: "0",
       name:"",
       createdDate: new Date(),
       month: (new Date).getMonth(),
@@ -36,7 +35,7 @@ const AddExpenditure = ({handleClose}) => {
 
       <Stack spacing={"1rem"}>
           <Stack justifyContent={'center'} alignItems={'center'}>
-          <img src={'/savings-pig.svg'} width={'20%'}  />
+          {/* <img src={'/savings-pig.svg'} width={'20%'}  /> */}
 
           <Typography  variant='caption' textAlign={"center"} marginTop={'.5rem'}>
               <span style={{

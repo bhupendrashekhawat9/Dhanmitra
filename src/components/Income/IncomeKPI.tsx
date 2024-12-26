@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toLocal } from '../../commonMethods/adapters'
 import { Stack, Typography } from '@mui/material'
 import { IncomeType } from '../../types/Income'
@@ -6,7 +6,6 @@ import { getAllData } from '../../indexDB/database'
 import { SectionTypes } from '../../types/types'
 
 interface IncomeKPIPropsType {
-  onClick: (ref: "INCOME") => void,
   refresh: SectionTypes[]
 }
 const IncomeKPI = (props: IncomeKPIPropsType) => {
@@ -17,7 +16,7 @@ const IncomeKPI = (props: IncomeKPIPropsType) => {
     month: (new Date()).getMonth(),
   })
 
-  let incomeAmount = toLocal(income.totalIncome, 'currency')
+  let incomeAmount = toLocal(income.totalIncome, 'currency') as string;
 
   let getAllIncomeData = async () => {
     let data: IncomeType[] = await getAllData("Incomes") as IncomeType[]

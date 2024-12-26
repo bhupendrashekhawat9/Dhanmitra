@@ -1,11 +1,8 @@
-import moment from 'moment';
-import React, { useEffect, useState } from 'react'
-import { toLocal } from '../../commonMethods/adapters';
+import { useEffect, useState } from 'react'
 import { getAllData } from '../../indexDB/database';
 import { EmiType } from '../../types/Emi';
 import { ExpenditureType } from '../../types/Expenditure';
 import TransactionCard from '../../customComponents/TransactionCard';
-import { Typography } from '@mui/material';
 
 const ExpenditureExtendedKPI = (refresh) => {
   
@@ -13,11 +10,8 @@ const ExpenditureExtendedKPI = (refresh) => {
       
       let getAllExpenditures = async ()=>{
         
-        let data: ExpenditureType[] = await getAllData("Expenditures") as EmiType[]
-        let currentMonthInstallment = 0;
-        let totalLoanAmount = 0;
+        let data: ExpenditureType[] = await getAllData("Expenditures") as ExpenditureType[]
         let date = new Date();
-        let currentMonth = date.getMonth();
         let currentYear = date.getFullYear();
         
         let groupedMontlyExpense = new Map();

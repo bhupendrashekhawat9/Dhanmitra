@@ -1,19 +1,38 @@
-import { Button, FormControl, FormLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
-import React, { useRef, useState } from 'react'
-import styled from 'styled-components'
-import { AddSavingsPayloadType } from '../../types/Savings'
-import { months } from '../../variables/dropdowns'
-import { useStaticVariable } from '../../hooks/StaticVariable'
-import { AddEmiPayloadType, EmiType } from '../../types/Emi'
+import { Button, FormControl, FormLabel, Stack, TextField, Typography } from '@mui/material'
+import { useState } from 'react'
 import { addData } from '../../indexDB/database'
-import { capitalize } from '../../commonMethods/adapters'
-
-let GridDiv = styled.div`
-display:grid;
-gri-template-layout: 1fr 1fr
-`
-let durationType = ["Month","Year","Day"];
-let installmentType = ["Monthly","Yearly","Daily"];
+import { capitalize, toLocal } from '../../commonMethods/adapters'
+import { AddEmiPayloadType } from '../../types/Emi'
+import moment from 'moment'
+export const getPaidInstallments = (endDate: Date, installmentType: AddEmiPayloadType["installmentType"]) => {
+    const todaysDate = new Date();
+  
+    // Calculate the total completed days
+    const pendingDays = Math.floor((endDate.getTime()-todaysDate.getTime() ) / (1000 * 60 * 60 * 24));
+  
+    let pendingInstallments = 0;
+  
+    switch (installmentType) {
+      case "DAILY":
+        pendingInstallments = pendingDays; // 1 installment per day
+        break;
+  
+      case "MONTHLY":
+       console.log( moment(endDate).diff(new Date()),"difference")
+        const monthsDifference =
+        pendingInstallments=  Math.floor(pendingDays/30)
+        break;
+  
+      case "YEARLY":
+        const yearsDifference =  endDate.getFullYear()-todaysDate.getFullYear();
+        pendingInstallments = yearsDifference > 0 ? yearsDifference : 0;
+        break;
+  
+      default:
+        throw new Error("Invalid installment type");
+    }
+    return pendingInstallments;
+  };
 const AddEMI = ({handleClose}) => {
     const [emi, setEmi] = useState<AddEmiPayloadType>({
         createdDate: new Date(),
@@ -39,7 +58,6 @@ const AddEMI = ({handleClose}) => {
         handleClose()
     }
     let installmentTypes = ["Daily","Monthly","Yearly"]
-    let durationTypes = ["DAY","MONTH","YEAR"]
     let handleChangeInstallmentType = ()=>{
         let index = installmentTypes.findIndex(i=> i.toLowerCase() == emi.installmentType.toLowerCase())
         let newIndex = index+1;
@@ -52,44 +70,12 @@ const AddEMI = ({handleClose}) => {
         }))
     }
     let todaysQuote = ""
-    type AddEmiPayloadType = {
-        installmentType: "DAILY" | "MONTHLY" | "YEARLY";
-      };
       
-      const getPaidInstallments = (endDate: Date, installmentType: AddEmiPayloadType["installmentType"]) => {
-        const todaysDate = new Date();
+   
       
-        // Calculate the total completed days
-        const completedDays = Math.floor((endDate.getTime()-todaysDate.getTime() ) / (1000 * 60 * 60 * 24));
-      
-        let completedInstallments = 0;
-      
-        switch (installmentType) {
-          case "DAILY":
-            completedInstallments = completedDays; // 1 installment per day
-            break;
-      
-          case "MONTHLY":
-            const monthsDifference =
-              todaysDate.getFullYear() * 12 +
-              todaysDate.getMonth() -
-              (endDate.getFullYear() * 12 + endDate.getMonth());
-            completedInstallments = monthsDifference > 0 ? monthsDifference : 0;
-            break;
-      
-          case "YEARLY":
-            const yearsDifference =  endDate.getFullYear()-todaysDate.getFullYear();
-            completedInstallments = yearsDifference > 0 ? yearsDifference : 0;
-            break;
-      
-          default:
-            throw new Error("Invalid installment type");
-        }
-        console.log(completedInstallments,emi)
-        return completedInstallments;
-      };
-      
-    let paidAmount = getPaidInstallments(new Date(emi.endDate), emi.installmentType)*emi.installmentAmount
+    let pendingAmount = toLocal(getPaidInstallments(new Date(emi.endDate), emi.installmentType)*emi.installmentAmount,'currency')
+    let paidAmount = toLocal(emi.loanAmount-(getPaidInstallments(new Date(emi.endDate), emi.installmentType)*emi.installmentAmount),'currency')
+
   return (
     
     <Stack spacing={"1rem"}>
@@ -142,6 +128,14 @@ const AddEMI = ({handleClose}) => {
      </Stack>
     </div>
  
+        <Stack direction={"row"} justifyContent={'space-between'}>
+            <Typography>
+                Pending Amount
+            </Typography>
+            <Typography fontWeight={600}>
+                {pendingAmount}
+            </Typography>
+        </Stack>
         <Stack direction={"row"} justifyContent={'space-between'}>
             <Typography>
                 Paid Amount
