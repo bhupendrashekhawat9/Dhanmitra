@@ -5,6 +5,7 @@ export interface ExpenditureType{
     createdDate: Date;
     month:number;
     year:number;
+    category:string
 }
 export interface AddExpenditurePayloadType{
     name:string;
@@ -13,5 +14,5 @@ export interface AddExpenditurePayloadType{
     year:number;
     userId: number;
     createdDate: Date;
-
+    category:string
 }

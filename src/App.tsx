@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
+import './index.css'
+
 import KPICard from './customComponents/KPICard'
 import IncomeKPI from './components/Income/IncomeKPI'
 import ExpenditureKPI from './components/Expenditure/ExpenditureKPI'
@@ -7,9 +9,6 @@ import EmiKPI from './components/Emi/EmiKPI'
 import GoalKPI from './components/Goals/GoalKPI'
 import { Button, Dialog, DialogContent, Icon, Stack, Typography } from '@mui/material'
 import SavingsKPI from './components/Savings/SavingsKPI'
-import TransactionCard from './customComponents/TransactionCard'
-import Divider from './customComponents/DIvider'
-import { capitalize } from './commonMethods/adapters'
 import AddSavings from './components/Savings/AddSavings'
 import AddGoals from './components/Goals/AddGoals'
 import AddExpenditure from './components/Expenditure/AddExpenditure'
@@ -19,19 +18,17 @@ import { SectionTypes } from './types/types'
 import EMIExtendedKPI from './components/Emi/EMIExtendedKPI'
 import SavingsExtendedKPI from './components/Savings/SavingsExtendedKPI'
 import ExpenditureExtendedKPI from './components/Expenditure/ExpenditureExtendedKpi'
-
-
-// deleteData(1,"Incomes").then(() => console.log('Data deleted'));
-
+import { Haptics } from '@capacitor/haptics';
+import { LocalNotifications, LocalNotificationSchema } from '@capacitor/local-notifications';
+import { PluginListenerHandle } from '@capacitor/core'
 function App() {
   const [openActionDialog, setOpenActionDialog] = useState(false);
   const [refresh, setRefresh] = useState<SectionTypes[]>([])
-  const [sectionOnFocus, setsectionOnFocus] = useState<SectionTypes>("SAVINGS")
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [notificationPermission, setnotificationPermission] = useState([])
+  const [sectionOnFocus, setsectionOnFocus] = useState<SectionTypes>("EXPENDITURE")
   const targetRef = useRef<HTMLDivElement>(null);
 
   const handleFocusTarget = () => {
-    let element = document.getElementById("ExpenditureKPI");
       
     if (targetRef.current) {
       targetRef.current.scrollIntoView({
@@ -49,12 +46,21 @@ function App() {
   let handleOnKpiClick = (ref: SectionTypes) => {
     setsectionOnFocus(ref)
     // toggleDrawer()
+    hapticsVibrate()
 
   }
   let extendedKPIViewComponent = ()=>{
       switch(sectionOnFocus){
         case "INCOME":
-          return <>Income</>
+          return <>
+          {
+            notificationPermission.map((i)=>{
+              return <Typography>
+                {i.body}
+              </Typography>
+            })
+          }
+          </>
           case "EMI":
             return <>
               <EMIExtendedKPI/></>
@@ -67,7 +73,9 @@ function App() {
           <SavingsExtendedKPI/>
           </>
           case "GOAL":
-          return <>GOAL</>
+          return <>
+          {notificationPermission}
+          </>
       }
   }
 
@@ -98,7 +106,14 @@ let getActionDrawerComponent = ()=>{
 useEffect(() => {
     handleFocusTarget()
 }, [])
+const hapticsVibrate = async () => {
+  // await Haptics.vibrate();
 
+};
+
+useEffect(() => {
+
+},[])
   return (
     <div style={{ width: "100vw", height: '100vh' }} >
 
@@ -106,7 +121,7 @@ useEffect(() => {
 
       <Stack padding={'1rem'} direction={'row'}>
     <Typography variant='h6'>
-     Dhan-Mitra
+     Dhanmitra
     </Typography>
         <Icon>
 
@@ -118,7 +133,9 @@ useEffect(() => {
         </p>
       </ProgressCard> */}
       <div className='kpiContainer' >
-        <div className='kpiContainer-element' onTouchStart={()=>handleOnKpiClick("INCOME")} onClick={()=>handleOnKpiClick("INCOME")}>
+        <div className='kpiContainer-element' onTouchStart={()=>{
+          handleOnKpiClick("INCOME")}} onClick={()=>handleOnKpiClick("INCOME")}>
+            
           <KPICard>
 
             <IncomeKPI refresh={refresh} />
@@ -159,7 +176,7 @@ useEffect(() => {
           </Button>
           </Stack>
         <div style={{
-          height:'40vh',
+          height:'max-content',
           
           margin:'.5rem',
           borderRadius:'1rem',

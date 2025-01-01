@@ -40,7 +40,7 @@ const SavingsExtendedKPI = (refresh) => {
         {
             allSavings.map((i:ExpenditureType)=>{
                 return <>
-                <TransactionCard amount={i.amount} name={i.name} />
+                <TransactionCard children={<></>} />
                 </>
             })
         }

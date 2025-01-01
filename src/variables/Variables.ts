@@ -65,3 +65,26 @@ export const savingsQuotes = [
     "If you don't find a way to make money while you sleep, you will work until you die. - Warren Buffett"
   ];
   
+
+  export let expenditureDivision = [
+      {
+          category: "FOOD",
+          amount: 3500,
+          defaultPercentage: "10%"
+      },
+      {
+          category: "TRAVEL",
+          amount: 2000,
+          defaultPercentage: "10%"
+      },
+      {
+          category: "RENT",
+          amount: 5000,
+          defaultPercentage: "20%"
+      },
+      {
+          category: "MISCELLANIOUS",
+          amount: 1500,
+          defaultPercentage: "5%"
+      }
+  ]

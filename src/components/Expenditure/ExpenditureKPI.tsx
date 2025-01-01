@@ -5,28 +5,44 @@ import { getAllData } from '../../indexDB/database'
 import { ExpenditureType } from '../../types/Expenditure'
 import { monthsToWeigth } from '../../variables/dropdowns'
 
+
 const ExpenditureKPI = (refresh) => {
   const [expenditureData, setexpenditureData] = useState({
-    totalExpenditure:0
+    totalExpenditure:0,
+    currentMonthExpenditure:0,
+    todaysExpenditure:0
   })
-  let totalExpenditure = toLocal(expenditureData.totalExpenditure,'currency') as string
+  // let totalExpenditure = toLocal(expenditureData.totalExpenditure,'currency') as string
+  let currentMonthExpenditure = toLocal(expenditureData.currentMonthExpenditure,'currency') as string
+  let todaysExpenditure = toLocal(expenditureData.todaysExpenditure,'currency') as string
+
+
 
   let getAllExpenditureData = async ()=>{
+    
     let data: ExpenditureType[] = await getAllData("Expenditures") as ExpenditureType[]
     let totalExpenditure = 0
-    let thisMonthContribution = 0;
+    let currentMonthExpenditure = 0;
     let date = new Date()
     let currentMonth = date.getMonth();
     let currentYear = date.getFullYear();
-
+    let todaysExpenditure = 0;
     data.forEach((i:ExpenditureType)=>{
       totalExpenditure+=parseInt(i.amount)
       if(currentMonth == i.month && i.year == currentYear){
-        thisMonthContribution+=parseInt(i.amount);
+        currentMonthExpenditure+=parseInt(i.amount);
+      
+      }
+      console.log(new Date(i.createdDate).toLocaleDateString()== date.toLocaleDateString())
+      if(new Date(i.createdDate).toLocaleDateString()== date.toLocaleDateString()){
+
+        todaysExpenditure+=parseInt(i.amount)
       }
   })
  setexpenditureData({
-  totalExpenditure
+  totalExpenditure,
+  currentMonthExpenditure,
+  todaysExpenditure
  })
   }
 
@@ -40,6 +56,7 @@ const ExpenditureKPI = (refresh) => {
   },[])
 useEffect(() => {
     getAllExpenditureData()
+ 
 }, [refresh])
 
   return (
@@ -55,11 +72,16 @@ useEffect(() => {
       </Stack>
      
         <Typography textAlign={'center'} variant='h4' fontWeight={600}>
-          {totalExpenditure}
+          {currentMonthExpenditure}
         </Typography>
      
-      <Stack height={"100%"} justifyContent={'center'} alignItems={'center'} position={'relative'} sx={{backgroundColor:"black"}}>
-        
+      <Stack height={"100%"} justifyContent={'center'} alignItems={'center'} position={'relative'} sx={{backgroundColor:'var(--primary-color)',color:"var(--text-color)",borderRadius:"var(--border-radius)"}}>
+      <Typography>
+        For Today
+        </Typography>
+        <Typography >
+{todaysExpenditure}
+        </Typography>
      
        
       </Stack>
