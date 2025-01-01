@@ -14,3 +14,24 @@ export interface AddIncomePayloadType{
     userId:number;
     createdDate: Date;
 }
+export interface IncomeSegrigationProps {
+    open?:boolean;
+    handleClose?: ()=> void;
+}
+export interface SegrigationDataType {
+    segrigationName?:string,
+    id:number,
+    name:string;
+    minAllocation:{
+        type: "AMOUNT"|"PERCENTAGE",
+        value: string
+    };
+    maxAllocation:{
+        type: "AMOUNT"|"PERCENTAGE",
+        value: string
+    };
+    isFixedCost:boolean
+}
+export interface AllSegmentationDataType  {
+    [key:string]: SegrigationDataType[]
+}

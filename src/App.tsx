@@ -18,9 +18,8 @@ import { SectionTypes } from './types/types'
 import EMIExtendedKPI from './components/Emi/EMIExtendedKPI'
 import SavingsExtendedKPI from './components/Savings/SavingsExtendedKPI'
 import ExpenditureExtendedKPI from './components/Expenditure/ExpenditureExtendedKpi'
-import { Haptics } from '@capacitor/haptics';
-import { LocalNotifications, LocalNotificationSchema } from '@capacitor/local-notifications';
-import { PluginListenerHandle } from '@capacitor/core'
+import ExtendedIncomeKPI from './components/Income/Income Seggrigation'
+import { ContextProvider } from './Context'
 function App() {
   const [openActionDialog, setOpenActionDialog] = useState(false);
   const [refresh, setRefresh] = useState<SectionTypes[]>([])
@@ -53,13 +52,7 @@ function App() {
       switch(sectionOnFocus){
         case "INCOME":
           return <>
-          {
-            notificationPermission.map((i)=>{
-              return <Typography>
-                {i.body}
-              </Typography>
-            })
-          }
+         <ExtendedIncomeKPI/>
           </>
           case "EMI":
             return <>
@@ -114,7 +107,10 @@ const hapticsVibrate = async () => {
 useEffect(() => {
 
 },[])
+
   return (
+    <ContextProvider>
+
     <div style={{ width: "100vw", height: '100vh' }} >
 
     
@@ -201,6 +197,8 @@ useEffect(() => {
       </DialogContent>
     </Dialog>
     </div>
+    </ContextProvider>
+
   )
 }
 

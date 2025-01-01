@@ -51,3 +51,11 @@ export const capitalize = (input:string|null, style?:"ALL"|"FIRST LETTER OF ALL"
     }
     return ""
 }
+export function getRupeeSymbol() {
+    const formatter = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" });
+    const parts = formatter.formatToParts(1);
+  
+    // Extract the currency symbol part
+    const rupeeSymbol = parts.find(part => part.type === "currency").value;
+    return rupeeSymbol;
+  }
