@@ -1,0 +1,26 @@
+.Income-Segrigation_Container{
+    background-color: rgb(150, 146, 135);
+    /* background-color: rgb(180, 202, 129); */
+
+    width: 100%;
+
+    padding: 1rem;
+    border-radius: var(--border-radius);
+}
+.segrigation-table > tbody td:not(:last-child){
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.164);
+    text-align: center;
+}
+.segrigation-table > thead td  {
+    padding: .5rem;
+    background-color: black;
+    color: var(--text-color);
+    text-align: center;
+}
+@media screen and (max-width: 600px) {
+    .Income-Segrigation_Container{  
+        width: 100%;
+       
+    }
+}

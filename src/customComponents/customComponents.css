@@ -1,0 +1,30 @@
+#progress-bar {
+    
+    height: 3.5rem;
+    background-color: #0655034b;
+    
+    overflow: hidden;
+    position: relative;
+    position: absolute;
+    filter: blur(1px);
+    color: white ;
+    background-color:var(--p-color_second); 
+
+  }
+
+  #progress {
+    min-height:3.5rem;
+    max-height: max-content;
+    width: 100%;
+    /* background-color:#daa95f;  */
+    background-color:var(--primary-color); 
+
+    border-radius: 10px;
+    transition: width 0.5s ease, background-color 0.3s ease;
+    position: relative;
+    transition-behavior: smooth;
+    margin:0 0 .5rem 0;
+    /* box-shadow: 1px 1px 5px 1px rgba(128, 128, 128, 0.555); */
+    overflow: hidden;
+    color: #000000;
+  }

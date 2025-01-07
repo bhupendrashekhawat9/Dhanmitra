@@ -1,0 +1,8 @@
+.emi_extended_kpi_container{
+    width: 100%;
+}
+@media screen and (max-width: 450px) {
+    .emi_extended_kpi_container{
+        width: 100%;
+    }
+}
