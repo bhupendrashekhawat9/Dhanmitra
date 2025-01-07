@@ -29,7 +29,7 @@ const ExpenditureExtendedKPI = (refresh) => {
 
         })
 
-        setAllExpenditures(data)
+        setAllExpenditures([...data].sort((a,b)=> new Date(b.createdDate).getMilliseconds() - new Date(a.createdDate).getMilliseconds() ))
 
     }
     useEffect(() => {
@@ -51,13 +51,13 @@ const ExpenditureExtendedKPI = (refresh) => {
                             display:'grid',
                             gridTemplateColumns:"1fr  1fr"
                         }}>
-                            <Stack>
+                            <Stack sx={{overflow:"hidden",textOverflow:"ellipsis"}}>
 
                                 <Typography> 
                                     {i.name}
                                 </Typography>
 
-                                <Typography textAlign={"start"} variant='caption' color='var(--caption-color)'>
+                                <Typography textAlign={"start"} variant='caption' >
                                     {`${moment(i.createdDate).format("DD MMM YYYY")}`}
                                 </Typography>
                             </Stack>

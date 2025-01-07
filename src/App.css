@@ -1,13 +1,15 @@
 
 *{
+  font-family: "Nunito Sans", serif;
   box-sizing: border-box;
 }
+
 body{
   margin:0;
   padding:0;
   /* background-color: #fcc8aa2d; */
   background-color: var(--background-color);
-
+box-sizing: border-box;
 }
 .kpiContainer-element{
   height: 20vh;
@@ -27,8 +29,13 @@ body{
   height:max-content;
   padding: .5rem;
 }
+.dm-main{
+   height: 100vh;
+   display:grid;
+ grid-template-columns: minmax(15%,20%) 1fr;
+}
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 1200px) {
   .kpiContainer-element{
     height: 22vh;
     min-height: 15rem;
@@ -39,5 +46,17 @@ body{
     padding: 1rem 0;
     /* height: max-content; */
     scroll-behavior: smooth;
+  }
+  .dm-main{
+    grid-template-columns: 0 1fr;
+    min-height: 100vh;
+  }
+  .dm-main-right{
+    height: inherit;
+   margin-bottom: 5rem;
+   height:'max-content';
+   margin:.5rem;
+   border-radius:1rem;
+   padding-bottom:5rem
   }
 }

@@ -1,1 +1,1 @@
-export type SectionTypes = "INCOME" | "EMI" | "EXPENDITURE" | "SAVINGS"|'GOAL'
+export type SectionTypes = "INCOMES" | "EMIS" | "EXPENDITURES" | "SAVINGS"|'GOALS'

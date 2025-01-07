@@ -1,11 +1,20 @@
+import { Stack } from "@mui/material"
+import IncomeKPI from "./IncomeKPI"
+
 interface IncomeContext {
   seggrigationData:unknown
 }
-const index = () => {
+const Incomes = () => {
    
   return (
-    <div>index</div>
+    <div>
+
+      <IncomeKPI/>
+      <Stack>
+
+      </Stack>
+    </div>
   )
 }
 
-export default index
+export default Incomes

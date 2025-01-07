@@ -145,9 +145,9 @@ const AddEMI = ({handleClose}) => {
             </Typography>
         </Stack>
 
-    <Button onClick={handleAddEmi} variant="contained" sx={{backgroundColor:'black'}}>
+    <button className='button' onClick={handleAddEmi}>
         Add EMI
-        </Button>
+        </button>
 </Stack>
     
   )

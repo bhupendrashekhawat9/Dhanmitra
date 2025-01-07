@@ -1,0 +1,36 @@
+.sidenav-container{
+    /* border-radius: var(--border-radius); */
+    background-color: var(--secondary-color);
+    height: 90%;
+    padding:  0;
+}
+
+.nav-btn:hover{
+    background-color: rgba(141, 8, 8, 0.103);
+}
+.focused{
+    background-color: rgba(141, 8, 8, 0.103);
+}
+@media screen and (max-width: 1200px) {
+    .sidenav-container{
+        padding: .2rem;
+        box-sizing: border-box;
+        display: flex;
+        /* border-radius: var(--border-radius); */
+        overflow: hidden;
+        float: bottom;
+        position:fixed;
+        bottom:1rem;
+        flex-direction: row;
+        width: max-content;
+        height: max-content;
+       left: 0;
+       right: 0;
+     
+    }
+    .nav-btn{
+        flex-direction: column;
+        width: calc(100vw/5);
+        font-size: small;
+    }
+}

@@ -1,4 +1,4 @@
-export const toLocal = (value: number | bigint | string, ref: "currency" | "percent") => {
+export const toLocal = (value: number | bigint | string, ref: "currency" | "percent"|"number") => {
     if (value || value === 0) {  // Check for valid value (also allows 0)
         // Convert value to number if it's a string or bigint
         const numericValue = typeof value === 'bigint' ? Number(value) : value;
@@ -21,7 +21,13 @@ export const toLocal = (value: number | bigint | string, ref: "currency" | "perc
                     maximumFractionDigits: 2,
                 };
                 break;
-            
+                case 'number':
+                    options = {
+                        style: "decimal",
+                        maximumFractionDigits: 2,
+                    };
+                    break;
+                
             default:
                 return '';
         }
@@ -35,11 +41,12 @@ export const toLocal = (value: number | bigint | string, ref: "currency" | "perc
 
 export const capitalize = (input:string|null, style?:"ALL"|"FIRST LETTER OF ALL"|"FIRST LETTER OF FIRST WORD")=>{
     if(input){
-        
+        let output =""
         let capitalizedWord = new String(input);
-        capitalizedWord  = input.toLocaleLowerCase()
-        capitalizedWord[0].toLocaleUpperCase()
-        return capitalizedWord;
+        capitalizedWord  = input.toLowerCase()
+       output+=capitalizedWord[0].toUpperCase()+capitalizedWord.slice(1);
+
+        return output;
         // for(let i =0;i< input.length;i++){
         //     let currentLetter = input[i]
         //     if(i ==0){

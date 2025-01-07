@@ -5,11 +5,8 @@ import { IncomeType } from '../../types/Income'
 import { getAllData } from '../../indexDB/database'
 import { SectionTypes } from '../../types/types'
 
-interface IncomeKPIPropsType {
-  refresh: SectionTypes[]
-}
-const IncomeKPI = (props: IncomeKPIPropsType) => {
-  let { refresh } = props
+const IncomeKPI = () => {
+
 
   const [income, setIncome] = useState({
     totalIncome: 0,
@@ -36,10 +33,6 @@ const IncomeKPI = (props: IncomeKPIPropsType) => {
     }))
   }
 
-  useEffect(() => {
-    if (!refresh[0] || refresh.includes("INCOME"))
-      getAllIncomeData()
-  }, [refresh])
   return (
     <Stack direction={'column'} height={'100%'}>
       <Typography fontWeight={600} variant='h6' textAlign={'center'}>

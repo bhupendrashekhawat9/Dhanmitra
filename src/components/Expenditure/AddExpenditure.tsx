@@ -1,17 +1,17 @@
 import { Stack, Typography, FormControl, FormLabel, TextField, Select, MenuItem, Button } from '@mui/material'
 
-import { useState } from 'react'
-import { addData } from '../../indexDB/database'
-import { expenditureDivision, savingsQuotes } from '../../variables/Variables'
+import {  useContext, useState } from 'react'
+import { addData, getAllData, getData } from '../../indexDB/database'
+import { savingsQuotes } from '../../variables/Variables'
 import { months } from '../../variables/dropdowns'
 import { AddExpenditurePayloadType } from '../../types/Expenditure'
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
 import { capitalize } from '../../commonMethods/adapters'
+import { Context, ContextType } from '../../Context'
 
 const AddExpenditure = ({ handleClose }) => {
+      let {store, updateContextStore, refreshContextStore } = useContext(Context) as ContextType ;
+    
     const [expenditure, setExpenditure] = useState<AddExpenditurePayloadType>({
         amount: "0",
         name: "",
@@ -23,7 +23,6 @@ const AddExpenditure = ({ handleClose }) => {
     })
     let handleOnChange = (event) => {
         let value = event.target.value;
-        let name = event.target.name;
 
         setExpenditure(prev => {
             if (event.target.name == "createdDate") {
@@ -38,11 +37,14 @@ const AddExpenditure = ({ handleClose }) => {
         })
     }
     let todaysQuote = savingsQuotes[(new Date()).getDate()]
-    let expenditureDivisions = expenditureDivision;
     let handleAddSavings = async () => {
-        addData(expenditure, "Expenditures")
+        debugger
+        await addData(expenditure, "Expenditures")
+        refreshContextStore("Expenditures")
         handleClose()
     }
+    let categories = store.incomes.segregations?.map((i)=> i.name)??[];
+    let expenditureDivisions = categories;
     return (
 
         <Stack spacing={"1rem"}>
@@ -70,8 +72,8 @@ const AddExpenditure = ({ handleClose }) => {
                     </FormLabel>
                     <Select name='category' value={expenditure.category} onChange={handleOnChange}>
                         {expenditureDivisions.map((i) => {
-                            return <MenuItem value={i.category}>
-                                {capitalize(i.category)}
+                            return <MenuItem value={i}>
+                                {capitalize(i,"FIRST LETTER OF ALL")}
                             </MenuItem>
                         })}
                     </Select>

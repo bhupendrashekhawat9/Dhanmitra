@@ -1,7 +1,7 @@
 import { AddIncomePayloadType } from "../types/Income";
 
 // Type for object store names
-type ObjectNameType = "Incomes" | "Expenditures" | "Savings" | "Goals" | "EMIs"|"Incomes.Segregation";
+export type ObjectNameType = "Incomes" | "Expenditures" | "Savings" | "Goals" | "EMIs"|"Incomes.Segregation";
 
 // Open or create a database
 const openDB = (): Promise<IDBDatabase> => {
@@ -86,9 +86,16 @@ export const addData = async (data: unknown, objectName: ObjectNameType): Promis
     const db = await openDB();
     const transaction = db.transaction(objectName, "readwrite");
     const store = transaction.objectStore(objectName);
-
     store.add(data);
-    transaction.oncomplete;
+    return new Promise((resolve,reject)=>{
+        transaction.oncomplete = ()=>{
+            resolve()     
+        };
+        transaction.onerror = ()=>{
+            reject()
+            throw new Error("update failed")
+        }
+    }) 
 };
 
 // Get data by ID
