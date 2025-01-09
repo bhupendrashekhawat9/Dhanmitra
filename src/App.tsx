@@ -16,6 +16,8 @@ import { IncomeType, SegrigationDataType } from './types/Income'
 import SideNavbar from "./components/SideNavbar"
 import ExpenditurePage from './components/Expenditure'
 import Incomes from './components/Income'
+import {Haptics} from "@capacitor/haptics"
+
 function App() {
   const [openActionDialog, setOpenActionDialog] = useState(false);
 
@@ -23,8 +25,11 @@ function App() {
   const {store,updateContextStore} = useContext(Context) as ContextType
 
   let applicationData: ContextType["store"]["application"] = store.application
-  const toggleDrawer =() =>{
+  const toggleDrawer =async() =>{
     setOpenActionDialog(!openActionDialog);
+    if(!openActionDialog){
+      await Haptics.vibrate()
+    }
     }
   let SwitchToFocusedModule = ()=>{
       switch(sectionOnFocus){

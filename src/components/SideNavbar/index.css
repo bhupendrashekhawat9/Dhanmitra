@@ -16,16 +16,18 @@
         padding: .2rem;
         box-sizing: border-box;
         display: flex;
-        /* border-radius: var(--border-radius); */
+        border-radius: var(--border-radius);
         overflow: hidden;
         float: bottom;
         position:fixed;
-        bottom:1rem;
+        bottom:0rem;
         flex-direction: row;
-        width: max-content;
+        width: 90%;
         height: max-content;
-       left: 0;
-       right: 0;
+       left: 50%;
+       right: 50%;
+       transform: translate(-50%, -50%);
+       background-color: var(--primary-color);
      
     }
     .nav-btn{
