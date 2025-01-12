@@ -84,7 +84,7 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
 
     }
     let refreshContextStore= async(ref: ObjectNameType)=>{
-        debugger
+        
         let data = await getAllData(ref) as unknown
         let tref = ref as string
         updateContextStore([[tref,data]])

@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { addData, deleteData, getAllData, getData, updateData } from '../../../indexDB/database'
 import { red } from '@mui/material/colors'
-const index = (props: IncomeSegrigationProps) => {
+const IncomeDivision = (props: IncomeSegrigationProps) => {
   // const { applicationData, setApplicationData } = useContext(Context)
 
   const [allIncomeSegrigationsnData, setAllIncomeSegrigationsData] = useState<SegrigationDataType[] | null>([])
@@ -169,7 +169,12 @@ useEffect(()=>{
 },[])
   return (
     <div className='Income-Segrigation_Container' >
-      <Stack >
+      <Stack>
+<Stack direction={"row"} justifyContent={'center'} alignItems={"center"}>
+
+      <Typography fontWeight={600}>
+        Income Division
+      </Typography>
         {
           !editable?<>
            <IconButton sx={{width:"max-content",marginLeft:"auto"}} onClick={toggleEdit}><EditIcon/></IconButton>
@@ -180,6 +185,8 @@ useEffect(()=>{
 
           </Stack>
         }
+</Stack>
+
        {currentEditable.length >0 && <table className='segrigation-table' style={{fontWeight:600,color:"black"}} >
           <thead>
 
@@ -235,4 +242,4 @@ useEffect(()=>{
   )
 }
 
-export default index
+export default IncomeDivision

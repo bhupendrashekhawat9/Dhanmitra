@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { toLocal } from '../../commonMethods/adapters'
 import { Stack, Typography } from '@mui/material'
 import { IncomeType } from '../../types/Income'
 import { getAllData } from '../../indexDB/database'
 import { SectionTypes } from '../../types/types'
+import { Context, ContextType } from '../../Context'
+import KPICard from '../../customComponents/KPICard'
+import { monthsToWeigth } from '../../variables/dropdowns'
 
 const IncomeKPI = () => {
 
-
+  let { store } = useContext(Context) as ContextType
   const [income, setIncome] = useState({
     totalIncome: 0,
     month: (new Date()).getMonth(),
@@ -16,7 +19,7 @@ const IncomeKPI = () => {
   let incomeAmount = toLocal(income.totalIncome, 'currency') as string;
 
   let getAllIncomeData = async () => {
-    let data: IncomeType[] = await getAllData("Incomes") as IncomeType[]
+    let data: IncomeType[] = store.incomes.allTransactions
     let totalIncome = 0
     let date = new Date()
     let currentMonth = date.getMonth();
@@ -32,28 +35,32 @@ const IncomeKPI = () => {
       totalIncome
     }))
   }
-
+  useEffect(() => {
+    getAllIncomeData()
+  }, [store])
+let currentMonth = new Date().getMonth()
   return (
-    <Stack direction={'column'} height={'100%'}>
-      <Typography fontWeight={600} variant='h6' textAlign={'center'}>
+    <div className='kpiContainer'>
 
-        Income
-      </Typography>
-      <Stack direction={'column'} padding={'0rem 1rem'} height={"100%"} justifyContent={'center'} alignItems={'center'}>
-        <Typography variant='h4' fontWeight={600} textAlign={'center'}>{incomeAmount}</Typography>
-        <div style={{
-          height: '2px',
-          border: "1px solid black",
-          width: '100%',
-          margin: '.5rem'
-        }}></div>
-        <Typography variant='h6' fontWeight={600} textAlign={'center'}>{1} source</Typography>
+    <div className='kpiContainer-element' id="ExpenditureKPI" >
+      <KPICard>
 
-        <Typography variant='caption'>
-          Set a goal to add 1 more source of income
-        </Typography>
-      </Stack>
-    </Stack>
+        <Stack direction={'column'} justifyContent={'center'} alignItems={'center'} height={"100%"} >
+          <Typography fontWeight={600} variant='h6' textAlign={'center'}>
+
+            Income
+          </Typography>
+          <Typography textAlign={'center'}>
+            for {monthsToWeigth[currentMonth]}
+          </Typography>
+          <Stack direction={'column'} padding={'0rem 1rem'} height={"100%"} justifyContent={'center'} alignItems={'center'}>
+            <Typography variant='h4' fontWeight={600} textAlign={'center'}>{incomeAmount}</Typography>
+
+          </Stack>
+        </Stack>
+      </KPICard>
+    </div>
+    </div>
   )
 }
 

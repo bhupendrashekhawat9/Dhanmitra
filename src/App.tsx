@@ -113,13 +113,21 @@ useEffect(() => {
     }} >
 
 
-      <Stack padding={'1rem'} direction={'row'}>
-    <Typography variant='h6' textAlign={'end'}>
-     Dhanmitra
-    </Typography>
-        <Icon>
+      <Stack padding={'1rem'} direction={'row'} alignItems={'end'}>
+   <img src='/logo.svg' height={'35px'}/>
+   <span style={{
+    width:'2px',
+    backgroundColor:'black',
+    height:'1.5rem',
+    margin:'0 0 .3rem .3rem'
+   }}>
 
-        </Icon>
+   </span>
+   <span style={{
+    marginLeft:'.5rem',
+    fontWeight:600,
+    height:'max-content'
+   }}>Dhanmitra</span>
       </Stack>
       {/* <ProgressCard progress={"60"} progressColor='green' >
         <p color='white'>

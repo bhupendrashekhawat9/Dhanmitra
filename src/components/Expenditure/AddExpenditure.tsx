@@ -38,7 +38,7 @@ const AddExpenditure = ({ handleClose }) => {
     }
     let todaysQuote = savingsQuotes[(new Date()).getDate()]
     let handleAddSavings = async () => {
-        debugger
+        
         await addData(expenditure, "Expenditures")
         refreshContextStore("Expenditures")
         handleClose()
