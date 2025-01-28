@@ -1,0 +1,30 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color-scheme: light dark;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    background: rgb(247,247,247);
+    background: linear-gradient(0deg, rgb(255, 255, 255) 29%, rgb(255, 255, 255) 71%, rgb(243, 239, 232) 99%); 
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    --boxShadow:"1px 1px 1px 1px grey";
+    --clr-0: #181C14;
+    --clr-0-light: #f3f0e5;
+
+    --clr-1: #181C14;
+    --background-color: #ffffff ;
+    --clr-2:#49243E
+    --clr--1 : #7c2263;
+    --text-color: rgb(231, 230, 223);
+    --clr--2:#8d0867b4;
+    --clr-highlight-0:#3C3D37;
+    --clr-highlight--1:#844343b5;
+    --border-radius: 1.5rem;
+    --mobile-screen:400px
+  }
+  @font-face {
+    font-family: "SF-PRO";
+    src: url("../public/sf-pro/SFPRODISPLAYREGULAR.OTF") format("OTF");
+  }

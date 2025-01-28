@@ -1,9 +1,10 @@
 import { Button, FormControl, FormLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
-import { AddSavingsPayloadType } from '../../types/Savings'
-import { months } from '../../variables/dropdowns'
-import { savingsQuotes } from '../../variables/Variables'
-import { addData } from '../../indexDB/database'
+import { addData } from '../../../indexDB/database'
+import { AddSavingsPayloadType } from '../../../types/Savings'
+import { savingsQuotes } from '../../../variables/Variables'
+import { months } from '../../../variables/dropdowns'
+
 
 const AddSavings = ({handleClose}) => {
     const [savings, setSavings] = useState<AddSavingsPayloadType>({
@@ -12,7 +13,6 @@ const AddSavings = ({handleClose}) => {
         createdDate: new Date(),
         month: (new Date).getMonth(),
         year: (new Date).getFullYear()
-
     })
     let handleOnChange = (event) => {
 

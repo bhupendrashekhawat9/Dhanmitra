@@ -1,4 +1,4 @@
-import React, {  useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import KPICard from '../../../customComponents/KPICard'
 import ExpenditureKPI from '../ExpenditureKPI'
 import { Stack, Typography } from '@mui/material'
@@ -7,7 +7,7 @@ import { Context, ContextType } from '../../../Context'
 import { getAllData } from '../../../indexDB/database'
 import { ExpenditureType } from '../../../types/Expenditure'
 import { IncomeType, SegrigationDataType } from '../../../types/Income'
-
+import "./index.css"
 const KPIs = () => {
     let date = new Date().getDate()
     let month = new Date().getMonth()
@@ -86,53 +86,61 @@ const KPIs = () => {
     let totalExpenditureForMonth = expenditureData.currentMonthExpenditure
     let avgDailyExpenditure = toLocal((totalExpenditureForMonth / date), "currency")
     let todaysExpLimit = toLocal(((currentMonthExpenditureLimit - totalExpenditureForMonth) / (31 - date)), "number")
-    console.log(currentMonthExpenditureLimit)
+    
+    let kpis = [
+        {
+            title:"Spent",
+            value: todaysExpenditure,
+            backgroundClr: "--clr-highlight-0",
+            iconName: null
+        },
+        {
+            title:"Todays Limit",
+            value: todaysExpLimit,
+            backgroundClr: "--clr-1",
+            iconName: null
+        },
+        {
+            title:"Average Spend",
+            value: avgDailyExpenditure,
+            backgroundClr: "--clr-1",
+            iconName: null
+        },
+
+    ]
     return (
         <div className='kpiContainer'>
-            <div className='kpiContainer-element' id="ExpenditureKPI" >
+            {/* <div className='kpiContainer-element' id="ExpenditureKPI" >
 
                 <KPICard>
                     <ExpenditureKPI />
                 </KPICard>
-            </div>
-            <div className='kpiContainer-element' id="ExpenditureKPI" >
+            </div> */}
+            {
+                kpis.map((kpi,index)=>{
+                    return <div key={index} style={{
+                        background:`var(${kpi.backgroundClr})`
+                    }} className='kpiContainer-element' id="ExpenditureKPI" >
 
-                <KPICard>
-                    <Stack height={'100%'} direction={"column"} alignContent={"space-between"} justifyContent={"center"}>
-                        <Stack>
-
-                            <Typography variant='h5' fontWeight={600} textAlign={'center'}>
-                                Todays Expenses
+                    <KPICard>
+                        <Stack height={'100%'} direction={"column"} alignContent={"space-between"} justifyContent={"center"}>
+                            
+    
+                                <Typography fontSize={"1.1rem"} letterSpacing={"6%"} padding={"0 1rem"} fontWeight={600} textAlign={'start'}>
+                                    {kpi.title}
+                                </Typography>
+    
+                            <Typography textAlign={'start'} padding={"1rem"} fontSize={"40px"}  fontWeight={600}>
+                                {kpi.value}
                             </Typography>
-
                         </Stack>
+    
+                    </KPICard>
+                </div>
+                })
+            }
 
-                        <Typography textAlign={'center'} variant='h5' padding={"1rem"} fontWeight={600}>
-                            <span style={{ fontWeight: "300" }}>{todaysExpenditure}</span>/{todaysExpLimit}
-                        </Typography>
-                    </Stack>
-
-                </KPICard>
-            </div>
-            <div className='kpiContainer-element' id="ExpenditureKPI" >
-
-                <KPICard>
-                    <Stack height={'100%'} direction={"column"} alignContent={"space-between"} justifyContent={"center"}>
-                        <Stack>
-
-                            <Typography variant='h5' fontWeight={600} textAlign={'center'}>
-                                Avg Daily Expenses
-                            </Typography>
-
-                        </Stack>
-
-                        <Typography textAlign={'center'} variant='h5' padding={"1rem"} fontWeight={600}>
-                            {avgDailyExpenditure}
-                        </Typography>
-                    </Stack>
-
-                </KPICard>
-            </div>
+         
 
         </div>
     )

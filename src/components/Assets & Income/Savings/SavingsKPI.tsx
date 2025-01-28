@@ -1,10 +1,11 @@
 import { Stack, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { toLocal } from '../../commonMethods/adapters'
-import { SavingsType } from '../../types/Savings'
-import { getAllData } from '../../indexDB/database'
-import { monthsToWeigth } from '../../variables/dropdowns'
-import { SectionTypes } from '../../types/types'
+import { toLocal } from '../../../commonMethods/adapters';
+import { getAllData } from '../../../indexDB/database';
+import { SavingsType } from '../../../types/Savings';
+import { SectionTypes } from '../../../types/types';
+import { monthsToWeigth } from '../../../variables/dropdowns';
+
 interface SavingsKPIProps{
   refresh:SectionTypes[]
 }

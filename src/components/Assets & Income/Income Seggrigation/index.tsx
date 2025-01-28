@@ -17,8 +17,9 @@ const IncomeDivision = (props: IncomeSegrigationProps) => {
 const [editable, setEditable] = useState(false)
 
   const handleChange = (event,id)=>{
+    
       let name :string[]= event.target.name.split(".");
-      let value = event.target.value
+      let value = event.target.value == "" ? 0 : event.target.value
       
       let data = currentEditable.map((row:SegrigationDataType)=>{
           if(row.id == id){

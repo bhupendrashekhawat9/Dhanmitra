@@ -1,34 +1,22 @@
 
 *{
-  font-family: "Nunito Sans", serif;
   box-sizing: border-box;
 }
-
+html{
+  padding:0;
+  margin:0
+}
 body{
+  font-family: "SF-PRO";
   margin:0;
   padding:0;
   /* background-color: #fcc8aa2d; */
-  background-color: var(--background-color);
-box-sizing: border-box;
-}
-.kpiContainer-element{
-  height: 20vh;
-  min-width: 20rem;
-  margin: 0 .5rem;
-  /* margin: 0rem .5rem; */
-  color:var(--text-color);
-  border-radius:var(--border-radius);
-  background-color: var(--secondary-color);
+  /* background-color: #F9F9F9; */
 
+  box-sizing: border-box;
+  color: black;
 }
-.kpiContainer{
-  display: flex;
-  flex-direction: row;
-  overflow-y: scroll;
-  scroll-snap-type: x mandatory;
-  height:max-content;
-  padding: .5rem;
-}
+
 .dm-main{
    height: 100vh;
    display:grid;
@@ -36,21 +24,6 @@ box-sizing: border-box;
 }
 
 @media screen and (max-width: 1200px) {
-  .kpiContainer-element{
-    height: 22vh;
-    min-height: 15rem;
-    min-width: 80%;
-    margin: 0 0.5rem;
-  }
-  .kpiContainer{
-    padding: 1rem 0;
-    /* height: max-content; */
-    scroll-behavior: smooth;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    overflow: auto;
-  }
   .dm-main{
     grid-template-columns: 0 1fr;
     min-height: 100vh;
@@ -59,7 +32,7 @@ box-sizing: border-box;
     height: inherit;
    margin-bottom: 5rem;
    height:'max-content';
-   margin:.5rem;
+  
    border-radius:1rem;
    padding-bottom:8rem
   }

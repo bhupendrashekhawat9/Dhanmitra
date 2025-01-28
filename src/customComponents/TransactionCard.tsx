@@ -15,8 +15,8 @@ const TransactionCard = (props: TransactionCardPropsType) => {
         <div className='transaction_card' style={{
          
             width: '100%',
-           
-            height: "3.5rem",
+           backgroundColor:"var(--clr-0-light)",
+            height: "max-content",
             borderRadius: '.5rem',
             // boxShadow: "1px 1px 10px 1px grey",
             marginTop: '.5rem',

@@ -74,18 +74,17 @@ const Charts = ({ data , type}) => {
       grid: {
         position: "back"
       },
-      fill: {
-        colors: ["#000"]
-      }
-      //   fill: {
-      //     type: 'image',
-      //     opacity: 0.87,
-      //     image: {
-      //       src: 'https://cdn.pixabay.com/photo/2023/10/08/17/04/swirls-8302543_1280.jpg',
-      //       width: 600,
-      //       height: 600,
-      //     },
-      //   },
+ 
+    
+        fill: {
+          type: 'image',
+          opacity: 0.87,
+          image: {
+            src: 'https://images.unsplash.com/photo-1567095761054-7a02e69e5c43?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGFic3RyYWN0fGVufDB8fDB8fHww',
+            width: 600,
+            height: 600,
+          },
+        },
     },
 
 

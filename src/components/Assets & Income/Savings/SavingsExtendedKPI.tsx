@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
-import { getAllData } from '../../indexDB/database';
-import { EmiType } from '../../types/Emi';
-import { ExpenditureType } from '../../types/Expenditure';
-import TransactionCard from '../../customComponents/TransactionCard';
+
+
+import { useState, useEffect } from "react";
+import TransactionCard from "../../../customComponents/TransactionCard";
+import { getAllData } from "../../../indexDB/database";
+import { ExpenditureType } from "../../../types/Expenditure";
 
 const SavingsExtendedKPI = (refresh) => {
   
