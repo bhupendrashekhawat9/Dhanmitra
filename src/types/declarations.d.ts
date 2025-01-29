@@ -18,7 +18,7 @@ declare global {
       };
     }
     interface Array<T> {
-      groupBy<K extends keyof T>(key: K): Record<T[K] & string, T[]>;
+      _groupBy<K extends keyof T>(key: K): Record<T[K] & string, T[]>;
     }
   }
   
