@@ -1,4 +1,4 @@
-import { Button, FormControl, FormLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Checkbox, FormControl, FormLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { AddIncomePayloadType } from '../../types/Income'
 import { months } from '../../variables/dropdowns'
@@ -13,8 +13,9 @@ const AddIncome = ({handleClose}) => {
         createdDate: new Date(),
         month: (new Date).getMonth(),
         year: (new Date).getFullYear(),
-        userId:0
-
+        userId:0,
+        allocateTo:"",
+        carryForward:false
     })
     let handleOnChange = (event) => {
 
@@ -31,6 +32,10 @@ const AddIncome = ({handleClose}) => {
        addData(income,'Incomes')
        handleClose()
     }
+    let allocateOptions = [{
+        title:"Savings",
+        value:"SAVINGS"
+    }]
     return (
 
         <Stack spacing={"1rem"}>
@@ -46,6 +51,13 @@ const AddIncome = ({handleClose}) => {
                 </span>
             </Typography>
             </Stack>
+            <FormControl>
+                <FormLabel>
+                    Name
+                </FormLabel>
+                
+                <TextField name='title' onChange={handleOnChange} value={income.title} />
+            </FormControl>
             <FormControl>
                 <FormLabel>
                     Amount
@@ -76,6 +88,47 @@ const AddIncome = ({handleClose}) => {
                     </Select>
                 </FormControl>
             </div>
+            <FormControl>
+                <FormLabel>
+                    <Typography variant='caption'>
+
+                    Would you like to allocate this amount to any category?
+                    </Typography>
+                </FormLabel>
+                <Select name='allocateTo' onChange={handleOnChange} value={income.allocateTo} >
+                    {
+                        allocateOptions.map((i)=>{
+                            return <>
+                            <MenuItem value={"i.value"}>
+                            {i.title}
+                            </MenuItem>
+                            </>
+                        })
+                    }
+                    </Select>
+            </FormControl>
+            <Stack direction={'row'} padding={'1rem 0 1rem 0'}>
+                <Checkbox checked={income.carryForward} onChange={(e)=>{
+                    setIncome(prev=>({
+                        ...prev,
+                        carryForward: e.target.checked
+                    }))
+                }}/>
+                <Stack>
+
+                <Typography>
+                    Recurring
+                </Typography>
+                <Typography variant='caption'>
+                    Carry forword automatically 
+                </Typography>
+                </Stack>
+            </Stack>
+            <Box>
+                <Typography variant='caption' padding={"0 0 0 0"} >
+                    Note: This amount will be transfered to savings
+                </Typography>
+            </Box>
             <Button onClick={handleAddSavings} variant="contained" sx={{backgroundColor:'black'}}>
                 Add Income
                 </Button>

@@ -42,7 +42,7 @@ const ExpenditurePage = () => {
         
       }}>
 
-      <Typography variant='h5' fontWeight={'800'} sx={{color:"var(--clr-highlight--1)",fontSize:"38px",letterSpacing:"1.8px"}}>
+      <Typography  variant='h5' fontWeight={'800'} sx={{color:"var(--clr-highlight--1)",fontSize:"38px",letterSpacing:"1.8px"}}>
         Good {phaseOfDay},
       </Typography>
       <Typography  variant='h5' fontWeight={'800'} sx={{fontSize:"32px", letterSpacing:"1.2px"}} color='black'>

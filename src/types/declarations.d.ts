@@ -17,6 +17,9 @@ declare global {
         ): void;
       };
     }
+    interface Array<T> {
+      groupBy<K extends keyof T>(key: K): Record<T[K] & string, T[]>;
+    }
   }
   
   export {};

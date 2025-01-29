@@ -7,6 +7,8 @@ export interface IncomeType {
     incomeId: number;
 }
 export interface AddIncomePayloadType{
+    carryForward?: boolean;
+    allocateTo?: unknown;
     amount: string;
     source: string;
     year :number;

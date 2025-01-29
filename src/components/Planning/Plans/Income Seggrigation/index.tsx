@@ -1,14 +1,14 @@
 import { Button, ButtonBase, Dialog, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
-import { AllSegmentationDataType, IncomeSegrigationProps, SegrigationDataType } from '../../../types/Income'
-import ExtendedIncomeDetails from './ExtendedIncomeDetails'
-import { Context } from '../../../Context'
-import { getRupeeSymbol, toLocal } from '../../../commonMethods/adapters'
+
 import "./index.css"
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { addData, deleteData, getAllData, getData, updateData } from '../../../indexDB/database'
+
 import { red } from '@mui/material/colors'
+import { toLocal, getRupeeSymbol } from '../../../../commonMethods/adapters';
+import { getAllData, deleteData, updateData } from '../../../../indexDB/database';
+import { IncomeSegrigationProps, SegrigationDataType } from '../../../../types/Income';
 const IncomeDivision = (props: IncomeSegrigationProps) => {
   // const { applicationData, setApplicationData } = useContext(Context)
 

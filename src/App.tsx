@@ -106,7 +106,7 @@ function App() {
 
       }}>
 
-        {/* <SideNavbar /> */}
+        <SideNavbar />
       </div>
       <div style={{
         overflow: 'auto'

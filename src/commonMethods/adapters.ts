@@ -66,3 +66,24 @@ export function getRupeeSymbol() {
     const rupeeSymbol = parts.find(part => part.type === "currency").value;
     return rupeeSymbol;
   }
+
+
+
+
+Object.defineProperties(Array.prototype,{
+    _groupBy:{
+        value:function<T,K extends keyof T>(key:K):Record<T[K] & string, T[]>{
+            return this.reduce((result: Record<T[K] & string, T[]>, item: T) => {
+                const groupKey = item[key] as string; // Ensure string type for object keys
+                if (!result[groupKey]) {
+                  result[groupKey] = [];
+                }
+                result[groupKey].push(item);
+                return result;
+              }, {} as Record<T[K] & string, T[]>);
+        },
+        writable: true,
+        configurable: true,
+        enumerable: false
+    }
+})
