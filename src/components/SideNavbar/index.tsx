@@ -1,7 +1,8 @@
 import React, { ReactNode, useContext } from 'react'
 import "./index.css"
 import { SectionTypes } from '../../types/types'
-import { Context, ContextType } from '../../Context'
+import { Context, ContextType, useContextv2 } from '../../Context'
+import { Stack, Typography } from '@mui/material'
 interface modulesType {
     displayName:string,
     icon: string,
@@ -16,53 +17,37 @@ interface props {
 }
 const NavItem = ({module,handleOnClick,focused}:props) => {
   return (
-    <div onClick={(e)=>{
+    <div  onClick={(e)=>{
         
-        handleOnClick(e,module.key)}} style={{display:"flex", alignItems:"center", justifyContent:"start",padding:".5rem", gap:'1rem'}} className={`nav-btn ${focused?"focused":""}`}>
+        handleOnClick(e,module.key)}} style={{display:"flex", alignItems:"center", justifyContent:"center",textAlign:"center",padding:"1rem", gap:'1rem', maxWidth:"max-content", borderRadius:"1rem", margin:".5rem"}} className={`nav-btn focused`}>
         
             <img height={'20'}  src={module.icon}/>
         
-        <div >
+        <Typography >
+
         {module.displayName}
-        </div>
+        </Typography>
     </div>
   )
 }
 
-const index = () => {
-      const {store,updateContextStore} = useContext(Context) as ContextType
+const Navigation = () => {
+      const {store,updateContextStore} = useContextv2() as ContextType
     
     let modules : modulesType[] = [
+        
         {
-            key:"EXPENDITURES",
-            displayName: "Expenditures",
-            icon:'/Nav_Expenditures.png',
-            path: "#Expenditures"
-        },
-        {
-            key:"INCOMES",
-            displayName: "Incomes",
+            key:"ASSETS",
+            displayName: "Assets & Incomes",
             icon:'/Nav_Income.png',
             path: "#Incomes"
         },
         {
-            key:"GOALS",
-            displayName: "Goals",
-            icon:'/Nav_Goal.png',
-            path: "#Goals"
-        },
-        {
-            key:"SAVINGS",
-            displayName: "Savings",
-            icon:'/Nav_Savings.png',
-            path: "#Savings"
-        },
-        {
-            key:"EMIS",
-            displayName: "EMI",
-            icon:"/Nav_EMI.png",
-            path: "#EMI"
-        },
+            key:"PLANS",
+            displayName: "Plans & Budgets",
+            icon:'/Nav_Planning.png',
+            path: "#Plans"
+        }
     ]
     let handleOnClick = (e,key)=>{
         
@@ -72,7 +57,11 @@ const index = () => {
     let path = store?.application?.path??""
     let onFocus = store.application.path
   return (
-    <div className='sidenav-container '>
+    <div style={{width:"100%",
+        display:"grid",
+        gridTemplateColumns:"max-content max-content max-content max-content max-content"
+        
+    }}>
         
         {
             
@@ -84,4 +73,4 @@ const index = () => {
   )
 }
 
-export default index
+export default Navigation

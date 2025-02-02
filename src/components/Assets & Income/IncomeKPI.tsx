@@ -55,7 +55,6 @@ let currentMonth = new Date().getMonth()
           </Typography>
           <Stack direction={'column'} padding={'0rem 1rem'} height={"100%"} justifyContent={'center'} alignItems={'center'}>
             <Typography variant='h4' fontWeight={600} textAlign={'center'}>{incomeAmount}</Typography>
-
           </Stack>
         </Stack>
       </KPICard>

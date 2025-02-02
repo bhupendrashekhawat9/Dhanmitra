@@ -1,30 +1,27 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import './App.css'
 import './index.css'
 
-import { Dialog, DialogContent, Icon, Stack, Typography } from '@mui/material'
-import AddSavings from './components/Assets & Income/Savings/AddSavings'
-import AddGoals from './components/Goals/AddGoals'
+import { Dialog, DialogContent, Stack } from '@mui/material'
 import AddExpenditure from './components/Expenditure/AddExpenditure'
-import AddEMI from './components/Emi/AddEmi'
 import AddIncome from './components/Assets & Income/AddIncome'
 import { SectionTypes } from './types/types'
-import SavingsExtendedKPI from './components/Assets & Income/Savings/SavingsExtendedKPI'
 import { Context, ContextType } from './Context'
-import { getAllData } from './indexDB/database'
-import { IncomeType, SegrigationDataType } from './types/Income'
-import SideNavbar from "./components/SideNavbar"
 import ExpenditurePage from './components/Expenditure'
 import Incomes from './components/Assets & Income'
 import { Haptics } from "@capacitor/haptics"
+import QuickSummary from './components/QuickView'
+import Budget from './components/Planning/Budgets'
+import Plans from './components/Planning/Plans'
 
 function App() {
   const [openActionDialog, setOpenActionDialog] = useState(false);
 
-  const [sectionOnFocus, setsectionOnFocus] = useState<SectionTypes>("EXPENDITURES")
+  const [sectionOnFocus, setsectionOnFocus] = useState<SectionTypes>("HOME")
   const { store, updateContextStore } = useContext(Context) as ContextType
 
   let applicationData: ContextType["store"]["application"] = store.application
+  let focusedModule = applicationData.path
   const toggleDrawer = async () => {
     setOpenActionDialog(!openActionDialog);
     if (!openActionDialog) {
@@ -32,122 +29,44 @@ function App() {
     }
   }
   let SwitchToFocusedModule = () => {
-    switch (sectionOnFocus) {
-      case "INCOMES":
+
+    switch (focusedModule) {
+      case "ASSETS":
         return <>
           <Incomes />
         </>
-      case "EMIS":
+      case "PLANS":
+        
         return <>
-        </>
-      case "EXPENDITURES":
+          <Plans />
+        </>;
+       case "HOME":
         return <>
-          <ExpenditurePage />
-        </>
-      case "SAVINGS":
-        return <>
-          <SavingsExtendedKPI />
-        </>
-      case "GOALS":
-        return <>
-          { }
-        </>
-    }
-  }
-
-  let getActionDrawerComponent = () => {
-    switch (sectionOnFocus) {
-      case "INCOMES":
-        return <>
-          <AddIncome handleClose={toggleDrawer} />
-        </>
-      case "EMIS":
-        return <>
-          <AddEMI handleClose={toggleDrawer} />
-        </>
-      case "EXPENDITURES":
-        return <>
-          <AddExpenditure handleClose={toggleDrawer} />
-        </>
-      case "SAVINGS":
-        return <>
-          <AddSavings handleClose={toggleDrawer} />
-        </>
-      case "GOALS":
-        return <>
-          <AddGoals handleClose={toggleDrawer} />
-        </>
+          <QuickSummary />
+        </>;
+         case "BUDGET":
+          return <>
+            <Budget />
+          </>;
     }
   }
   useEffect(() => {
     // handleFocusTarget()
     setsectionOnFocus(applicationData.path)
   }, [applicationData.path])
-
-  const fetchAllIncomeSegrigations = async () => {
-
-    let allSegregations: SegrigationDataType[] | null = await getAllData("Incomes.Segregation") as SegrigationDataType[] | null;
-    let allIncomes: IncomeType[] = await getAllData("Incomes") as IncomeType[]
-
-    updateContextStore([["incomes.segregations", allSegregations], ["incomes.allTransactions", allIncomes]])
-
-  }
-
-  useEffect(() => {
-    fetchAllIncomeSegrigations()
-  }, [])
-
   return (
 
 
-    <div className='dm-main' onDoubleClick={() => !openActionDialog ? toggleDrawer() : null}  >
-      <div style={{
-        padding: '1rem',
-
-      }}>
-
-        <SideNavbar />
-      </div>
-      <div style={{
-        overflow: 'auto'
-      }} >
-
-
-       
-        {/* <ProgressCard progress={"60"} progressColor='green' >
-        <p color='white'>
-          This is a progress card
-        </p>
-      </ProgressCard> */}
-
-        {/* Extended KPI Card*/}
-
-        <div className='dm-main-right' style={{
-
-          // backgroundColor:'black'
-        }}>
-          <Stack>
-          </Stack>
+    <div className='dm-main' onDoubleClick={() => !openActionDialog ? toggleDrawer() : null}>    
           {SwitchToFocusedModule()}
+      
+        <div>
+          <Dialog open={openActionDialog} onClose={toggleDrawer}>
+            <DialogContent>
+              <AddExpenditure handleClose={toggleDrawer}/>
+            </DialogContent>
+          </Dialog>
         </div>
-
-        <Dialog
-          fullWidth
-
-          open={openActionDialog}
-          onClose={toggleDrawer}
-        >
-          <DialogContent sx={{
-            minHeight: '10vh'
-          }}>
-
-            {
-              getActionDrawerComponent()
-            }
-          </DialogContent>
-        </Dialog>
-      </div>
-
     </div>
 
 

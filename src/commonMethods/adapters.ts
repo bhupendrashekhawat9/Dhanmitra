@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const toLocal = (value: number | bigint | string, ref: "currency" | "percent"|"number") => {
     if (value || value === 0) {  // Check for valid value (also allows 0)
         // Convert value to number if it's a string or bigint
@@ -67,9 +69,19 @@ export function getRupeeSymbol() {
     return rupeeSymbol;
   }
 
+export const getCurrentMonthStartDate = (date?:Date|null):Date => {
+    if(!date){
+        date = new Date()
+    }
+    return new Date(moment(date).startOf("month").format("YYYY-MM-DD"));
+  };
 
-
-
+  export const getCurrentMonthEndDate = (date?:Date|null):Date => {
+    if(!date){
+        date = new Date()
+    }
+    return new Date(moment(date).endOf("month").format("YYYY-MM-DD"));
+  };
 Object.defineProperties(Array.prototype,{
     _groupBy:{
         value:function<T,K extends keyof T>(key:K):Record<T[K] & string, T[]>{

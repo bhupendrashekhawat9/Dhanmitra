@@ -1,15 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
-import KPICard from '../../customComponents/KPICard'
-import ExpenditureKPI from './ExpenditureKPI'
-import { IncomeType, SegrigationDataType } from '../../types/Income'
-import { ExpenditureType } from '../../types/Expenditure'
-import { Context, ContextType } from '../../Context'
-import { toLocal } from '../../commonMethods/adapters'
-import { getAllData } from '../../indexDB/database'
 import KPIs from './KPIs'
 import ExpenditureExtendedKPI from './ExpenditureExtendedKpi'
 import { Stack, Typography } from '@mui/material'
 import Information from './Informations/Information'
+import Navigation from '../SideNavbar'
 
 
 let getPhaseOfDay = ()=>{
@@ -35,7 +28,7 @@ const ExpenditurePage = () => {
   return (
     <div style={{
      
-   
+   maxWidth:"100rem"
     }}>
       <Stack sx={{
         padding:"2rem",
@@ -57,8 +50,15 @@ const ExpenditurePage = () => {
           Todays Summary
         </Typography>
          <KPIs/>
-      </Stack>
+
          <Information data={{dayLimit:0,daySpent:0}} />
+
+         <Stack sx={{
+          margin:"3rem 0"
+         }} >
+        <Navigation/>
+         </Stack>
+      </Stack>
          <ExpenditureExtendedKPI/>
     </div>
   )

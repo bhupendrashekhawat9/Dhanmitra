@@ -1,34 +1,71 @@
 import { AddIncomePayloadType } from "../types/Income";
 
 // Type for object store names
-export type ObjectNameType = "Incomes" | "Expenditures" | "Savings" | "Goals" | "EMIs"|"Incomes.Segregation";
+export type ObjectNameType = "incomes" | "transactions" | "assets" | "plans" | "budgets";
 
 // Open or create a database
+//----------------------depricated
+// const openDB = (): Promise<IDBDatabase> => {
+//     return new Promise((resolve, reject) => {
+//         const request = indexedDB.open("Dhanmitra", 1); // Database name and version
+
+//         request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
+//             const db = (event.target as IDBOpenDBRequest).result;
+          
+            
+//             if (!db.objectStoreNames.contains("Incomes.Segregation")) {
+//                 db.createObjectStore("Incomes.Segregation", { keyPath: "id", autoIncrement: false });
+//             }
+//             if (!db.objectStoreNames.contains("Incomes")) {
+//                 db.createObjectStore("Incomes", { keyPath: "id", autoIncrement: true });
+//             }
+//             if (!db.objectStoreNames.contains("Expenditures")) {
+//                 db.createObjectStore("Expenditures", { keyPath: "id", autoIncrement: true });
+//             }
+//             if (!db.objectStoreNames.contains("Savings")) {
+//                 db.createObjectStore("Savings", { keyPath: "id", autoIncrement: true });
+//             }
+//             if (!db.objectStoreNames.contains("EMIs")) {
+//                 db.createObjectStore("EMIs", { keyPath: "id", autoIncrement: true });
+//             }
+//             if (!db.objectStoreNames.contains("Goals")) {
+//                 db.createObjectStore("Goals", { keyPath: "id", autoIncrement: true });
+//             }
+//         };
+
+//         request.onsuccess = (event: Event) => {
+//             resolve((event.target as IDBOpenDBRequest).result);
+//         };
+
+//         request.onerror = (event: Event) => {
+//             reject(`IndexedDB error: ${(event.target as IDBOpenDBRequest).error?.message}`);
+//         };
+//     });
+// };
+
 const openDB = (): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open("Dhanmitra", 1); // Database name and version
+        const request = indexedDB.open("Dhanmitra", 3); // Database name and version
 
         request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
             const db = (event.target as IDBOpenDBRequest).result;
-          
-            
-            if (!db.objectStoreNames.contains("Incomes.Segregation")) {
-                db.createObjectStore("Incomes.Segregation", { keyPath: "id", autoIncrement: false });
+            if (!db.objectStoreNames.contains("transactions")) {
+                db.createObjectStore("transactions", { keyPath: "id", autoIncrement: true });
             }
-            if (!db.objectStoreNames.contains("Incomes")) {
-                db.createObjectStore("Incomes", { keyPath: "id", autoIncrement: true });
+            if (!db.objectStoreNames.contains("incomes")) {
+                db.createObjectStore("incomes", { keyPath: "id", autoIncrement: true });
             }
-            if (!db.objectStoreNames.contains("Expenditures")) {
-                db.createObjectStore("Expenditures", { keyPath: "id", autoIncrement: true });
+            if (!db.objectStoreNames.contains("assets")) {
+                db.createObjectStore("assets", { keyPath: "id", autoIncrement: true });
             }
-            if (!db.objectStoreNames.contains("Savings")) {
-                db.createObjectStore("Savings", { keyPath: "id", autoIncrement: true });
+            if (!db.objectStoreNames.contains("plans")) {
+                db.createObjectStore("plans", { keyPath: "id", autoIncrement: true });
             }
-            if (!db.objectStoreNames.contains("EMIs")) {
-                db.createObjectStore("EMIs", { keyPath: "id", autoIncrement: true });
+            if (!db.objectStoreNames.contains("budgets")) {
+                db.createObjectStore("budgets", { keyPath: "id", autoIncrement: true });
             }
-            if (!db.objectStoreNames.contains("Goals")) {
-                db.createObjectStore("Goals", { keyPath: "id", autoIncrement: true });
+            if (!db.objectStoreNames.contains("goals")) {
+                db.createObjectStore("goals", { keyPath: "id", autoIncrement: true });
             }
         };
 
@@ -81,18 +118,18 @@ export const updateData = async (objectName: ObjectNameType, updatedData: any)=>
   
   
 // Add data to the store
-export const addData = async (data: unknown, objectName: ObjectNameType): Promise<void> => {
+export const addData = async (data: unknown, objectName: ObjectNameType): Promise<Event> => {
     
     const db = await openDB();
     const transaction = db.transaction(objectName, "readwrite");
     const store = transaction.objectStore(objectName);
     store.add(data);
     return new Promise((resolve,reject)=>{
-        transaction.oncomplete = ()=>{
-            resolve()     
+        transaction.oncomplete = (e)=>{
+            resolve(e)     
         };
-        transaction.onerror = ()=>{
-            reject()
+        transaction.onerror = (e)=>{
+            reject(e)
             throw new Error("update failed")
         }
     }) 
@@ -172,15 +209,7 @@ export function  getAllKeyValuePairs (storeName: string): Promise<unknown[]> {
 })
   }
   
-  // Example usage
-  getAllKeyValuePairs("Incomes.Segregation");
   
-// Get all income transactions
-export const getAllIncomeTransactions = async (): Promise<AddIncomePayloadType[]> => {
-    const data = (await getAllData("Incomes")) as AddIncomePayloadType[];
-    return data;
-};
-
 // Delete data by ID
 export const deleteData = async (id: number, objectName: ObjectNameType): Promise<void> => {
     const db = await openDB();

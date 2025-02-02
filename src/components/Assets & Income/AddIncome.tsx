@@ -1,21 +1,26 @@
 import { Box, Button, Checkbox, FormControl, FormLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
-import { AddIncomePayloadType } from '../../types/Income'
-import { months } from '../../variables/dropdowns'
+
 import { incomeQuotes } from '../../variables/Variables'
-import { addData } from '../../indexDB/database'
+import { Transactions } from '../../types/types'
+import { addIncomeType, addTransaction } from '../../commonMethods/fetchMethods'
+import { IncomeType } from '../../types/Income'
 
 
-const AddIncome = ({handleClose}) => {
-    const [income, setIncome] = useState<AddIncomePayloadType>({
-        amount: "0",
-        source: "",
+const AddIncome = ({ handleClose }) => {
+    const [income, setIncome] = useState({
+        name: "",
         createdDate: new Date(),
-        month: (new Date).getMonth(),
-        year: (new Date).getFullYear(),
-        userId:0,
-        allocateTo:"",
-        carryForward:false
+        budgetCategory: "",
+        amount: 0,
+        transactionType: "CREDIT",
+        module: "INCOME",
+        userId: 0,
+        startDate: new Date(),
+        endDate: null,
+        autoCarry: false,
+        transferTo: "",
+        transferToType: "ASSETS"
     })
     let handleOnChange = (event) => {
 
@@ -28,35 +33,70 @@ const AddIncome = ({handleClose}) => {
     }
     let todaysQuote = incomeQuotes[(new Date()).getDate()]
 
-    let handleAddSavings =  async()=>{
-       addData(income,'Incomes')
-       handleClose()
+    let handleAddIncome = async () => {
+        let transaction: Transactions = {
+            name: income.name,
+            createdDate: income.createdDate,
+            budgetCategory: income.budgetCategory,
+            amount: income.amount,
+            transactionType: 'CREDIT',
+            module: 'INCOME',
+            userId: 0
+        }
+        let incomeType: IncomeType = {
+            createDate: income.createdDate,
+            amount: income.amount,
+            name: income.name,
+            startDate: income.startDate,
+            endDate: income.endDate,
+            autoCarry: income.autoCarry,
+            transferTo: income.transferTo,
+            transferToType: income.transferToType
+        }
+        addTransaction(transaction)
+        addIncomeType(incomeType);
+        handleClose()
     }
     let allocateOptions = [{
-        title:"Savings",
-        value:"SAVINGS"
-    }]
+        title: "Assets",
+        value: "ASSETS"
+    },
+    {
+        value: "BUDGET",
+        title: "Budget"
+    }
+    ]
+    let transferToOptions = [
+        {
+            id: 0,
+            name: "Savings",
+        },
+        {
+            id: 2,
+            name: "FD",
+        },
+    ]
     return (
 
         <Stack spacing={"1rem"}>
             <Stack justifyContent={'center'} alignItems={'center'}>
-            {/* <img src={'/savings-pig.svg'} width={'20%'}  /> */}
+                {/* <img src={'/savings-pig.svg'} width={'20%'}  /> */}
 
-            <Typography  variant='caption' textAlign={"center"} marginTop={'.5rem'}>
-                <span style={{
-                     padding:"1rem"
-                }}>
+                <Typography variant='caption' textAlign={"center"} marginTop={'.5rem'}>
+                    <span style={{
+                        padding: "1rem"
+                    }}>
 
-                {todaysQuote}
-                </span>
-            </Typography>
+                        {todaysQuote}
+                    </span>
+                </Typography>
             </Stack>
             <FormControl>
                 <FormLabel>
                     Name
                 </FormLabel>
-                
-                <TextField name='title' onChange={handleOnChange} value={income.title} />
+
+                <TextField name='name' onChange={handleOnChange} value={income.name} />
             </FormControl>
             <FormControl>
                 <FormLabel>
@@ -69,69 +109,123 @@ const AddIncome = ({handleClose}) => {
                 gridTemplateColumns: "1fr 1fr",
                 columnGap: '1rem'
             }}>
+
                 <FormControl>
                     <FormLabel>
-                        Source
+                        Date
                     </FormLabel>
-                    <TextField name={"source"} value={income.source} onChange={handleOnChange}/>
-                </FormControl>
-                <FormControl>
-                    <FormLabel>
-                        Month
-                    </FormLabel>
-                    <Select name='month' value={income.month} onChange={handleOnChange}>
-                        {Object.keys(months).map((i) => {
-                            return <MenuItem value={months[i]}>
-                                {i}
-                            </MenuItem>
-                        })}
-                    </Select>
+
+
+                    <TextField value={income.createdDate} name='createdDate' onChange={handleOnChange} type='date' />
+
                 </FormControl>
             </div>
-            <FormControl>
-                <FormLabel>
-                    <Typography variant='caption'>
+            <Stack>
 
-                    Would you like to allocate this amount to any category?
-                    </Typography>
-                </FormLabel>
-                <Select name='allocateTo' onChange={handleOnChange} value={income.allocateTo} >
-                    {
-                        allocateOptions.map((i)=>{
-                            return <>
-                            <MenuItem value={"i.value"}>
-                            {i.title}
-                            </MenuItem>
-                            </>
-                        })
-                    }
+                <FormControl>
+                    <FormLabel>
+                        <Typography variant='caption'>
+
+                            Would you like to allocate this amount to any category?
+                        </Typography>
+                    </FormLabel>
+                    <Select name='transferToType' onChange={handleOnChange} value={income.transferToType} >
+                        {
+                            allocateOptions.map((i) => {
+                                return <MenuItem value={i.value}>
+                                    {i.title}
+                                </MenuItem>
+                            })
+                        }
                     </Select>
-            </FormControl>
-            <Stack direction={'row'} padding={'1rem 0 1rem 0'}>
-                <Checkbox checked={income.carryForward} onChange={(e)=>{
-                    setIncome(prev=>({
-                        ...prev,
-                        carryForward: e.target.checked
-                    }))
-                }}/>
-                <Stack>
+                </FormControl>
+                <FormControl>
+                    <FormLabel>
+                        <Typography variant='caption'>
 
-                <Typography>
-                    Recurring
-                </Typography>
-                <Typography variant='caption'>
-                    Carry forword automatically 
-                </Typography>
+                            Transfer To
+                        </Typography>
+                    </FormLabel>
+                    <Select name='transferTo' onChange={handleOnChange} value={income.transferTo} >
+                        {
+                            transferToOptions.map((i) => {
+                                return <MenuItem value={i.id}>
+                                    {i.name}
+                                </MenuItem>
+
+                            })
+                        }
+                    </Select>
+                </FormControl>
+            </Stack>
+
+            <Stack direction={'column'} padding={'1rem 0 1rem 0'}>
+                <Stack direction={"row"}>
+                    <Checkbox checked={income.autoCarry} onChange={(e) => {
+                        setIncome(prev => ({
+                            ...prev,
+                            autoCarry: e.target.checked
+                        }))
+                    }} />
+                    <div>
+
+                        <Typography>
+                            Recurring
+                        </Typography>
+                        <Typography variant='caption'>
+                            Carry forword automatically
+                        </Typography>
+                    </div>
+
                 </Stack>
+
+
+                {
+                    income.autoCarry && (
+                        <>
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: "1fr 1fr",
+                                columnGap: '1rem',
+                                marginTop: "2rem",
+                                width: "100%"
+                            }}>
+
+                                <FormControl>
+                                    <FormLabel>
+                                        From
+                                    </FormLabel>
+
+
+                                    <TextField defaultValue={income.startDate} value={income.startDate} name='createdDate' onChange={handleOnChange} type='date' />
+
+                                </FormControl>
+                                <FormControl>
+                                    <FormLabel>
+                                        To
+                                    </FormLabel>
+
+
+                                    <TextField value={income.endDate} name='createdDate' onChange={handleOnChange} type='date' />
+
+                                </FormControl>
+                            </div>
+
+                        </>
+
+                    )
+                }
+
+
             </Stack>
             <Box>
                 <Typography variant='caption' padding={"0 0 0 0"} >
                     Note: This amount will be transfered to savings
                 </Typography>
             </Box>
-            <Button onClick={handleAddSavings} variant="contained" sx={{backgroundColor:'black'}}>
+            <Button onClick={handleAddIncome} variant="contained" sx={{ backgroundColor: 'black' }}>
                 Add Income
-                </Button>
+            </Button>
         </Stack>
 
     )

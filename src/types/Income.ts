@@ -1,22 +1,14 @@
-export interface IncomeType {
-    amount: string;
-    createdDate: Date;
-    source: string;
-    month:number;
-    year:number;
-    incomeId: number;
-}
-export interface AddIncomePayloadType{
-    title?: unknown;
-    carryForward?: boolean;
-    allocateTo?: unknown;
-    amount: string;
-    source: string;
-    year :number;
-    month: number;
-    userId:number;
-    createdDate: Date;
-}
+// export interface IncomeType {
+//     amount: string;
+//     createdDate: Date;
+//     source: string;
+//     month:number;
+//     year:number;
+//     incomeId: number;
+// }
+
+import { Transactions } from "./types";
+
 export interface IncomeSegrigationProps {
     open?:boolean;
     handleClose?: ()=> void;
@@ -37,4 +29,19 @@ export interface SegrigationDataType {
 }
 export interface AllSegmentationDataType  {
     [key:string]: SegrigationDataType[]
+}
+
+export interface AddIncomePayloadType{
+}
+export interface IncomeType{
+    id?:number,
+    createDate:Date;
+    amount:number;
+    name:string,
+    startDate:Date|null;
+    endDate:Date|null;
+    autoCarry:boolean;
+    transferTo: string;
+    transferToType:string;
+
 }

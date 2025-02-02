@@ -1,35 +1,30 @@
-import { Stack, Typography, FormControl, FormLabel, TextField, Select, MenuItem, Button } from '@mui/material'
+import { Stack, Typography, FormControl, FormLabel, TextField, Select, MenuItem, Button, Chip } from '@mui/material'
 
 import {  useContext, useState } from 'react'
-import { addData, getAllData, getData } from '../../indexDB/database'
 import { savingsQuotes } from '../../variables/Variables'
-import { months } from '../../variables/dropdowns'
-import { AddExpenditurePayloadType } from '../../types/Expenditure'
 
 import { capitalize } from '../../commonMethods/adapters'
 import { Context, ContextType } from '../../Context'
+import { Transactions } from '../../types/types'
+import { addTransaction } from '../../commonMethods/fetchMethods'
+import moment from 'moment'
 
 const AddExpenditure = ({ handleClose }) => {
       let {store, updateContextStore, refreshContextStore } = useContext(Context) as ContextType ;
     
-    const [expenditure, setExpenditure] = useState<AddExpenditurePayloadType>({
-        amount: "0",
+    const [expenditure, setExpenditure] = useState<Transactions>({
+        amount: 0,
         name: "",
         createdDate: new Date(),
-        month: (new Date).getUTCMonth(),
-        year: (new Date).getFullYear(),
+        budgetCategory:"1",
         userId: 0,
-        category:""
+        module:"EXPRNDITURE",
+        transactionType:"DEBIT",
+        spendSource:"CASH"
     })
     let handleOnChange = (event) => {
         let value = event.target.value;
-
         setExpenditure(prev => {
-            if (event.target.name == "createdDate") {
-                value = new Date(event.target.value);
-                prev.month = value.getUTCMonth()
-            }
-
             return {
                 ...prev,
                 [event.target.name]: value
@@ -37,17 +32,33 @@ const AddExpenditure = ({ handleClose }) => {
         })
     }
     let todaysQuote = savingsQuotes[(new Date()).getDate()]
-    let handleAddSavings = async () => {
+    let handleAddTransaction = async () => {
         
-        await addData(expenditure, "Expenditures")
-        refreshContextStore("Expenditures")
+        await addTransaction(expenditure)
+        refreshContextStore("transactions")
         handleClose()
     }
-    let categories = store.incomes.segregations?.map((i)=> i.name)??[];
-    let expenditureDivisions = categories;
+    let budgetCategories = store.budgets.activeBudget[0]?.budgetCategories??[];
+
+    let paymentType = [{
+        title:"Cash",
+        value:"CASH"
+    },
+    {
+        title:"Credit",
+        value:"LOAN"
+    }
+]  
+ let handleUpdatePaymentSource = (val)=>{
+
+    setExpenditure(prev=>({
+        ...prev,
+        spendSource:val
+    }))
+}
     return (
 
-        <Stack spacing={"1rem"}>
+        <Stack spacing={"1.2rem"}>
             <Stack justifyContent={'center'} alignItems={'center'}>
                 {/* <img src={'/savings-pig.svg'} width={'20%'}  /> */}
 
@@ -64,16 +75,16 @@ const AddExpenditure = ({ handleClose }) => {
                 <FormLabel>
                     Description
                 </FormLabel>
-                <TextField name='name' onChange={handleOnChange} value={expenditure.name} />
+                <TextField size={"small"} name='name' onChange={handleOnChange} value={expenditure.name} />
             </FormControl>
             <FormControl>
                     <FormLabel>
                         Category
                     </FormLabel>
-                    <Select name='category' value={expenditure.category} onChange={handleOnChange}>
-                        {expenditureDivisions.map((i) => {
-                            return <MenuItem value={i}>
-                                {capitalize(i,"FIRST LETTER OF ALL")}
+                    <Select size='small' name='budgetCategory' value={expenditure.budgetCategory} onChange={handleOnChange}>
+                        {budgetCategories.map((i) => {
+                            return <MenuItem value={i.id}>
+                                {capitalize(i.name,"FIRST LETTER OF ALL")}
                             </MenuItem>
                         })}
                     </Select>
@@ -82,37 +93,34 @@ const AddExpenditure = ({ handleClose }) => {
                 <FormLabel>
                     Amount
                 </FormLabel>
-                <TextField name='amount' onChange={handleOnChange} value={expenditure.amount} />
+                <TextField size={"small"} name='amount' onChange={handleOnChange} value={expenditure.amount} />
             </FormControl>
+            <Stack direction={"row"} gap={1} padding={'1rem 0'}>
+               {
+                paymentType.map((i)=>{
+                    return <>
+                    <Chip sx={{padding:"1rem"}} label={i.title} clickable variant={expenditure.spendSource == i.value ? "filled":"outlined"} onClick={()=>handleUpdatePaymentSource(i.value)} />
+                    </>
+                })
+               }
+            </Stack>
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: "1fr 1fr",
+                gridTemplateColumns: "1fr",
                 columnGap: '1rem',
                 flexDirection: "column"
             }}>
 
-                <FormControl>
-                    <FormLabel>
-                        Month
-                    </FormLabel>
-                    <Select name='month' value={expenditure.month} onChange={handleOnChange}>
-                        {Object.keys(months).map((i) => {
-                            return <MenuItem value={months[i]}>
-                                {i}
-                            </MenuItem>
-                        })}
-                    </Select>
-                </FormControl>
               
                 <FormControl>
                     <FormLabel>
                         Date
                     </FormLabel>
                    
-                    <TextField  value={new Date(expenditure.createdDate).toISOString().split("T")[0]} name='createdDate' onChange={handleOnChange} type='date' />
+                    <TextField size={"small"}  value={expenditure.createdDate} name='createdDate' onChange={handleOnChange} type='date' />
                 </FormControl>
             </div>
-            <Button onClick={handleAddSavings} variant="contained" sx={{ backgroundColor: 'black' }}>
+            <Button onClick={handleAddTransaction} variant="contained" sx={{ backgroundColor: 'black' }}>
                 Add
             </Button>
         </Stack>

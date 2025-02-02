@@ -19,16 +19,21 @@ body{
 
 .dm-main{
    height: 100vh;
-   display:grid;
- grid-template-columns: minmax(15%,20%) 1fr;
+   display: flex;
+   justify-content: center;
+   align-items: start;
+   overflow: auto;
+   /* width: 1200px; */
 }
 
 @media screen and (max-width: 1200px) {
   .dm-main{
-    grid-template-columns: 0 1fr;
+    display: block;
+    width: 100%;
     min-height: 100vh;
+    padding: 0 1rem;
   }
-  .dm-main-right{
+  .dm-main{
     height: inherit;
    margin-bottom: 5rem;
    height:'max-content';

@@ -1,9 +1,4 @@
-.sidenav-container{
-    /* border-radius: var(--border-radius); */
-    /* background-color: var(--clr-1);
-    height: 100vh;
-    padding:  0; */
-}
+
 
 .nav-btn:hover{
     background-color: rgba(141, 8, 8, 0.103);
@@ -21,7 +16,7 @@
     position:fixed;
     bottom:0rem;
     flex-direction: row;
-    width: 90%;
+    width:40rem;
     height: max-content;
    left: 50%;
    right: 50%;
