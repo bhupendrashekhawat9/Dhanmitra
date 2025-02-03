@@ -26,7 +26,7 @@ interface expenditureCtxType{
 }
 interface applicationType{
     path:SectionTypes,
-    addTransactionModule:"EXPENDITURE"|"INCOME"|null
+    addTransactionModule:"EXPENDITURE"|"INCOME"|"BUDGET"|null
 }
 interface budgetsType{
     activeBudget: BudgetsType[]

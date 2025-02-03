@@ -1,10 +1,8 @@
-import { Box, Button, Dialog, DialogContent, IconButton, Stack, TableBody, Typography } from "@mui/material"
-import IncomeKPI from "./IncomeKPI"
-import IncomeDivision from "../Planning/Plans/Income Seggrigation"
+import { Box, Dialog, DialogContent, IconButton, Stack, Typography } from "@mui/material"
 import Card from "../../customComponents/Card"
 import AddIncome from "./AddIncome"
 import { useState } from "react"
-import { Add, ArrowBack } from "@mui/icons-material"
+import { Add } from "@mui/icons-material"
 import { ContextType, useContextv2 } from "../../Context"
 import Layout from "../Screens/Layout"
 import { IncomeType } from "../../types/Income"
@@ -15,10 +13,6 @@ interface IncomeContext {
 }
 const Incomes = () => {
   let { store, updateContextStore } = useContextv2() as ContextType
-  let handleBack = () => {
-
-    updateContextStore([["application.path", "HOME"]])
-  }
   return (
     <div>
       <Layout>

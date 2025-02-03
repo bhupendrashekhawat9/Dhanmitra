@@ -20,7 +20,7 @@ const BudgetSummary = () => {
   return (
     <>
       {budgets.map((budget) => {
-        const spentPercentage = Math.min((totalExpenditures / budget.amount) * 100, 100); // Ensures max 100%
+        const spentPercentage = Math.min((totalExpenditures / parseInt(budget.amount)) * 100, 100); // Ensures max 100%
 
         return (
           <Stack onClick={()=> setExpandBudget(prev=>!prev)} key={budget.name} spacing={2} padding={2} sx={{ border: '1px solid #ddd', borderRadius: 2 }} minWidth={'20rem'} width={expandBudget ? "100%":""}>

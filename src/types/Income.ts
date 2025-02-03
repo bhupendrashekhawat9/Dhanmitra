@@ -36,7 +36,7 @@ export interface AddIncomePayloadType{
 export interface IncomeType{
     id?:number,
     createDate:Date;
-    amount:number;
+    amount:string;
     name:string,
     startDate:Date|null;
     endDate:Date|null;

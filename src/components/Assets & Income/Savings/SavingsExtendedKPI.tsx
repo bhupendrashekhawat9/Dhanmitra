@@ -9,28 +9,28 @@ const SavingsExtendedKPI = (refresh) => {
   
       const [allSavings, setAllSavings] = useState([])
       
-      let getAllExpenditures = async ()=>{
+    //   let getAllExpenditures = async ()=>{
         
-        let data: ExpenditureType[] = await getAllData("Savings") as ExpenditureType[]
-        let date = new Date();
-        let currentYear = date.getFullYear();
+    //     let data: ExpenditureType[] = await getAllData("") as ExpenditureType[]
+    //     let date = new Date();
+    //     let currentYear = date.getFullYear();
         
-        let groupedMontlyExpense = new Map();
-        data.forEach((i:ExpenditureType)=>{
-            if(i.year == currentYear){
+    //     let groupedMontlyExpense = new Map();
+    //     data.forEach((i:ExpenditureType)=>{
+    //         if(i.year == currentYear){
 
-                groupedMontlyExpense.set(i.month,groupedMontlyExpense.get(i.month)+parseInt(i.amount))
-            }
+    //             groupedMontlyExpense.set(i.month,groupedMontlyExpense.get(i.month)+parseInt(i.amount))
+    //         }
             
-        })
+    //     })
         
-    setAllSavings(data)
+    // setAllSavings(data)
       
-      }
+    //   }
       useEffect(() => {
         
           if(refresh){
-            getAllExpenditures()
+            // getAllExpenditures()
           }
       }, [refresh])
       

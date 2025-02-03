@@ -3,7 +3,7 @@ import { toLocal } from '../../commonMethods/adapters'
 import { Stack, Typography } from '@mui/material'
 import { IncomeType } from '../../types/Income'
 import { getAllData } from '../../indexDB/database'
-import { SectionTypes } from '../../types/types'
+import { SectionTypes, Transactions } from '../../types/types'
 import { Context, ContextType } from '../../Context'
 import KPICard from '../../customComponents/KPICard'
 import { monthsToWeigth } from '../../variables/dropdowns'
@@ -19,14 +19,12 @@ const IncomeKPI = () => {
   let incomeAmount = toLocal(income.totalIncome, 'currency') as string;
 
   let getAllIncomeData = async () => {
-    let data: IncomeType[] = store.incomes.allTransactions
+    let data: Transactions[] = store.transactions
     let totalIncome = 0
     let date = new Date()
-    let currentMonth = date.getMonth();
-    let currentYear = date.getFullYear();
 
-    data.forEach((i: IncomeType) => {
-      if (currentMonth == i.month && i.year == currentYear) {
+    data.forEach((i: Transactions) => {
+      if (i.transactionType == "CREDIT") {
         totalIncome += parseInt(i.amount);
       }
     })

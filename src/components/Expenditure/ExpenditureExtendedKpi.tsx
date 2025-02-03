@@ -30,7 +30,7 @@ const ExpenditureExtendedKPI = (refresh) => {
                     marginTop:".5rem"
                 }}>
 
-                    <CategoryExpenditure />
+               
                 </Stack>
             </Stack>
 

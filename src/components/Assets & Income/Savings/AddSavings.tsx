@@ -26,7 +26,7 @@ const AddSavings = ({handleClose}) => {
     let todaysQuote = savingsQuotes[(new Date()).getDate()]
 
     let handleAddSavings =  async()=>{
-       addData(savings,'Savings')
+    //    addData(savings,'Savings')
        handleClose()
     }
     return (

@@ -38,14 +38,15 @@ const AddIncome = ({ handleClose }) => {
             name: income.name,
             createdDate: income.createdDate,
             budgetCategory: income.budgetCategory,
-            amount: income.amount,
+            amount: income.amount.toString(),
             transactionType: 'CREDIT',
             module: 'INCOME',
-            userId: 0
+            userId: 0,
+            spendSource:null
         }
         let incomeType: IncomeType = {
             createDate: income.createdDate,
-            amount: income.amount,
+            amount: income.amount.toString(),
             name: income.name,
             startDate: income.startDate,
             endDate: income.endDate,

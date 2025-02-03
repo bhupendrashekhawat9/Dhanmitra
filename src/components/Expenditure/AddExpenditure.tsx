@@ -13,7 +13,7 @@ const AddExpenditure = ({ handleClose }) => {
       let {store, updateContextStore, refreshContextStore } = useContext(Context) as ContextType ;
     
     const [expenditure, setExpenditure] = useState<Transactions>({
-        amount: 0,
+        amount: "0",
         name: "",
         createdDate: new Date(),
         budgetCategory:"1",
