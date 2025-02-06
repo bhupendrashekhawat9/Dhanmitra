@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import KPICard from '../../../customComponents/KPICard'
 import { Stack, Typography } from '@mui/material'
-import { toLocal } from '../../../commonMethods/adapters'
+import { toLocal } from '../../../methods/adapters'
 import { Context, ContextType } from '../../../Context'
 import "./index.css"
 import moment from 'moment'

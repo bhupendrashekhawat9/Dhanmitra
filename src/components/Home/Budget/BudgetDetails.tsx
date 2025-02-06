@@ -3,30 +3,44 @@ import { useEffect, useState } from 'react';
 import { ContextType, useContextv2 } from '../../../Context';
 import Progress from '../../../customComponents/Progress';
 import { BudgetsType } from '../../../types/Budgets';
-import { toLocal } from '../../../commonMethods/adapters';
+import { toLocal } from '../../../methods/adapters';
 
 interface PropsType {
   budgetData: BudgetsType;
+}
+let getCategoryAmountOnType = (category:BudgetsType['budgetCategories'][0],budget:BudgetsType):number=>{
+  let value = 0;
+  if(category.amountType == "PERCENTAGE"){
+    value = parseInt(budget.amount) * (parseInt(category.amount)/100);
+    return value;
+  }
+  return category.amount;
+
 }
 
 const BudgetDetails = ({ budgetData }: PropsType) => {
   const { store } = useContextv2() as ContextType;
   const transactions = store.transactions;
 
-  const [categorySpending, setCategorySpending] = useState<{ [key: string]: number }>({});
+  const [categorySpending, setCategorySpending] = useState<{ [key: string]: {limit:number;spent:number} }>({});
 
   useEffect(() => {
-    const budgetMap: { [key: string]: number } = {};
+    
+    const budgetMap: { [key: string]: {spent:number,limit:number} } = {};
 
     // Initialize categories with zero spending
-    budgetData.budgetCategories?.forEach(category => {
-      budgetMap[category.name] = 0;
+    budgetData.categories?.forEach(category => {
+      budgetMap[category.name] = {spent:0,limit:getCategoryAmountOnType(category,budgetData)};
     });
 
     // Aggregate spending per category
     transactions.forEach(transaction => {
-      if (transaction.budgetCategory && budgetMap.hasOwnProperty(transaction.budgetCategory)) {
-        budgetMap[transaction.budgetCategory] += parseFloat(transaction.amount);
+      
+      if (transaction.budgetCategoryId && budgetMap.hasOwnProperty(transaction.budgetCategoryId)) {
+        let tCategory = budgetMap[transaction.budgetCategoryId]
+        if(budgetMap[transaction.budgetCategoryId]){
+          tCategory.spent+= parseFloat(transaction.amount);
+        }
       }
     });
 
@@ -37,8 +51,8 @@ const BudgetDetails = ({ budgetData }: PropsType) => {
     <Stack spacing={3} padding={2}>
 
       {budgetData.budgetCategories?.map((category) => {
-        const spent = categorySpending[category.name] || 0;
-        const spentPercentage = Math.min((spent / category.amount) * 100, 100); // Ensures max 100%
+        const {spent=0,limit=0} = categorySpending[category.name] || {};
+        const spentPercentage = Math.min((spent / limit) * 100, 100); // Ensures max 100%
 
         return (
           <Stack key={category.name} spacing={1} sx={{  padding: 1 }}>

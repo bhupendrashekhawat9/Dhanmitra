@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ContextType, useContextv2 } from '../../../Context';
 import { Stack, Typography, LinearProgress } from '@mui/material';
-import { toLocal } from '../../../commonMethods/adapters';
+import { toLocal } from '../../../methods/adapters';
 import BudgetDetails from './BudgetDetails';
 
 const BudgetSummary = () => {

@@ -31,6 +31,8 @@
     "react-apexcharts": "^1.7.0",
     "react-dom": "^18.3.1",
     "react-native-get-sms-android": "^2.1.0",
+    "react-router": "^6.29.0",
+    "react-router-dom": "^6.29.0",
     "styled-components": "^6.1.13",
     "uuid": "^11.0.5",
     "uuidv4": "^6.2.13"

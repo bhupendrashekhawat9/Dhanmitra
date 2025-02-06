@@ -2,7 +2,7 @@ import KPIs from './KPIs'
 import ExpenditureExtendedKPI from './ExpenditureExtendedKpi'
 import { Stack, Typography } from '@mui/material'
 import Information from './Informations/Information'
-import Navigation from '../SideNavbar'
+import Navigation from '../SideNavbar/Navbar'
 
 
 let getPhaseOfDay = ()=>{

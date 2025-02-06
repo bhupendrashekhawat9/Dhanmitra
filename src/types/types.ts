@@ -4,10 +4,12 @@ export type SectionTypes = "ASSETS" | "PLANS" |"HOME"|"BUDGET"
 export interface Transactions {
     name: string;
     createdDate:Date;
-    budgetCategory:string;
+    budgetCategoryId:string;
+    budgetId:string;
     amount:string;
     transactionType:"DEBIT"|"CREDIT",
-    module:"INCOME"|"EXPRNDITURE";
+    module:"EXPRNDITURE";
     userId:number|string;
-    spendSource:"CASH"|"LOAN"
+    wallet:"CREDIT"|"CASH";
+
 }

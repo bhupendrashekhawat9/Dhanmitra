@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { toLocal } from '../../commonMethods/adapters'
+import { toLocal } from '../../methods/adapters'
 import { Stack, Typography } from '@mui/material'
 import { IncomeType } from '../../types/Income'
 import { getAllData } from '../../indexDB/database'

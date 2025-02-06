@@ -3,7 +3,7 @@ import { getAllData } from '../../indexDB/database';
 import { ExpenditureType } from '../../types/Expenditure';
 import TransactionCard from '../../customComponents/TransactionCard';
 import { Chip, Stack, Typography } from '@mui/material';
-import { toLocal } from '../../commonMethods/adapters';
+import { toLocal } from '../../methods/adapters';
 import moment from 'moment';
 import { red } from '@mui/material/colors';
 

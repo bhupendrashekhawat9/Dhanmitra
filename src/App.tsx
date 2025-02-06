@@ -10,9 +10,10 @@ import { Context, ContextType } from './Context'
 import ExpenditurePage from './components/Expenditure'
 import Incomes from './components/Assets & Income'
 import { Haptics } from "@capacitor/haptics"
-import QuickSummary from './components/QuickView'
+import QuickSummary from './components/Home/Home'
 import Budget from './components/Planning/Budgets'
 import Plans from './components/Planning/Plans'
+import AppRouter from './route/Router'
 
 function App() {
   const [openActionDialog, setOpenActionDialog] = useState(false);
@@ -28,28 +29,6 @@ function App() {
       await Haptics.vibrate()
     }
   }
-  let SwitchToFocusedModule = () => {
-
-    switch (focusedModule) {
-      case "ASSETS":
-        return <>
-          <Incomes />
-        </>
-      case "PLANS":
-        
-        return <>
-          <Plans />
-        </>;
-       case "HOME":
-        return <>
-          <QuickSummary />
-        </>;
-         case "BUDGET":
-          return <>
-            <Budget />
-          </>;
-    }
-  }
   useEffect(() => {
     // handleFocusTarget()
     setsectionOnFocus(applicationData.path)
@@ -58,8 +37,8 @@ function App() {
 
 
     <div className='dm-main' onDoubleClick={() => !openActionDialog ? toggleDrawer() : null}>    
-          {SwitchToFocusedModule()}
       
+      <AppRouter/>
         <div>
           <Dialog open={openActionDialog} onClose={toggleDrawer}>
             <DialogContent>

@@ -6,7 +6,7 @@ import { Add } from "@mui/icons-material"
 import { ContextType, useContextv2 } from "../../Context"
 import Layout from "../Screens/Layout"
 import { IncomeType } from "../../types/Income"
-import { toLocal } from "../../commonMethods/adapters"
+import { toLocal } from "../../methods/adapters"
 
 interface IncomeContext {
   seggrigationData: unknown
@@ -54,7 +54,7 @@ export const CurrentMonthIncomeSummary = () => {
     <Dialog open={isAddIncomeOpen} onClose={handleCloseAddIncome}>
       <DialogContent>
 
-        <AddIncome handleClose={handleCloseAddIncome} />
+        <AddIncome />
       </DialogContent>
     </Dialog>
     <Card sx={{

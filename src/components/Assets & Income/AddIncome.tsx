@@ -3,22 +3,45 @@ import { useState } from 'react'
 
 import { incomeQuotes } from '../../variables/Variables'
 import { Transactions } from '../../types/types'
-import { addIncomeType, addTransaction } from '../../commonMethods/fetchMethods'
+import { addIncomeType, addTransaction } from '../../methods/fetchMethods'
 import { IncomeType } from '../../types/Income'
+import { useNavigate } from 'react-router'
+import { useContextv2 } from '../../Context'
+import { v4 } from 'uuid'
 
+let transferToTypes = [
+    {
+        title:"Assets",
+        value:"ASSETS"
+    },
+    {
+        title:"Budget",
+        value: "BUDGET"
+    }
+]
+let transferToCategories =[
+    {
+        id:1,
+        title:"Food",
+        
+    }
+]
 
-const AddIncome = ({ handleClose }) => {
-    const [income, setIncome] = useState({
+const AddIncome = () => {
+    let navigate = useNavigate()
+    let {store} = useContextv2();
+    const [income, setIncome] = useState<IncomeType>({
+        id: v4(),
         name: "",
         createdDate: new Date(),
-        budgetCategory: "",
-        amount: 0,
+        amount: "0",
         transactionType: "CREDIT",
         module: "INCOME",
-        userId: 0,
+        userId: store.userData.id,
         startDate: new Date(),
         endDate: null,
-        autoCarry: false,
+        recurring: false,
+        recurringType: "MONTHLY",
         transferTo: "",
         transferToType: "ASSETS"
     })
@@ -56,7 +79,7 @@ const AddIncome = ({ handleClose }) => {
         }
         addTransaction(transaction)
         addIncomeType(incomeType);
-        handleClose()
+        navigate(-1)
     }
     let allocateOptions = [{
         title: "Assets",

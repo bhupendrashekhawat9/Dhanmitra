@@ -6,16 +6,16 @@ import { useState } from "react";
 import { v4 as uuid } from "uuid";
 import { Delete as DeleteIcon, Close as CloseIcon } from "@mui/icons-material";
 import { red } from "@mui/material/colors";
-import { getRupeeSymbol } from "../../../commonMethods/adapters";
+import { getCurrentMonthEndDate, getCurrentMonthStartDate, getRupeeSymbol } from "../../../methods/adapters";
 import { addData } from "../../../indexDB/database";
 
 const AddBudget = ({ open, handleClose }) => {
     const [budget, setBudget] = useState({
         name: "",
         amount: "",
-        startDate: "",
-        endDate: "",
-        budgetCategories: [
+        startDate: getCurrentMonthStartDate(),
+        endDate: getCurrentMonthEndDate(),
+        categories: [
             {
                 id: uuid(),
                 name: "",
@@ -35,7 +35,7 @@ const AddBudget = ({ open, handleClose }) => {
     const handleDivisionChange = (id, field, value) => {
         setBudget((prev) => ({
             ...prev,
-            budgetCategories: prev.budgetCategories.map((division) =>
+            categories: prev.categories.map((division) =>
                 division.id === id ? { ...division, [field]: value } : division
             ),
         }));
@@ -45,8 +45,8 @@ const AddBudget = ({ open, handleClose }) => {
     const handleAddcategories = () => {
         setBudget((prev) => ({
             ...prev,
-            budgetCategories: [
-                ...prev.budgetCategories,
+            categories: [
+                ...prev.categories,
                 { id: uuid(), name: "", amount: "", amountType: "AMOUNT" },
             ],
         }));
@@ -56,7 +56,7 @@ const AddBudget = ({ open, handleClose }) => {
     const handleDelete = (id) => {
         setBudget((prev) => ({
             ...prev,
-            budgetCategories: prev.budgetCategories.filter((division) => division.id !== id),
+            categories: prev.categories.filter((division) => division.id !== id),
         }));
     };
     const handleSubmit = async ()=>{
@@ -100,7 +100,7 @@ const AddBudget = ({ open, handleClose }) => {
                     </Button>
                     </Stack>
                     <Stack spacing={2}>
-                        {budget.budgetCategories.map((division) => (
+                        {budget.categories.map((division) => (
                             <Stack key={division.id} direction="row" spacing={2} alignItems="center">
                                 <TextField
                                     size="small"

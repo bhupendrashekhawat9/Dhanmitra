@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import ExpenditureExtendedKPI from '../Expenditure/ExpenditureExtendedKpi'
 import Information from '../Expenditure/Informations/Information'
 import KPIs from '../Expenditure/KPIs'
-import Navigation from '../SideNavbar'
+import Navigation from '../SideNavbar/Navbar'
 import AddBudget from '../Planning/Budgets/AddBudget'
 import { ContextType, useContextv2 } from '../../Context'
 import Transactions from '../Transactions'
@@ -24,7 +24,7 @@ let getPhaseOfDay = () => {
   }
   return "Night"
 }
-const QuickSummary = () => {
+const Home = () => {
   let phaseOfDay = getPhaseOfDay()
 
   let {store,updateContextStore} = useContextv2() as ContextType
@@ -76,4 +76,4 @@ const QuickSummary = () => {
   )
 }
 
-export default QuickSummary
+export default Home

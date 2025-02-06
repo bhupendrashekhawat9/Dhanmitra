@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material'
 import React from 'react'
-import { toLocal } from '../../../commonMethods/adapters'
+import { toLocal } from '../../../methods/adapters'
 
 interface propsType {
   data: {

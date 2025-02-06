@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material'
-import { toLocal } from '../commonMethods/adapters';
+import { toLocal } from '../methods/adapters';
 import React, { ReactNode } from 'react';
 
 export interface TransactionCardPropsType{

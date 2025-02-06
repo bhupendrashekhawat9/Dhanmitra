@@ -3,6 +3,7 @@ import "./index.css"
 import { SectionTypes } from '../../types/types'
 import { Context, ContextType, useContextv2 } from '../../Context'
 import { Stack, Typography } from '@mui/material'
+import { useNavigate } from 'react-router'
 interface modulesType {
     displayName:string,
     icon: string,
@@ -16,10 +17,9 @@ interface props {
     focused: boolean
 }
 const NavItem = ({module,handleOnClick,focused}:props) => {
+    let navigate = useNavigate()
   return (
-    <div  onClick={(e)=>{
-        
-        handleOnClick(e,module.key)}} style={{display:"flex", alignItems:"center", justifyContent:"center",textAlign:"center",padding:"1rem", gap:'1rem', maxWidth:"max-content", borderRadius:"1rem", margin:".5rem"}} className={`nav-btn focused`}>
+    <div  onClick={(e)=> navigate(module.path)} style={{display:"flex", alignItems:"center", justifyContent:"center",textAlign:"center",padding:"1rem", width:"8rem", borderRadius:"1rem", margin:""}} className={`nav-btn focused`}>
         
             <img height={'20'}  src={module.icon}/>
         
@@ -33,25 +33,37 @@ const NavItem = ({module,handleOnClick,focused}:props) => {
 
 const Navigation = () => {
       const {store,updateContextStore} = useContextv2() as ContextType
-    
+    let navigate = useNavigate()
     let modules : modulesType[] = [
         
         {
             key:"ASSETS",
-            displayName: "Assets & Incomes",
+            displayName: "Assets",
             icon:'/Nav_Income.png',
-            path: "#Incomes"
+            path: "/Assets"
+        },
+        {
+            key:"INCMOES",
+            displayName: "Incomes",
+            icon:'/Nav_Income.png',
+            path: "/Incomes"
         },
         {
             key:"PLANS",
-            displayName: "Plans & Budgets",
+            displayName: "Plans",
             icon:'/Nav_Planning.png',
-            path: "#Plans"
+            path: "/Plans"
+        },
+        {
+            key:"BUDGETS",
+            displayName: "Budgets",
+            icon:'/Nav_EMI.png',
+            path: "/Budgets"
         }
     ]
-    let handleOnClick = (e,key)=>{
-        
-        updateContextStore([["application.path",key ]])
+    let handleOnClick = (path)=>{
+        debugger
+    navigate(path)
         
     }
     let path = store?.application?.path??""
@@ -59,7 +71,9 @@ const Navigation = () => {
   return (
     <div style={{width:"100%",
         display:"grid",
-        gridTemplateColumns:"max-content max-content max-content max-content max-content"
+        gridTemplateColumns:"8rem 8rem 8rem 8rem 8rem",
+        gridTemplateRows:"8rem",
+        columnGap:"1rem"
         
     }}>
         

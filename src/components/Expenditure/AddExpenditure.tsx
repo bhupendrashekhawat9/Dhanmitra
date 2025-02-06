@@ -1,12 +1,12 @@
 import { Stack, Typography, FormControl, FormLabel, TextField, Select, MenuItem, Button, Chip } from '@mui/material'
 
-import {  useContext, useState } from 'react'
+import {  useContext, useEffect, useState } from 'react'
 import { savingsQuotes } from '../../variables/Variables'
 
-import { capitalize } from '../../commonMethods/adapters'
+import { capitalize } from '../../methods/adapters'
 import { Context, ContextType } from '../../Context'
 import { Transactions } from '../../types/types'
-import { addTransaction } from '../../commonMethods/fetchMethods'
+import { addTransaction } from '../../methods/fetchMethods'
 import moment from 'moment'
 
 const AddExpenditure = ({ handleClose }) => {
@@ -16,12 +16,14 @@ const AddExpenditure = ({ handleClose }) => {
         amount: "0",
         name: "",
         createdDate: new Date(),
-        budgetCategory:"1",
+        budgetId:"",
+        budgetCategoryId:"1",
         userId: 0,
         module:"EXPRNDITURE",
         transactionType:"DEBIT",
-        spendSource:"CASH"
+        wallet:"CASH"
     })
+    const [BudgetCategoryOptions, setBudgetCategoryOptions] = useState([])
     let handleOnChange = (event) => {
         let value = event.target.value;
         setExpenditure(prev => {
@@ -38,7 +40,8 @@ const AddExpenditure = ({ handleClose }) => {
         refreshContextStore("transactions")
         handleClose()
     }
-    let budgetCategories = store.budgets.activeBudget[0]?.budgetCategories??[];
+
+    let activeBudgets = store.budgets.activeBudget;
 
     let paymentType = [{
         title:"Cash",
@@ -49,13 +52,18 @@ const AddExpenditure = ({ handleClose }) => {
         value:"LOAN"
     }
 ]  
+
  let handleUpdatePaymentSource = (val)=>{
 
     setExpenditure(prev=>({
         ...prev,
-        spendSource:val
+        wallet:val
     }))
 }
+useEffect(()=>{
+    let budget = activeBudgets.find((i)=> i.id == expenditure.budgetId)??{categories:[]}
+    setBudgetCategoryOptions(budget.categories??[]);
+},[expenditure.budgetId])
     return (
 
         <Stack spacing={"1.2rem"}>
@@ -79,10 +87,22 @@ const AddExpenditure = ({ handleClose }) => {
             </FormControl>
             <FormControl>
                     <FormLabel>
+                        Budget
+                    </FormLabel>
+                    <Select size='small' name='budgetId' value={expenditure.budgetId} onChange={handleOnChange}>
+                        {activeBudgets.map((i) => {
+                            return <MenuItem value={i.id}>
+                                {capitalize(i.name,"FIRST LETTER OF ALL")}
+                            </MenuItem>
+                        })}
+                    </Select>
+                </FormControl>
+            <FormControl>
+                    <FormLabel>
                         Category
                     </FormLabel>
-                    <Select size='small' name='budgetCategory' value={expenditure.budgetCategory} onChange={handleOnChange}>
-                        {budgetCategories.map((i) => {
+                    <Select size='small' name='budgetCategoryId' value={expenditure.budgetCategoryId} onChange={handleOnChange}>
+                        {BudgetCategoryOptions.map((i) => {
                             return <MenuItem value={i.id}>
                                 {capitalize(i.name,"FIRST LETTER OF ALL")}
                             </MenuItem>
@@ -99,7 +119,7 @@ const AddExpenditure = ({ handleClose }) => {
                {
                 paymentType.map((i)=>{
                     return <>
-                    <Chip sx={{padding:"1rem"}} label={i.title} clickable variant={expenditure.spendSource == i.value ? "filled":"outlined"} onClick={()=>handleUpdatePaymentSource(i.value)} />
+                    <Chip sx={{padding:"1rem"}} label={i.title} clickable variant={expenditure.wallet == i.value ? "filled":"outlined"} onClick={()=>handleUpdatePaymentSource(i.value)} />
                     </>
                 })
                }

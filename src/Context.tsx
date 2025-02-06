@@ -5,8 +5,8 @@ import { SectionTypes, Transactions } from "./types/types";
 import { getAllData, ObjectNameType } from "./indexDB/database";
 import moment, { Moment } from "moment";
 import { BudgetsType } from "./types/Budgets";
-import { getCurrentMonthEndDate, getCurrentMonthStartDate } from "./commonMethods/adapters";
-import { getAllActiveBudgets, getAllIncomes, getAllTransactions } from "./commonMethods/fetchMethods";
+import { getCurrentMonthEndDate, getCurrentMonthStartDate } from "./methods/adapters";
+import { getAllActiveBudgets, getAllIncomes, getAllTransactions } from "./methods/fetchMethods";
 import { IncomeTypes } from "./components/Assets & Income";
 
 
@@ -37,6 +37,9 @@ interface plansType{
 }
 type assetsType = []
 interface ContextStore {
+    userData:{
+        id:string;
+    }
     startDate:Date;
     endDate:Date;
     application: applicationType
@@ -56,6 +59,9 @@ export const useContextv2 = ()=>{
 
 export const ContextProvider = ({children}:{children:ReactNode})=>{
     const [store, setStore] = useState<ContextStore>({
+        userData:{
+            id:"0"
+        },
         startDate: getCurrentMonthStartDate(),
         endDate:getCurrentMonthEndDate(),
         transactions:[],

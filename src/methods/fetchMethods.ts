@@ -33,15 +33,23 @@ export const getAllTransactions = async(startDate:Date|null,endDate:Date|null)=>
     let data: Transactions[] = await getAllData("transactions") as Transactions[]
 
     let budgets = await getAllActiveBudgets(startDate,endDate) as BudgetsType[]
-    let groupedBudgets = budgets._groupBy("id")
+    let groupedBudgets = {}
+    budgets.forEach((i)=>{
+        i.categories.forEach((j)=>{
+            groupedBudgets[i.id] = j
+        })
+
+    })
     let filteredData = []
 
     data.forEach((i:Transactions)=>{
+        
         filteredData.push({
             ...i,
             budgetCategory: groupedBudgets[i.budgetCategory]?.name
         })
     })
+    
     return filteredData;
 }
 export const getAllIncomes = async(startDate:Date|null,endDate:Date|null)=>{

@@ -25,7 +25,11 @@ body{
    overflow: auto;
    /* width: 1200px; */
 }
-
+.addItemContainer{
+  border: black dashed 2px;
+  border-radius: 1rem;
+  background-color: aqua;
+}
 @media screen and (max-width: 1200px) {
   .dm-main{
     display: block;
