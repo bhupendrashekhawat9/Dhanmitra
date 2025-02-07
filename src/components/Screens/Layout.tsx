@@ -14,15 +14,17 @@ const Layout = ({children}) => {
   return (
     <div style={{
         width:"100%",
-
+        
     }}>
     <div style={{
         padding:"1rem .5rem"
+
     }}>
         <IconButton onClick={handleBack}>
           <ArrowBack/>
         </IconButton>
       </div>
+      
       {
         children
       }

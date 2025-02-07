@@ -6,24 +6,25 @@ import BudgetDetails from './BudgetDetails';
 
 const BudgetSummary = () => {
   let { store } = useContextv2() as ContextType;
-  const [expandBudget, setExpandBudget] = useState(false)
+  const [expandBudget, setExpandBudget] = useState(null)
   let budgets = store.budgets.activeBudget;
   let transactions = store.transactions;
-
-  let totalExpenditures = transactions.reduce((accu, next) => {
-    if(next.transactionType == "DEBIT"){
-      return accu + parseInt(next.amount)
-    }
-    return accu
-  }, 0);
+  let budgetGroupedTxn = transactions._groupBy("budgetId");
+  
 
   return (
     <>
       {budgets.map((budget) => {
+        console.log(budget)
+        let totalExpenditures = budgetGroupedTxn[budget.id]?.reduce((accu, next) => {
+          if(next.transactionType == "DEBIT" ){
+            return accu + parseInt(next.amount)
+          }
+          return accu
+        }, 0);
         const spentPercentage = Math.min((totalExpenditures / parseInt(budget.amount)) * 100, 100); // Ensures max 100%
-
         return (
-          <Stack onClick={()=> setExpandBudget(prev=>!prev)} key={budget.name} spacing={2} padding={2} sx={{ border: '1px solid #ddd', borderRadius: 2 }} minWidth={'20rem'} width={expandBudget ? "100%":""}>
+          <Stack onClick={()=> setExpandBudget(prev=> prev == budget.id ? null : budget.id)} key={budget.name} spacing={2} padding={2} sx={{ border: '1px solid #ddd', borderRadius: 2 }} minWidth={'20rem'} width={"100%"}>
             <Typography variant="h6">{budget.name}</Typography>
             
             <Stack direction="row" justifyContent="space-between">
@@ -47,7 +48,7 @@ const BudgetSummary = () => {
               {spentPercentage.toFixed(2)}% used
             </Typography>
           {
-expandBudget && <BudgetDetails budgetData={budget}/>
+            expandBudget === budget.id && <BudgetDetails budgetData={budget}/>
           }
             
           </Stack>

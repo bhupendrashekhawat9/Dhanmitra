@@ -15,6 +15,11 @@ export interface ContextType{
     store:ContextStore;
     updateContextStore: (arg:Array<[string,unknown]>)=> void;
     refreshContextStore:(key:ObjectNameType)=> void
+    methods:{
+        fetchAllBudgets:()=>void,
+        fetchAllIncomes:()=>void,
+        fetchAllTransactions:()=>void
+    }
 }
 export const Context = createContext<ContextType|object>({});
 
@@ -158,7 +163,11 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
             }
         })
     }
-    console.log(store)
+    let methods = {
+        fetchAllBudgets,
+        fetchAllIncomes,
+        fetchAllTransactions
+    }
     useEffect(() => {
         fetchAllTransactions();
         fetchAllBudgets();
@@ -167,7 +176,7 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
     
 
     return(
-        <Context.Provider value={{store,updateContextStore,refreshContextStore}} >
+        <Context.Provider value={{store,updateContextStore,refreshContextStore,methods}} >
             {children}
         </Context.Provider>
     )

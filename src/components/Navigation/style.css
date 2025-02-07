@@ -1,0 +1,37 @@
+
+
+.nav-btn:hover{
+    background-color: rgba(141, 8, 8, 0.103);
+}
+/* .focused{
+    background-color: rgba(141, 8, 8, 0.103);
+} */
+.navbar{
+    background-color: var(--clr-1);
+    padding: 0.5rem 1rem;
+    box-sizing: border-box;
+     width:"max-content";
+    float: bottom;  position:fixed;
+    bottom:0rem;
+    left: 0;
+    z-index: 10;
+    color: var(--text-color);
+
+}
+.navbar > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: max-content;
+    padding: .5rem;
+    width: 100vw;
+}
+.navbar-btn-container{
+    flex-direction: column;
+    width: calc(100vw/5);
+    font-size: small;
+    background-color: var(--clr-1);
+}
+@media screen and (max-width: 1200px) {
+
+}

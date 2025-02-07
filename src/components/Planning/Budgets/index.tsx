@@ -20,10 +20,14 @@ const Budget = () => {
 
     return (
         <Layout>
+            <div className="container" style={{
+                padding:"1rem 2rem"
+            }}>
+
             <Typography variant="h4">
                 Budgets
             </Typography>
-            <Stack direction={'row'} flexWrap={"wrap"} spacing={1}>
+            <Stack direction={'row'} flexWrap={"wrap"} spacing={1} >
                 {activeBudgets.map((budget) => {
                     return (
                         <Stack onClick={() => setExpandBudget(prev => prev==budget.id?null:budget.id)} key={budget.name} spacing={2} padding={2} sx={{ border: '1px solid #ddd', borderRadius: 2 }} minWidth={'max-content'} width={expandBudget ? "100%" : ""}>
@@ -50,6 +54,7 @@ const Budget = () => {
             </Stack>
 
             <AddBudget open={open} handleClose={handleClose} />
+                    </div>
         </Layout>
     );
 };

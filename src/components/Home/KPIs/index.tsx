@@ -60,7 +60,7 @@ const KPIs = () => {
         })
     }
     let getExpenditureOnCredits = (data: Transactions[])=>{
-        let filteredData = data.filter((i)=> i.spendSource == "LOAN")
+        let filteredData = data.filter((i)=> i.wallet == "LOAN")
         setexpenditureData((prev) => {
             return {
                 ...prev,
@@ -109,12 +109,6 @@ const KPIs = () => {
     ]
     return (
         <div className='kpiContainer'>
-            {/* <div className='kpiContainer-element' id="ExpenditureKPI" >
-
-                <KPICard>
-                    <ExpenditureKPI />
-                </KPICard>
-            </div> */}
             {
                 kpis.map((kpi, index) => {
                     return <div key={index} style={{

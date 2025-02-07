@@ -1,14 +1,16 @@
-import { Stack, Typography } from '@mui/material'
+import { Fab, Stack, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import ExpenditureExtendedKPI from '../Expenditure/ExpenditureExtendedKpi'
 import Information from '../Expenditure/Informations/Information'
-import KPIs from '../Expenditure/KPIs'
+import KPIs from './KPIs'
 import Navigation from '../SideNavbar/Navbar'
 import AddBudget from '../Planning/Budgets/AddBudget'
 import { ContextType, useContextv2 } from '../../Context'
 import Transactions from '../Transactions'
 import Budget from './Budget'
 import AddTransaction from '../Transactions/AddTransaction'
+
+import { Add } from '@mui/icons-material'
 let getPhaseOfDay = () => {
 
   let date = new Date();
@@ -26,14 +28,14 @@ let getPhaseOfDay = () => {
 }
 const Home = () => {
   let phaseOfDay = getPhaseOfDay()
-
+  const [openAddScreen,setOpenAddScreen] = useState(false)
   let {store,updateContextStore} = useContextv2() as ContextType
-  let handleOpenAddTransaction = ()=>{
-    updateContextStore([["application.addTransactionModule","EXPENDITURE"]])
+  let handleToggleAddTransaction = ()=>{
+    debugger
+    setOpenAddScreen(prev=> !prev)
   }
   return (
-    <div onDoubleClick={handleOpenAddTransaction} style={{
-
+    <div onDoubleClick={handleToggleAddTransaction} style={{
       maxWidth: "100rem"
     }}>
       <Stack sx={{
@@ -41,10 +43,10 @@ const Home = () => {
 
       }}>
 
-        <Typography variant='h5' fontWeight={'800'} sx={{ color: "var(--clr-highlight--1)", fontSize: "38px", letterSpacing: "1.8px" }}>
+        <Typography  fontWeight={'800'} sx={{ color: "var(--clr-highlight--1)", fontSize: "2rem", letterSpacing: "1.8px" }}>
           Good {phaseOfDay},
         </Typography>
-        <Typography variant='h5' fontWeight={'800'} sx={{ fontSize: "32px", letterSpacing: "1.8px" }} color='black'>
+        <Typography variant='h5' fontWeight={'800'} sx={{fontSize: "2rem", letterSpacing: "1.8px" }} color='black'>
           Bhupendra
         </Typography>
       </Stack>
@@ -60,17 +62,14 @@ const Home = () => {
 
         <Information data={{ dayLimit: 0, daySpent: 0 }} />
 
-        <Stack sx={{
-          margin: "3rem 0"
-        }} >
-          <Navigation />
-        </Stack>
+       
       </Stack>
       <Stack>
         <Budget/>
         <Transactions/>
       </Stack>
-      <AddTransaction />
+    
+      
       {/* <ExpenditureExtendedKPI /> */}
     </div>
   )

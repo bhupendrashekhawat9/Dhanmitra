@@ -33,11 +33,11 @@ const Budget = () => {
                 </Stack>
                 </Button>
               </Stack>
-                <Stack >
+                <Stack gap={1}  >
                     {
-                         <Stack direction={"row"} justifyContent={"space-between"}>
+                         
                         <BudgetSummary/>
-                        </Stack>
+               
                     }
                    
                     

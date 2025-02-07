@@ -7,7 +7,7 @@ import AddIncome from '../components/Assets & Income/AddIncome';
 import Plans from '../components/Planning/Plans';
 const AppRouter = () => {
     return (
-        <div>
+
 
             <Routes>
                 <Route index element={<Home />} />
@@ -25,7 +25,7 @@ const AppRouter = () => {
                     <Route index element={<Plans />} />
                 </Route>
             </Routes>
-        </div>
+   
     )
 }
 

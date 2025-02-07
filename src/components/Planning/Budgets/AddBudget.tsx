@@ -1,33 +1,34 @@
 import {
     Button, Dialog, DialogContent, DialogTitle, FormControl, FormLabel,
-    IconButton, InputAdornment, Stack, TextField
+    IconButton, InputAdornment, Stack, TextField,
+    Typography
 } from "@mui/material";
 import { useState } from "react";
-import { v4 as uuid } from "uuid";
+import { parse, v4 as uuid } from "uuid";
 import { Delete as DeleteIcon, Close as CloseIcon } from "@mui/icons-material";
 import { red } from "@mui/material/colors";
 import { getCurrentMonthEndDate, getCurrentMonthStartDate, getRupeeSymbol } from "../../../methods/adapters";
 import { addData } from "../../../indexDB/database";
+import moment from "moment";
+import { BudgetsType } from "../../../types/Budgets";
+import { ContextType, useContextv2 } from "../../../Context";
 
 const AddBudget = ({ open, handleClose }) => {
+    let {store,methods} = useContextv2() as ContextType
     const [budget, setBudget] = useState({
         name: "",
         amount: "",
-        startDate: getCurrentMonthStartDate(),
-        endDate: getCurrentMonthEndDate(),
+        startDate: getCurrentMonthStartDate().toISOString().split("T")[0],
+        endDate: getCurrentMonthEndDate().toISOString().split("T")[0],
         categories: [
-            {
-                id: uuid(),
-                name: "",
-                amount: "",
-                amountType: "AMOUNT",
-            },
+    
         ],
     });
 
     // Handles main budget fields
     const handleOnChange = (event) => {
         const { name, value } = event.target;
+        
         setBudget((prev) => ({ ...prev, [name]: value }));
     };
 
@@ -62,8 +63,17 @@ const AddBudget = ({ open, handleClose }) => {
     const handleSubmit = async ()=>{
         await addData(budget,"budgets")
         handleClose()
+        methods.fetchAllBudgets()
     }
-    return (
+    let getCategoryAmt = (category: BudgetsType["categories"][0],budgetAmt: number)=>{
+        if(category.amountType == "PERCENTAGE"){
+            return budgetAmt*(parseInt(category.amount)/100)
+        }
+        return category.amount
+    }
+    const isCategoryAmtExceeding = parseInt(budget.amount) < budget.categories.reduce((prev,next)=> prev+ parseInt(getCategoryAmt(next,parseInt(budget.amount))),0);
+    const isBudgetAmtNull = parseInt(budget.amount) < 1
+      return (
         <Dialog open={open} onClose={handleClose} fullWidth>
             <DialogTitle>
                 Add Budget
@@ -84,6 +94,7 @@ const AddBudget = ({ open, handleClose }) => {
                     <Stack direction="row" spacing={2}>
                         <FormControl fullWidth>
                             <FormLabel>Valid From</FormLabel>
+                        
                             <TextField size="small" type="date" name="startDate" value={budget.startDate} onChange={handleOnChange} />
                         </FormControl>
                         <FormControl fullWidth>
@@ -93,8 +104,10 @@ const AddBudget = ({ open, handleClose }) => {
                     </Stack>
 
                     {/* Budget categories Section */}
-                    <Stack justifyContent={"end"} sx={{marginTop:"2rem"}}>
-
+                    <Stack justifyContent={"space-between"} alignItems={"center"} sx={{marginTop:"2rem"}} direction={"row"}>
+                    <Typography color={red[900]} fontWeight={600}>
+                        {isCategoryAmtExceeding && "Amount exceeding the budget"}
+                    </Typography>
                     <Button variant="contained" size="small" sx={{ maxWidth: "max-content", marginLeft: "auto", backgroundColor: "var(--clr-0)" }} onClick={handleAddcategories}>
                         Add Categories
                     </Button>
@@ -103,6 +116,7 @@ const AddBudget = ({ open, handleClose }) => {
                         {budget.categories.map((division) => (
                             <Stack key={division.id} direction="row" spacing={2} alignItems="center">
                                 <TextField
+                                error={isCategoryAmtExceeding}
                                     size="small"
                                     placeholder="Name"
                                     value={division.name}
@@ -110,6 +124,8 @@ const AddBudget = ({ open, handleClose }) => {
                                     fullWidth
                                 />
                                 <TextField
+                                error={isCategoryAmtExceeding}
+
                                     size="small"
                                     placeholder="Amount"
                                     value={division.amount}

@@ -1,5 +1,5 @@
 .kpiContainer-element{
-    height: 15vh;
+    
     min-width: 15rem;
     margin: 0 .5rem;
     /* margin: 0rem .5rem; */
@@ -23,7 +23,7 @@
     }
     .kpiContainer{
       padding: 1rem 0;
-      /* height: max-content; */
+      height: max-content;
       scroll-behavior: smooth;
       display: flex;
       justify-content: start;

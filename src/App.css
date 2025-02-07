@@ -12,17 +12,18 @@ body{
   padding:0;
   /* background-color: #fcc8aa2d; */
   /* background-color: #F9F9F9; */
-
   box-sizing: border-box;
   color: black;
+  /* display: flex;
+  justify-content: center; */
 }
-
+.container{
+  padding:"5rem"
+}
 .dm-main{
    height: 100vh;
-   display: flex;
-   justify-content: center;
-   align-items: start;
    overflow: auto;
+  width: 100%;
    /* width: 1200px; */
 }
 .addItemContainer{
@@ -30,7 +31,7 @@ body{
   border-radius: 1rem;
   background-color: aqua;
 }
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: var(--mb-scrn-mg)) {
   .dm-main{
     display: block;
     width: 100%;

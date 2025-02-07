@@ -2,31 +2,24 @@ import { Dialog, DialogContent } from '@mui/material'
 import React, { useState } from 'react'
 import AddExpenditure from '../Expenditure/AddExpenditure'
 import AddIncome from '../Assets & Income/AddIncome'
-
-const AddTransaction = () => {
-    const [selectedModule, setSelectedModule] = useState(null)
-    let handleOpenAddTransaction = ()=>{
-        setSelectedModule("EXPENDITURE")
-    }
+interface addTransactionProps {
+    open: boolean;
+    handleClose: ()=> void
+}
+const AddTransaction = (props: addTransactionProps) => {
     let handleClose = ()=>{
-        setSelectedModule(null)
+        props.handleClose()
     }
-    let getSelectedModuleDialog = (ref: "EXPENDITURE"|"INCOME"|null)=>{
-        switch(ref){
-            case "EXPENDITURE":
-                return <AddExpenditure handleClose={handleClose}/>;
-            case "INCOME":
-                return <AddIncome handleClose={handleClose}/>
-        }
-    }
+
   return (
-    <div onDoubleClick={handleOpenAddTransaction}>
-        <Dialog open={selectedModule}>
+    
+        <Dialog open={props.open}>
             <DialogContent>
-                {getSelectedModuleDialog(selectedModule)}
+                <>
+                <AddExpenditure handleClose={handleClose}/>
+                </>
             </DialogContent>
         </Dialog>
-    </div>
   )
 }
 

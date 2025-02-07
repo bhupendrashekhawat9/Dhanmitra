@@ -1,0 +1,6 @@
+.addBudgetContainer{
+    border: black dashed 2px;
+    border-radius: 1rem;
+    min-width: 5rem;
+    background-color: rgb(7, 250, 250);
+}

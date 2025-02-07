@@ -21,7 +21,7 @@ const NavItem = ({module,handleOnClick,focused}:props) => {
   return (
     <div  onClick={(e)=> navigate(module.path)} style={{display:"flex", alignItems:"center", justifyContent:"center",textAlign:"center",padding:"1rem", width:"8rem", borderRadius:"1rem", margin:""}} className={`nav-btn focused`}>
         
-            <img height={'20'}  src={module.icon}/>
+            <FaChartPie/>
         
         <Typography >
 
@@ -62,20 +62,14 @@ const Navigation = () => {
         }
     ]
     let handleOnClick = (path)=>{
-        debugger
+        
     navigate(path)
         
     }
     let path = store?.application?.path??""
     let onFocus = store.application.path
   return (
-    <div style={{width:"100%",
-        display:"grid",
-        gridTemplateColumns:"8rem 8rem 8rem 8rem 8rem",
-        gridTemplateRows:"8rem",
-        columnGap:"1rem"
-        
-    }}>
+    <div className='navbar'>
         
         {
             

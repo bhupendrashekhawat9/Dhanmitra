@@ -8,7 +8,7 @@ interface KPICardProps{
 }
 const KPICard = (props:KPICardProps) => {
   return (
-    <div  style={{ height:'max-content', borderRadius:'.5rem', padding:'.5rem'
+    <div  style={{ height:'max-content',minHeight:"10rem", borderRadius:'.5rem', padding:'.5rem'
     }}>
         {
             props.children

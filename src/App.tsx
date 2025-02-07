@@ -14,6 +14,8 @@ import QuickSummary from './components/Home/Home'
 import Budget from './components/Planning/Budgets'
 import Plans from './components/Planning/Plans'
 import AppRouter from './route/Router'
+import Navigation from './components/SideNavbar/Navbar'
+import Navbar from './components/Navigation/NavBar'
 
 function App() {
   const [openActionDialog, setOpenActionDialog] = useState(false);
@@ -36,16 +38,15 @@ function App() {
   return (
 
 
-    <div className='dm-main' onDoubleClick={() => !openActionDialog ? toggleDrawer() : null}>    
+    <div style={{
+      maxWidth:"1200px",
+      height:"100vh",
+      overflow:"auto",
+      margin:"auto"
+    }} onDoubleClick={() => !openActionDialog ? toggleDrawer() : null}>    
       
       <AppRouter/>
-        <div>
-          <Dialog open={openActionDialog} onClose={toggleDrawer}>
-            <DialogContent>
-              <AddExpenditure handleClose={toggleDrawer}/>
-            </DialogContent>
-          </Dialog>
-        </div>
+       <Navbar/>
     </div>
 
 
