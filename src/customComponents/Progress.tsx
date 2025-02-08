@@ -30,7 +30,7 @@ const Progress = ({ value, target, minValue, maxValue }) => {
         }}>
             <div style={{
                 width: `${100}%`,
-                backgroundColor: "var(--clr-1)",
+                backgroundColor: "var(--color-100)",
                 height: '1.8rem',
                 borderRadius:"0rem",
                 borderStartStartRadius:".5rem",
@@ -49,7 +49,7 @@ const Progress = ({ value, target, minValue, maxValue }) => {
                     position:"absolute",
                     bottom:"-100%",
                     
-                    backgroundColor:"var(--clr-1)",
+                    backgroundColor:"var(--color-100)",
                     padding:".3rem .3rem",
                     textAlign:"center",
                     borderRadius:".2rem"

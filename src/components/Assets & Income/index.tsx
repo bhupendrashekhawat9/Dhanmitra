@@ -14,8 +14,8 @@ interface IncomeContext {
 const Incomes = () => {
   let { store, updateContextStore } = useContextv2() as ContextType
   return (
-    <div>
       <Layout>
+    <div className="container">
 
         <Stack sx={{
           padding: '1rem 1rem'
@@ -32,9 +32,9 @@ const Incomes = () => {
           <CurrentMonthIncomeSummary />
           <IncomeTypes />
         </Stack>
-      </Layout>
 
     </div>
+      </Layout>
   )
 }
 
@@ -54,16 +54,15 @@ export const CurrentMonthIncomeSummary = () => {
     <Dialog open={isAddIncomeOpen} onClose={handleCloseAddIncome}>
       <DialogContent>
 
-        <AddIncome />
+        <AddIncome handleClose={handleCloseAddIncome} />
       </DialogContent>
     </Dialog>
     <Card sx={{
-      maxWidth: "50rem",
-      minWidth: "50rem"
+      width:"100%"
     }}>
       <>
 
-        <Stack direction={'row'} justifyContent={"space-between"}>
+        <Stack direction={'row'} justifyContent={"space-between"} >
           <Stack>
 
             <Typography>
@@ -113,7 +112,7 @@ export const IncomeTypes = () => {
   const { store } = useContextv2() as ContextType
   console.log(store.incomes)
   let incomeCategories = store.incomes.reduce((acc, next) => {
-    if (next.autoCarry) {
+    if (next.recurring) {
 
       return [...acc, {
         type: "Recurring",
@@ -124,8 +123,10 @@ export const IncomeTypes = () => {
     return acc
   }, [])
   let groupedCategories = incomeCategories._groupBy("type")
+  console.log(groupedCategories,incomeCategories,'group')
   return <Box sx={{
     marginTop: "2.5rem",
+   
   }}>
     {
       Object.keys(groupedCategories)?.map((i, index) => {

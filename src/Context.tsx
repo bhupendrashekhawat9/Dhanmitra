@@ -1,13 +1,11 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { AllSegmentationDataType, IncomeType, SegrigationDataType } from "./types/Income";
+import { IncomeType } from "./types/Income";
 import { ExpenditureType } from "./types/Expenditure";
 import { SectionTypes, Transactions } from "./types/types";
 import { getAllData, ObjectNameType } from "./indexDB/database";
-import moment, { Moment } from "moment";
 import { BudgetsType } from "./types/Budgets";
 import { getCurrentMonthEndDate, getCurrentMonthStartDate } from "./methods/adapters";
 import { getAllActiveBudgets, getAllIncomes, getAllTransactions } from "./methods/fetchMethods";
-import { IncomeTypes } from "./components/Assets & Income";
 
 
 
@@ -18,7 +16,8 @@ export interface ContextType{
     methods:{
         fetchAllBudgets:()=>void,
         fetchAllIncomes:()=>void,
-        fetchAllTransactions:()=>void
+        fetchAllTransactions:()=>void,
+        fetchUserData:()=> void
     }
 }
 export const Context = createContext<ContextType|object>({});
@@ -41,10 +40,12 @@ interface plansType{
     upcomingPlans:[]
 }
 type assetsType = []
+type userDataType = {
+id:string;
+        name:string
+}
 interface ContextStore {
-    userData:{
-        id:string;
-    }
+    userData:userDataType
     startDate:Date;
     endDate:Date;
     application: applicationType
@@ -65,7 +66,8 @@ export const useContextv2 = ()=>{
 export const ContextProvider = ({children}:{children:ReactNode})=>{
     const [store, setStore] = useState<ContextStore>({
         userData:{
-            id:"0"
+            id:"",
+            name:""
         },
         startDate: getCurrentMonthStartDate(),
         endDate:getCurrentMonthEndDate(),
@@ -163,15 +165,26 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
             }
         })
     }
+    let fetchUserData = async()=>{
+        let data: userDataType = (await getAllData("user"))[0] as userDataType;
+        setStore((prev)=>{
+            return {
+                ...prev,
+                userData:data
+            }
+        })
+    }
     let methods = {
         fetchAllBudgets,
         fetchAllIncomes,
-        fetchAllTransactions
+        fetchAllTransactions,
+        fetchUserData
     }
     useEffect(() => {
         fetchAllTransactions();
         fetchAllBudgets();
-        fetchAllIncomes()
+        fetchAllIncomes();
+        fetchUserData()
     }, [])
     
 

@@ -6,9 +6,9 @@ import { Transactions } from '../../types/types'
 import { addIncomeType, addTransaction } from '../../methods/fetchMethods'
 import { IncomeType } from '../../types/Income'
 import { useNavigate } from 'react-router'
-import { useContextv2 } from '../../Context'
+import { ContextType, useContextv2 } from '../../Context'
 import { v4 } from 'uuid'
-
+import { capitalize, getFormatedAmountToNumber, toLocal } from '../../methods/adapters'
 let transferToTypes = [
     {
         title:"Assets",
@@ -27,59 +27,58 @@ let transferToCategories =[
     }
 ]
 
-const AddIncome = () => {
+const AddIncome = ({handleClose}) => {
     let navigate = useNavigate()
-    let {store} = useContextv2();
+    let {store,methods} = useContextv2() as ContextType;
     const [income, setIncome] = useState<IncomeType>({
         id: v4(),
         name: "",
-        createdDate: new Date(),
+        createdDate: new Date().toISOString().split("T")[0],
         amount: "0",
         transactionType: "CREDIT",
         module: "INCOME",
         userId: store.userData.id,
-        startDate: new Date(),
+        startDate: new Date().toISOString().split("T")[0],
         endDate: null,
         recurring: false,
         recurringType: "MONTHLY",
         transferTo: "",
-        transferToType: "ASSETS"
+        transferToType: ""
+        // transferToTypeId:""
     })
-    let handleOnChange = (event) => {
 
+    let handleOnChange = (event) => {
+        let {name,value} = event.target;
+        
+        switch(name){
+            case "name":
+                value = capitalize(value);
+            break;
+            case "amount":
+               let tVal =  value.replace(/[^0-9.]/g, "")
+                value = toLocal(tVal,"currency")
+            default:
+                null
+        }
         setIncome(prev => {
             return {
                 ...prev,
-                [event.target.name]: event.target.value
+                [name]: (value)
             }
         })
     }
     let todaysQuote = incomeQuotes[(new Date()).getDate()]
 
     let handleAddIncome = async () => {
-        let transaction: Transactions = {
-            name: income.name,
-            createdDate: income.createdDate,
-            budgetCategory: income.budgetCategory,
-            amount: income.amount.toString(),
-            transactionType: 'CREDIT',
-            module: 'INCOME',
-            userId: 0,
-            spendSource:null
+        let payload: IncomeType = {
+           ...income,
+           amount: getFormatedAmountToNumber(income.amount)
         }
-        let incomeType: IncomeType = {
-            createDate: income.createdDate,
-            amount: income.amount.toString(),
-            name: income.name,
-            startDate: income.startDate,
-            endDate: income.endDate,
-            autoCarry: income.autoCarry,
-            transferTo: income.transferTo,
-            transferToType: income.transferToType
-        }
-        addTransaction(transaction)
-        addIncomeType(incomeType);
-        navigate(-1)
+     
+    
+        addIncomeType(payload);
+        methods.fetchAllIncomes()
+        handleClose()
     }
     let allocateOptions = [{
         title: "Assets",
@@ -100,6 +99,38 @@ const AddIncome = () => {
             name: "FD",
         },
     ]
+    let recurringTypeOptions = [
+        {
+            title: "Monthly",
+            value: "MONTHLY"
+        },
+        {
+            title: "Yearly",
+            value: "YEARLY"
+        },
+        {
+            title: "Daily",
+            value: "DAILY"
+        }
+    ];
+    
+    let getRecurringMessage = (type, createdDate) => {
+        const date = new Date(createdDate);
+        
+        switch (type) {
+            case "MONTHLY":
+                date.setMonth(date.getMonth() + 1);
+                return `This income will be credited every month. Next on ${date.toDateString()}.`;
+            case "YEARLY":
+                date.setFullYear(date.getFullYear() + 1);
+                return `This income will be credited every year. Next on ${date.toDateString()}.`;
+            case "DAILY":
+                date.setDate(date.getDate() + 1);
+                return `This income will be credited daily. Next on ${date.toDateString()}.`;
+            default:
+                return "";
+        }
+    };
     return (
 
         <Stack spacing={"1rem"}>
@@ -126,7 +157,7 @@ const AddIncome = () => {
                 <FormLabel>
                     Amount
                 </FormLabel>
-                <TextField name='amount' onChange={handleOnChange} value={income.amount} />
+                <TextField type='text'  name='amount' onChange={handleOnChange} value={(income.amount)} />
             </FormControl>
             <div style={{
                 display: 'grid',
@@ -144,7 +175,7 @@ const AddIncome = () => {
 
                 </FormControl>
             </div>
-            <Stack>
+            {/* <Stack>
 
                 <FormControl>
                     <FormLabel>
@@ -181,31 +212,50 @@ const AddIncome = () => {
                         }
                     </Select>
                 </FormControl>
-            </Stack>
+            </Stack> */}
 
             <Stack direction={'column'} padding={'1rem 0 1rem 0'}>
-                <Stack direction={"row"}>
-                    <Checkbox checked={income.autoCarry} onChange={(e) => {
-                        setIncome(prev => ({
-                            ...prev,
-                            autoCarry: e.target.checked
-                        }))
-                    }} />
-                    <div>
+                <Stack direction={"row"} spacing={1}>
 
-                        <Typography>
-                            Recurring
-                        </Typography>
-                        <Typography variant='caption'>
-                            Carry forword automatically
-                        </Typography>
-                    </div>
+                    <Stack direction={"row"} minWidth={"50%"} alignItems={"center"}>
+                        <Checkbox checked={income.recurring} onChange={(e) => {
+                            setIncome(prev => ({
+                                ...prev,
+                                recurring: e.target.checked
+                            }))
+                        }} />
+                        <div>
 
+                            <Typography>
+                                Recurring
+                            </Typography>
+                            <Typography variant='caption'>
+                                Carry forword automatically
+                            </Typography>
+                        </div>
+
+                    </Stack>
+                   {income.recurring && <FormControl fullWidth>
+                        <FormLabel>
+                            <Typography >
+
+                               Recurring Type
+                            </Typography>
+                        </FormLabel>
+                        <Select name='transferToType' onChange={handleOnChange} value={income.transferToType} >
+                            {
+                                recurringTypeOptions.map((i) => {
+                                    return <MenuItem value={i.value}>
+                                        {i.title}
+                                    </MenuItem>
+                                })
+                            }
+                        </Select>
+                    </FormControl>}
                 </Stack>
 
-
                 {
-                    income.autoCarry && (
+                    income.recurring && (
                         <>
                             <div style={{
                                 display: 'grid',
@@ -243,8 +293,11 @@ const AddIncome = () => {
 
             </Stack>
             <Box>
-                <Typography variant='caption' padding={"0 0 0 0"} >
-                    Note: This amount will be transfered to savings
+                <Typography>
+                    
+                </Typography>
+                <Typography variant='caption' fontWeight={"600"} padding={"0 0 0 0"} >
+                    Note: {getRecurringMessage(income.transferToType,income.createdDate)}
                 </Typography>
             </Box>
             <Button onClick={handleAddIncome} variant="contained" sx={{ backgroundColor: 'black' }}>

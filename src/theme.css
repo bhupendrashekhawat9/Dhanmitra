@@ -10,10 +10,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     --boxShadow:"1px 1px 1px 1px grey";
-    --clr-0: #20202073;
+    --clr-0: #181C14;
     --clr-0-light: #f3f0e5;
 
-    --clr-1: #181C14;
+    --color-100:;
     --background-color: #ffffff ;
     --clr-2:#49243E
     --clr--1 : #7c2263;
@@ -22,23 +22,14 @@
     --clr-highlight-0:#3C3D37;
     --clr-highlight--1:#844343b5;
     --border-radius: 1.5rem;
-    --mb-scrn-mg:400px;
+    --mobile-screen:400px;
+
+    --color-100:#181C14;
+    --color-75:#181c14b2;
+    --color-50:#181c1479;
+    --color-25:#181c142f;
   }
   @font-face {
     font-family: "SF-PRO";
     src: url("../public/sf-pro/SFPRODISPLAYREGULAR.OTF") format("OTF");
-  }
-  .glass {
-   
-    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-    backdrop-filter: blur( 17px );
-    -webkit-backdrop-filter: blur( 17px );
-    border-radius: 10px;
-    border: 1px solid rgba( 255, 255, 255, 0.18 );
-  }
-  .light {
-    background: rgba(255, 255, 255, 0.521);
-  }
-  .dark {
-    background: rgba( 255, 255, 255, 0.25 );
   }

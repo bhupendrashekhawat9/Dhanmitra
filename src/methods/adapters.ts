@@ -43,20 +43,18 @@ export const toLocal = (value: number | bigint | string, ref: "currency" | "perc
 
 export const capitalize = (input:string|null, style?:"ALL"|"FIRST LETTER OF ALL"|"FIRST LETTER OF FIRST WORD")=>{
     if(input){
-        let output =""
-        let capitalizedWord = new String(input);
-        capitalizedWord  = input.toLowerCase()
-       output+=capitalizedWord[0].toUpperCase()+capitalizedWord.slice(1);
+        let str = new String(input);
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+    return ""
+}
+export const getFormatedAmountToNumber = (value:string)=>{
+    
+    if(value){
 
-        return output;
-        // for(let i =0;i< input.length;i++){
-        //     let currentLetter = input[i]
-        //     if(i ==0){
-        //         currentLetter.toUpperCase()
-        //     }
-        //     capitalizedWord+=currentLetter;
-        // }
-        // return capitalizedWord;
+        let tVal =  value.replace(/[^0-9.]/g, "")
+        
+        return (tVal)
     }
     return ""
 }
@@ -75,7 +73,10 @@ export const getCurrentMonthStartDate = (date?:Date|null):Date => {
     }
     return new Date(moment(date).startOf("month").format("YYYY-MM-DD"));
   };
-
+// export const capitalize = (str: string): string => {
+//     if (!str) return "";
+//     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+// };
   export const getCurrentMonthEndDate = (date?:Date|null):Date => {
     if(!date){
         date = new Date()

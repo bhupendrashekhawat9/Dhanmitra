@@ -2,7 +2,7 @@ import KPIs from '../Home/KPIs'
 import ExpenditureExtendedKPI from './ExpenditureExtendedKpi'
 import { Stack, Typography } from '@mui/material'
 import Information from './Informations/Information'
-import Navigation from '../SideNavbar/Navbar'
+
 
 
 let getPhaseOfDay = ()=>{
@@ -56,7 +56,7 @@ const ExpenditurePage = () => {
          <Stack sx={{
           margin:"3rem 0"
          }} >
-        <Navigation/>
+       
          </Stack>
       </Stack>
          <ExpenditureExtendedKPI/>

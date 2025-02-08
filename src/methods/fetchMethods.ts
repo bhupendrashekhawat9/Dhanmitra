@@ -8,7 +8,7 @@ export const getAllActiveBudgets = async(startDate:Date|null,endDate:Date|null)=
     let budgets:BudgetsType[] = await getAllData("budgets") as BudgetsType[];
     let filteredBUdgets= budgets.filter(i=> {
 
-        if(i.carryForward && i.endDate){
+        if(i.recurring && i.endDate){
             return moment(i.endDate).isSameOrBefore(endDate)
         }    
         return moment(endDate).isSameOrAfter(i.createdDate)
@@ -46,7 +46,7 @@ export const getAllTransactions = async(startDate:Date|null,endDate:Date|null)=>
         
         filteredData.push({
             ...i,
-            budgetCategory: groupedBudgets[i.budgetCategory]?.name
+            budgetCategory: groupedBudgets[i.budgetCategoryId]?.name
         })
     })
     
@@ -73,4 +73,7 @@ export const addTransaction = async(data:Transactions)=>{
 }
 export const addIncomeType =async(data:IncomeType)=>{
     addData(data,"incomes")
+}
+export const updateUser = async(data)=>{
+    addData(data,"user")
 }

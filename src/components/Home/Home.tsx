@@ -1,16 +1,11 @@
-import { Fab, Stack, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import ExpenditureExtendedKPI from '../Expenditure/ExpenditureExtendedKpi'
+import { Stack, Typography } from '@mui/material'
+import { useState } from 'react'
 import Information from '../Expenditure/Informations/Information'
 import KPIs from './KPIs'
-import Navigation from '../SideNavbar/Navbar'
-import AddBudget from '../Planning/Budgets/AddBudget'
 import { ContextType, useContextv2 } from '../../Context'
 import Transactions from '../Transactions'
 import Budget from './Budget'
-import AddTransaction from '../Transactions/AddTransaction'
 
-import { Add } from '@mui/icons-material'
 let getPhaseOfDay = () => {
 
   let date = new Date();
@@ -39,20 +34,20 @@ const Home = () => {
       maxWidth: "100rem"
     }}>
       <Stack sx={{
-        padding: "3rem",
+        padding: "2rem",
 
       }}>
 
-        <Typography  fontWeight={'800'} sx={{ color: "var(--clr-highlight--1)", fontSize: "2rem", letterSpacing: "1.8px" }}>
+        <Typography  fontWeight={'800'} sx={{ color: "var(--color-75)", fontSize: "2rem", letterSpacing: "1.8px" }}>
           Good {phaseOfDay},
         </Typography>
         <Typography variant='h5' fontWeight={'800'} sx={{fontSize: "2rem", letterSpacing: "1.8px" }} color='black'>
-          Bhupendra
+          {store.userData.name}
         </Typography>
       </Stack>
       
       <Stack sx={{
-        marginTop: "2rem",
+        marginTop: "1rem",
         padding: "0 0 0 1rem"
       }}>
         <Typography variant='h6' fontWeight={600} sx={{ padding: ".5rem" }}>

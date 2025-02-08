@@ -60,7 +60,7 @@ const KPIs = () => {
         })
     }
     let getExpenditureOnCredits = (data: Transactions[])=>{
-        let filteredData = data.filter((i)=> i.wallet == "LOAN")
+        let filteredData = data.filter((i)=> i.wallet == "CREDIT")
         setexpenditureData((prev) => {
             return {
                 ...prev,
@@ -90,19 +90,19 @@ const KPIs = () => {
         {
             title: "Todays Limit",
             value: todaysExpLimit,
-            backgroundClr: "--clr-1",
+            backgroundClr: "--color-100",
             iconName: null
         },
         {
             title: "Average Spend",
             value: avgDailyExpenditure,
-            backgroundClr: "--clr-1",
+            backgroundClr: "--color-100",
             iconName: null
         },
         {
             title: "Overdraft",
             value: expenditureOnCredit,
-            backgroundClr: "--clr-1",
+            backgroundClr: "--color-100",
             iconName: null
         },
 

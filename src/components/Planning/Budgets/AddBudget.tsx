@@ -69,10 +69,9 @@ const AddBudget = ({ open, handleClose }) => {
         if(category.amountType == "PERCENTAGE"){
             return budgetAmt*(parseInt(category.amount)/100)
         }
-        return category.amount
+        return parseInt(category.amount)
     }
-    const isCategoryAmtExceeding = parseInt(budget.amount) < budget.categories.reduce((prev,next)=> prev+ parseInt(getCategoryAmt(next,parseInt(budget.amount))),0);
-    const isBudgetAmtNull = parseInt(budget.amount) < 1
+    const isCategoryAmtExceeding = parseInt(budget.amount) < budget.categories.reduce((prev,next)=> prev+ (getCategoryAmt(next,parseInt(budget.amount))),0);
       return (
         <Dialog open={open} onClose={handleClose} fullWidth>
             <DialogTitle>

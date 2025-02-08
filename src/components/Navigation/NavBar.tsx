@@ -1,18 +1,18 @@
-import React, { ReactNode, useContext, useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import "./style.css"
 import { SectionTypes } from '../../types/types'
-import { Context, ContextType, useContextv2 } from '../../Context'
-import { Stack, Typography } from '@mui/material'
+import { ContextType, useContextv2 } from '../../Context'
 import { useNavigate } from 'react-router'
 import { FaChartPie } from "react-icons/fa";
 import { TbMoneybag } from "react-icons/tb";
-import { MdSavings, MdOutlineEventNote, MdAdd } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 import AddTransaction from '../Transactions/AddTransaction'
 interface modulesType {
     displayName: string,
-    icon: string,
-    path: string
-    key: SectionTypes
+    icon: ReactNode,
+    path?: string
+    key: string,
+    id:number
 
 }
 interface props {
@@ -39,16 +39,16 @@ const Navbar = () => {
     }
     let modules: modulesType[] = [
 
+        // {
+        //     id: -1,
+        //     key: "ASSETS",
+        //     displayName: "Assets",
+        //     icon: <MdSavings size={"2rem"} />,
+        //     path: "/Assets"
+        // },
         {
             id: -1,
-            key: "ASSETS",
-            displayName: "Assets",
-            icon: <MdSavings size={"2rem"} />,
-            path: "/Assets"
-        },
-        {
-            id: -1,
-            key: "INCMOES",
+            key: "INCOMES",
             displayName: "Incomes",
             icon: <TbMoneybag size={"2rem"} />,
             path: "/Incomes"
@@ -57,7 +57,7 @@ const Navbar = () => {
             id: 0,
             key: "ADD",
             displayName: "",
-            icon: <div onClick={openAddTransaction}  style={{
+            icon: <div onClick={handleOpenAddTransaction}  style={{
                 padding: "1rem",
                 borderRadius: "50%",
                 backgroundColor: "white",
@@ -73,13 +73,13 @@ const Navbar = () => {
             </div>
             
         },
-        {
-            id: 1,
-            key: "PLANS",
-            displayName: "Plans",
-            icon: <MdOutlineEventNote size={"2rem"} />,
-            path: "/Plans"
-        },
+        // {
+        //     id: 1,
+        //     key: "PLANS",
+        //     displayName: "Plans",
+        //     icon: <MdOutlineEventNote size={"2rem"} />,
+        //     path: "/Plans"
+        // },
         {
             id: 1,
             key: "BUDGETS",

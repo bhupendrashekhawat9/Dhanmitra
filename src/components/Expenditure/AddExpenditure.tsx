@@ -15,7 +15,7 @@ const AddExpenditure = ({ handleClose }) => {
     const [expenditure, setExpenditure] = useState<Transactions>({
         amount: "0",
         name: "",
-        createdDate: new Date(),
+        createdDate: new Date().toISOString().split("T")[0],
         budgetId:"",
         budgetCategoryId:"1",
         userId: 0,
@@ -64,6 +64,16 @@ useEffect(()=>{
     let budget = activeBudgets.find((i)=> i.id == expenditure.budgetId)??{categories:[]}
     setBudgetCategoryOptions(budget.categories??[]);
 },[expenditure.budgetId])
+
+useEffect(() => {
+    if(activeBudgets.length==1){
+        setExpenditure(prev=>({
+            ...prev,
+            budgetId : activeBudgets[0]?.id 
+
+        }))
+    }
+  }, [activeBudgets])
     return (
 
         <Stack spacing={"1.2rem"}>

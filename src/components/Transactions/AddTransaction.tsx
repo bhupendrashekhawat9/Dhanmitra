@@ -13,7 +13,7 @@ const AddTransaction = (props: addTransactionProps) => {
 
   return (
     
-        <Dialog open={props.open}>
+        <Dialog open={props.open} onClose={props.handleClose}>
             <DialogContent>
                 <>
                 <AddExpenditure handleClose={handleClose}/>

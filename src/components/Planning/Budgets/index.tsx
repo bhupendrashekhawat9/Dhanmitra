@@ -12,7 +12,6 @@ const Budget = () => {
     const { store } = useContextv2();
     const [expandBudget, setExpandBudget] = useState(null)
     let activeBudgets = store.budgets.activeBudget
-    let allBudgets = store.budgets.allBudgets
 
     const handleClose = () => {
         setOpen(false);

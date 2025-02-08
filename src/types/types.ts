@@ -3,7 +3,7 @@ import { ObjectNameType } from "../indexDB/database";
 export type SectionTypes = "ASSETS" | "PLANS" |"HOME"|"BUDGET"
 export interface Transactions {
     name: string;
-    createdDate:Date;
+    createdDate:string;
     budgetCategoryId:string;
     budgetId:string;
     amount:string;

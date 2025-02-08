@@ -1,16 +1,24 @@
-import React from 'react'
-import { BrowserRouter, Routes, Route } from "react-router";
+import React, { useEffect, useState } from 'react'
+import { Routes, Route } from "react-router";
 import Home from '../components/Home/Home';
 import Budget from '../components/Planning/Budgets';
 import Incomes from '../components/Assets & Income';
-import AddIncome from '../components/Assets & Income/AddIncome';
 import Plans from '../components/Planning/Plans';
+import { ContextType, useContextv2 } from '../Context';
 const AppRouter = () => {
+    let {store} = useContextv2() as ContextType;
+    const [indexComponent, setIndexComponent] = useState(<Home/>)
+    useEffect(()=>{
+        // if(!store.userData.name){
+        //     setIndexComponent(<RegisterUser/>)
+        // }
+
+    },[store.userData])
     return (
 
 
             <Routes>
-                <Route index element={<Home />} />
+                <Route index element={indexComponent} />
                 <Route path="Budgets" element={<Budget />} />
 
                 <Route path='Incomes'>

@@ -1,7 +1,7 @@
 import { AddIncomePayloadType } from "../types/Income";
 
 // Type for object store names
-export type ObjectNameType = "incomes" | "transactions" | "assets" | "plans" | "budgets";
+export type ObjectNameType = "incomes" | "transactions" | "assets" | "plans" | "budgets"|"user";
 
 // Open or create a database
 //----------------------depricated
@@ -45,12 +45,15 @@ export type ObjectNameType = "incomes" | "transactions" | "assets" | "plans" | "
 
 const openDB = (): Promise<IDBDatabase> => {
     return new Promise((resolve, reject) => {
-        const request = indexedDB.open("Dhanmitra", 3); // Database name and version
+        const request = indexedDB.open("Dhanmitra", 4); // Database name and version
 
         request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
             const db = (event.target as IDBOpenDBRequest).result;
             if (!db.objectStoreNames.contains("transactions")) {
                 db.createObjectStore("transactions", { keyPath: "id", autoIncrement: true });
+            }
+            if (!db.objectStoreNames.contains("user")) {
+                db.createObjectStore("user", { keyPath: "id", autoIncrement: false });
             }
             if (!db.objectStoreNames.contains("incomes")) {
                 db.createObjectStore("incomes", { keyPath: "id", autoIncrement: true });

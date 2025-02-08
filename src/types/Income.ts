@@ -5,11 +5,11 @@ export interface IncomeType{
     transactionType:"DEBIT"|"CREDIT",
     module:"EXPENDITURE"|"INCOME",
     id:string,
-    createdDate:Date;
+    createdDate:string;
     amount:string;
     name:string,
-    startDate:Date|null;
-    endDate:Date|null;
+    startDate:string|null;
+    endDate:string|null;
     recurring:boolean;
     recurringType:"MONTHLY"|"WEEKLY"|"DAILY";
     transferTo: string;
