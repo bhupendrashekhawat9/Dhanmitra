@@ -13,7 +13,11 @@ import moment from "moment";
 import { BudgetsType } from "../../../types/Budgets";
 import { ContextType, useContextv2 } from "../../../Context";
 
-const AddBudget = ({ open, handleClose }) => {
+interface props {
+    open?:boolean,
+    handleClose?:()=>void
+}
+const AddBudget = ({ open, handleClose }:props) => {
     let {store,methods} = useContextv2() as ContextType
     const [budget, setBudget] = useState({
         name: "",
@@ -73,15 +77,8 @@ const AddBudget = ({ open, handleClose }) => {
     }
     const isCategoryAmtExceeding = parseInt(budget.amount) < budget.categories.reduce((prev,next)=> prev+ (getCategoryAmt(next,parseInt(budget.amount))),0);
       return (
-        <Dialog open={open} onClose={handleClose} fullWidth>
-            <DialogTitle>
-                Add Budget
-                <IconButton onClick={handleClose} sx={{ position: "absolute", right: 8, top: 8 }}>
-                    <CloseIcon />
-                </IconButton>
-            </DialogTitle>
-            <DialogContent>
-                <Stack spacing={2}>
+      
+                <Stack spacing={2} width={'max-content'}>
                     <FormControl>
                         <FormLabel>Budget Name</FormLabel>
                         <TextField size="small" name="name" value={budget.name} onChange={handleOnChange} />
@@ -162,9 +159,21 @@ const AddBudget = ({ open, handleClose }) => {
                     </Button>
                         </Stack>
                 </Stack>
-            </DialogContent>
-        </Dialog>
+         
     );
 };
 
+export const AddBudgetPopUpScreen = ({ open, handleClose }:props)=>{
+   return <Dialog open={open} onClose={handleClose} fullWidth>
+    <DialogTitle>
+        Add Budget
+        <IconButton onClick={handleClose} sx={{ position: "absolute", right: 8, top: 8 }}>
+            <CloseIcon />
+        </IconButton>
+    </DialogTitle>
+    <DialogContent>
+        <AddBudget/>
+    </DialogContent>
+    </Dialog>
+}
 export default AddBudget;

@@ -8,8 +8,10 @@ import { Context, ContextType } from '../../Context'
 import { Transactions } from '../../types/types'
 import { addTransaction } from '../../methods/fetchMethods'
 import moment from 'moment'
-
-const AddExpenditure = ({ handleClose }) => {
+interface props {
+    handleCLose?:()=>void
+}
+const AddExpenditure = ({ handleClose }:props) => {
       let {store, updateContextStore, refreshContextStore } = useContext(Context) as ContextType ;
     
     const [expenditure, setExpenditure] = useState<Transactions>({

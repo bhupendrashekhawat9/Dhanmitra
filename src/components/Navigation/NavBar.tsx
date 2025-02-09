@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router'
 import { FaChartPie } from "react-icons/fa";
 import { TbMoneybag } from "react-icons/tb";
 import { MdAdd } from "react-icons/md";
-import AddTransaction from '../Transactions/AddTransaction'
+import AddNewTxn from '../AddNew/AddNewTxn'
+import { RiHomeLine } from "react-icons/ri";
 interface modulesType {
     displayName: string,
     icon: ReactNode,
@@ -25,7 +26,13 @@ const NavItem = ({ module, handleOnClick, focused }: props) => {
     return (
         <div onClick={(e) => navigate(module.path)} className={`navbar-btn`}>
             {module.icon}
+            {
+                focused && <>
+                <div className='nav-btn_focused'>
 
+                </div>
+                </>
+            }
         </div>
     )
 }
@@ -39,26 +46,33 @@ const Navbar = () => {
     }
     let modules: modulesType[] = [
 
-        // {
-        //     id: -1,
-        //     key: "ASSETS",
-        //     displayName: "Assets",
-        //     icon: <MdSavings size={"2rem"} />,
-        //     path: "/Assets"
-        // },
+        {
+            id: -1,
+            key: "HOME",
+            displayName: "Home",
+            icon: <RiHomeLine size={"1.5rem"}/>,
+            path: "/"
+        },
         {
             id: -1,
             key: "INCOMES",
             displayName: "Incomes",
-            icon: <TbMoneybag size={"2rem"} />,
+            icon: <TbMoneybag size={"1.5rem"} />,
             path: "/Incomes"
+        },
+        {
+            id: -1,
+            key: "BUDGETS",
+            displayName: "Budgets",
+            icon: <FaChartPie size={"1.5rem"} />,
+            path: "/Budgets"
         },
         {
             id: 0,
             key: "ADD",
             displayName: "",
             icon: <div onClick={handleOpenAddTransaction}  style={{
-                padding: "1rem",
+                padding: ".5rem",
                 borderRadius: "50%",
                 backgroundColor: "white",
                 display:"flex",
@@ -68,7 +82,7 @@ const Navbar = () => {
                 color:"black"
             }}>
                
-                    <MdAdd size={"2rem"} />
+                    <MdAdd size={"1.5rem"} />
                
             </div>
             
@@ -80,13 +94,7 @@ const Navbar = () => {
         //     icon: <MdOutlineEventNote size={"2rem"} />,
         //     path: "/Plans"
         // },
-        {
-            id: 1,
-            key: "BUDGETS",
-            displayName: "Budgets",
-            icon: <FaChartPie size={"2rem"} />,
-            path: "/Budgets"
-        }
+       
     ]
     let handleOnClick = (path) => {
         navigate(path)
@@ -94,17 +102,21 @@ const Navbar = () => {
     let path = store?.application?.path ?? ""
     let onFocus = store.application.path
     return (
+        <>
+         <AddNewTxn open={openAddTransaction} handleClose={handleOpenAddTransaction}/>
         <div className='navbar'>
-                <AddTransaction open={openAddTransaction} handleClose={handleOpenAddTransaction} />
+           
+                {/* <AddTransaction open={openAddTransaction} handleClose={handleOpenAddTransaction} /> */}
             <div>
                 {
-
+                    
                     modules.map((module, index) => {
                         return <NavItem module={module} focused={onFocus == module.key} handleOnClick={handleOnClick} />
                     })
                 }
             </div>
         </div>
+                </>
     )
 }
 

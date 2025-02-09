@@ -26,8 +26,10 @@ let transferToCategories =[
         
     }
 ]
-
-const AddIncome = ({handleClose}) => {
+interface props {
+    handleClose?: ()=> void
+}
+const AddIncome = ({handleClose}:props) => {
     let navigate = useNavigate()
     let {store,methods} = useContextv2() as ContextType;
     const [income, setIncome] = useState<IncomeType>({

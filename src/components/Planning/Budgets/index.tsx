@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AddBudget from "./AddBudget";
+import AddBudget, { AddBudgetPopUpScreen } from "./AddBudget";
 import Layout from "../../Screens/Layout";
 import { Box, LinearProgress, Stack, Typography } from "@mui/material";
 import { useContextv2 } from "../../../Context";
@@ -45,14 +45,10 @@ const Budget = () => {
                         </Stack>
                     );
                 })}
-                <div onClick={() => setOpen(true)} style={{
-                    width: "6rem", height: "6rem"
-                }} className="addItemContainer">
-
-                </div>
+              
             </Stack>
 
-            <AddBudget open={open} handleClose={handleClose} />
+            {/* <AddBudgetPopUpScreen open={open} handleClose={handleClose} /> */}
                     </div>
         </Layout>
     );

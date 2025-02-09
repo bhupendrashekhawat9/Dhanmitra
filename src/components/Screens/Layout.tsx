@@ -20,9 +20,9 @@ const Layout = ({children}) => {
         padding:"1rem .5rem"
 
     }}>
-        <IconButton onClick={handleBack}>
+        {/* <IconButton onClick={handleBack}>
           <ArrowBack/>
-        </IconButton>
+        </IconButton> */}
       </div>
       
       {
