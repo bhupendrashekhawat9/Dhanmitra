@@ -9,7 +9,7 @@ import { Transactions } from '../../types/types'
 import { addTransaction } from '../../methods/fetchMethods'
 import moment from 'moment'
 interface props {
-    handleCLose?:()=>void
+    handleClose?:()=>void
 }
 const AddExpenditure = ({ handleClose }:props) => {
       let {store, updateContextStore, refreshContextStore } = useContext(Context) as ContextType ;
