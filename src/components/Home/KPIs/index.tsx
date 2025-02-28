@@ -6,81 +6,42 @@ import { Context, ContextType } from '../../../Context'
 import "./index.css"
 import moment from 'moment'
 import { Transactions } from '../../../types/types'
+import { getExpenditureOnCredits, getTotalExpenditure, getTodaysExpenditure, getExpenditureLimit } from '../controller/controllers'
 const KPIs = () => {
-    let date = new Date().getDate()
+    const date = new Date().getDate()
 
-    const [expenditureData, setexpenditureData] = useState({
+    const [expenditureData, setExpenditureData] = useState({
         totalExpenditure: 0,
         currentMonthExpenditure: 0,
         todaysExpenditure: 0,
         expenditureOnCredit:0
     })
-    let { store } = useContext(Context) as ContextType;
+    const { store } = useContext(Context) as ContextType;
 
-
-    const [currentMonthExpenditureLimit, setcurrentMonthExpenditureLimit] = useState(0)
 
     // let totalExpenditure = toLocal(expenditureData.totalExpenditure,'currency') as string
-    let todaysExpenditure = toLocal(expenditureData.todaysExpenditure, 'currency') as string
+    const todaysExpenditure = toLocal(expenditureData.todaysExpenditure, 'currency') as string
     
-    let getExpenditureLimit = () => {
-        let budget = store.budgets.activeBudget.reduce((acc, next) => acc += parseInt(next.amount), 0);
-        setcurrentMonthExpenditureLimit(budget)
-
-    }
-    let getTodaysExpenditure = () => {
-        
-        let data = store.transactions.filter((i) =>{
-            
-            if(new Date().toDateString() == new Date(i.createdDate).toDateString() && i.transactionType == "DEBIT"){
-                return true
-            }
-            return false
-
-        })
-        setexpenditureData((prev) => {
-            return {
-                ...prev,
-                todaysExpenditure: data.reduce((acc, next) => acc += parseInt(next.amount), 0)
-            }
-        })
-    }
-    let getTotalExpenditure = (data:Transactions[])=>{
-        let totalExpenditure = data.reduce((acc,next)=> {
-            if(next.transactionType == "DEBIT"){
-                return acc+=parseInt(next.amount)
-            }
-            return acc;
-        },0);
-        setexpenditureData((prev)=>{
-            return {
-                ...prev,
-                totalExpenditure 
-            }
-        })
-    }
-    let getExpenditureOnCredits = (data: Transactions[])=>{
-        let filteredData = data.filter((i)=> i.wallet == "LOAN")
-        setexpenditureData((prev) => {
-            return {
-                ...prev,
-                expenditureOnCredit: filteredData.reduce((acc, next) => acc += parseInt(next.amount), 0)
-            }
-        })
-    }
+ 
     useEffect(() => {
-        getExpenditureOnCredits(store.transactions)
-        getTotalExpenditure(store.transactions)
-        getTodaysExpenditure()
-        getExpenditureLimit()
+        setExpenditureData((prev) => {
+            return {
+                ...prev,
+                totalExpenditure: getTotalExpenditure(store.transactions),
+                currentMonthExpenditure: getTotalExpenditure(store.transactions),
+                todaysExpenditure: getTodaysExpenditure(store.transactions),
+                expenditureOnCredit: getExpenditureOnCredits(store.transactions),
+                currentMonthExpenditureLimit: getExpenditureLimit(store.budgets.activeBudget)
+            }
+            })
     }, [store])
 
-    let totalExpenditure = expenditureData.totalExpenditure
-    let avgDailyExpenditure = toLocal((totalExpenditure / new Date().getDate()), "currency")
-    let expenditureOnCredit = toLocal(expenditureData.expenditureOnCredit,'currency');
-    let todaysExpLimit = toLocal(((currentMonthExpenditureLimit - totalExpenditure) / (31 - date)), "number")
+    const totalExpenditure = expenditureData.totalExpenditure
+    const avgDailyExpenditure = toLocal((totalExpenditure / new Date().getDate()), "currency")
+    const expenditureOnCredit = toLocal(expenditureData.expenditureOnCredit,'currency');
+    const todaysExpLimit = toLocal(((expenditureData.currentMonthExpenditureLimit - totalExpenditure) / (31 - date)), "number")
 
-    let kpis = [
+    const kpis = [
         {
             title: "Spent",
             value: todaysExpenditure,
@@ -123,7 +84,7 @@ const KPIs = () => {
                                     {kpi.title}
                                 </Typography>
 
-                                <Typography textAlign={'start'} padding={"1rem"} fontSize={"40px"} fontWeight={600}>
+                                <Typography textAlign={'start'} padding={"1rem"} fontSize={"2rem"} fontWeight={600}>
                                     {kpi.value}
                                 </Typography>
                             </Stack>
