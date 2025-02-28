@@ -18,16 +18,16 @@ interface tabOption {
 
 
 const AddNewTxn = ({open,handleClose}) => {
-    let location = useLocation()
-    let [focusedScreen,setFocusedScreen] = useState(()=> location.pathname)
-    let [sortedTabs,setSortedTabs] = useState<tabOption[]>([]);
-    let tabOptions: {[key: string]: tabOption} =  {
+    const location = useLocation()
+    const [focusedScreen,setFocusedScreen] = useState(()=> location.pathname)
+    const [sortedTabs,setSortedTabs] = useState<tabOption[]>([]);
+    const tabOptions: {[key: string]: tabOption} =  {
         "/Income": {
             id:-1,
             title: "Income",
             value: "INCOME",
             path: "/Income",
-            component: <AddIncome/>,
+            component: <AddIncome handleClose={handleClose}/>,
             icon:<FaDivide/>
         },
         "/": {
@@ -35,7 +35,7 @@ const AddNewTxn = ({open,handleClose}) => {
             title: "Expense",
             value: "EXPENDITURE",
             path: "/",
-            component: <AddExpenditure/>,
+            component: <AddExpenditure handleClose={handleClose} />,
             icon:<FaDivide/>
 
 
@@ -45,17 +45,17 @@ const AddNewTxn = ({open,handleClose}) => {
             title: "Budget",
             value: "BUDGET",
             path: "/Budget",
-            component: <AddBudget/>,
+            component: <AddBudget handleClose={handleClose}/>,
             icon:<FaDivide/>
 
         }
     }
     
-    let getFocusedScreen = (options: {[key: string]: tabOption}, focusedModule:string )=>{
+    const getFocusedScreen = (options: {[key: string]: tabOption}, focusedModule:string )=>{
         return options[focusedModule]?.component
 
     }
-    let reorderTabs = (tabs: tabOption[],focusedModule:string)=>{
+    const reorderTabs = (tabs: tabOption[],focusedModule:string)=>{
         
         let lastFocuesed = tabs.find((i)=> i.id == 0);
         let currentFocus = tabs.find((i)=> i.path == focusedModule);
@@ -75,7 +75,7 @@ const AddNewTxn = ({open,handleClose}) => {
             return i
         })
     }
-    let handleTabFocus = (tab: unknown)=>{
+    const handleTabFocus = (tab: unknown)=>{
         let tTab = tab as tabOption
         setFocusedScreen(tTab.path)
     }

@@ -18,7 +18,7 @@ interface props {
     handleClose?:()=>void
 }
 const AddBudget = ({ open, handleClose }:props) => {
-    let {store,methods} = useContextv2() as ContextType
+    const {store,methods,refreshContextStore} = useContextv2() as ContextType
     const [budget, setBudget] = useState({
         name: "",
         amount: "",
@@ -69,7 +69,7 @@ const AddBudget = ({ open, handleClose }:props) => {
         handleClose()
         methods.fetchAllBudgets()
     }
-    let getCategoryAmt = (category: BudgetsType["categories"][0],budgetAmt: number)=>{
+    const getCategoryAmt = (category: BudgetsType["categories"][0],budgetAmt: number)=>{
         if(category.amountType == "PERCENTAGE"){
             return budgetAmt*(parseInt(category.amount)/100)
         }

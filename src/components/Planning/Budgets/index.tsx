@@ -1,22 +1,50 @@
 import React, { useState } from "react";
-import AddBudget, { AddBudgetPopUpScreen } from "./AddBudget";
 import Layout from "../../Screens/Layout";
-import { Box, LinearProgress, Stack, Typography } from "@mui/material";
+import { Box, IconButton, LinearProgress, Stack, Typography } from "@mui/material";
 import { useContextv2 } from "../../../Context";
-import moment from "moment";
 import { toLocal } from "../../../methods/adapters";
 import BudgetDetails from "../../Home/Budget/BudgetDetails";
+import { Delete } from "@mui/icons-material";
+import { deleteData } from "../../../indexDB/database";
 
-const Budget = () => {
-    const [open, setOpen] = useState(false);
-    const { store } = useContextv2();
+const Budget = ({budget})=>{
+    const {refreshContextStore,methods} = useContextv2()
     const [expandBudget, setExpandBudget] = useState(null)
-    let activeBudgets = store.budgets.activeBudget
+    const deleteBudget = async (id)=>{
+        await deleteData(budget.id, "budgets")
+        methods.fetchAllBudgets()
+    }
+    return (
+        <Stack onClick={() => setExpandBudget(prev => prev==budget.id?null:budget.id)} key={budget.name} padding={2} sx={{ border: '1px solid #ddd', borderRadius: 2 }} margin={".5%"} width={expandBudget ? "100%" : "48%"}>
+            <Stack direction={"column"}>
+                <Stack direction={'row'} justifyContent={"space-between"}>
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+            <Typography variant="h6">{budget.name}</Typography>
+            <Box display="flex" justifyContent="flex-end">
+                <IconButton onClick={()=> deleteBudget(budget.id)}>
+                    <Delete />
+                </IconButton>
+            </Box>
+                  </Stack>
 
+                <Stack direction="column" justifyContent="space-between">
+                    <Typography>Budget:</Typography>
+                    <Typography>{toLocal(budget.amount, "currency")}</Typography>
+                </Stack>
+            </Stack>
+           
+
+            {
+                expandBudget == budget.id && <BudgetDetails budgetData={budget} />
+            }
+
+        </Stack>
+    );
+}
+
+const Budgets = () => {
+    const { store } = useContextv2();
+    const activeBudgets = store.budgets.activeBudget
     return (
         <Layout>
             <div className="container" style={{
@@ -26,32 +54,17 @@ const Budget = () => {
             <Typography variant="h4">
                 Budgets
             </Typography>
-            <Stack direction={'row'} flexWrap={"wrap"} spacing={1} >
-                {activeBudgets.map((budget) => {
-                    return (
-                        <Stack onClick={() => setExpandBudget(prev => prev==budget.id?null:budget.id)} key={budget.name} spacing={2} padding={2} sx={{ border: '1px solid #ddd', borderRadius: 2 }} minWidth={'max-content'} width={expandBudget ? "100%" : ""}>
-                            <Typography variant="h6">{budget.name}</Typography>
-
-
-                            <Stack direction="row" justifyContent="space-between">
-                                <Typography>Budget:</Typography>
-                                <Typography>{toLocal(budget.amount, "currency")}</Typography>
-                            </Stack>
-
-                            {
-                                expandBudget == budget.id && <BudgetDetails budgetData={budget} />
-                            }
-
-                        </Stack>
-                    );
-                })}
+            <Stack direction={'row'} flexWrap={"wrap"}  marginTop={'2rem'}>
+              {
+                   activeBudgets.map((budget) => {
+                    return <Budget key={budget.id} budget={budget} />
+                   })
+              }
               
             </Stack>
-
-            {/* <AddBudgetPopUpScreen open={open} handleClose={handleClose} /> */}
                     </div>
         </Layout>
     );
 };
 
-export default Budget;
+export default Budgets;

@@ -220,5 +220,5 @@ export const deleteData = async (id: number, objectName: ObjectNameType): Promis
     const store = transaction.objectStore(objectName);
 
     store.delete(id);
-     transaction.oncomplete;
+    transaction.oncomplete;
 };

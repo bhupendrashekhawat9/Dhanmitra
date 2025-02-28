@@ -10,6 +10,6 @@ export interface Transactions {
     transactionType:"DEBIT"|"CREDIT",
     module:"EXPRNDITURE";
     userId:number|string;
-    wallet:"CREDIT"|"CASH";
+    wallet:"LOAN"|"CASH";
 
 }

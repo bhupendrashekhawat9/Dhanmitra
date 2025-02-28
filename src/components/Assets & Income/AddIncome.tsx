@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router'
 import { ContextType, useContextv2 } from '../../Context'
 import { v4 } from 'uuid'
 import { capitalize, getFormatedAmountToNumber, toLocal } from '../../methods/adapters'
-let transferToTypes = [
+const transferToTypes = [
     {
         title:"Assets",
         value:"ASSETS"
@@ -19,7 +19,7 @@ let transferToTypes = [
         value: "BUDGET"
     }
 ]
-let transferToCategories =[
+const transferToCategories =[
     {
         id:1,
         title:"Food",
@@ -30,8 +30,8 @@ interface props {
     handleClose?: ()=> void
 }
 const AddIncome = ({handleClose}:props) => {
-    let navigate = useNavigate()
-    let {store,methods} = useContextv2() as ContextType;
+    const navigate = useNavigate()
+    const {store,methods,refreshContextStore} = useContextv2() as ContextType;
     const [income, setIncome] = useState<IncomeType>({
         id: v4(),
         name: "",
@@ -49,7 +49,7 @@ const AddIncome = ({handleClose}:props) => {
         // transferToTypeId:""
     })
 
-    let handleOnChange = (event) => {
+    const handleOnChange = (event) => {
         let {name,value} = event.target;
         
         switch(name){
@@ -69,9 +69,9 @@ const AddIncome = ({handleClose}:props) => {
             }
         })
     }
-    let todaysQuote = incomeQuotes[(new Date()).getDate()]
+    const todaysQuote = incomeQuotes[(new Date()).getDate()]
 
-    let handleAddIncome = async () => {
+    const handleAddIncome = async () => {
         let payload: IncomeType = {
            ...income,
            amount: getFormatedAmountToNumber(income.amount)
@@ -80,9 +80,10 @@ const AddIncome = ({handleClose}:props) => {
     
         addIncomeType(payload);
         methods.fetchAllIncomes()
+        refreshContextStore("incomes")
         handleClose()
     }
-    let allocateOptions = [{
+    const allocateOptions = [{
         title: "Assets",
         value: "ASSETS"
     },
@@ -91,7 +92,7 @@ const AddIncome = ({handleClose}:props) => {
         title: "Budget"
     }
     ]
-    let transferToOptions = [
+    const transferToOptions = [
         {
             id: 0,
             name: "Savings",
@@ -101,7 +102,7 @@ const AddIncome = ({handleClose}:props) => {
             name: "FD",
         },
     ]
-    let recurringTypeOptions = [
+    const recurringTypeOptions = [
         {
             title: "Monthly",
             value: "MONTHLY"
@@ -116,7 +117,7 @@ const AddIncome = ({handleClose}:props) => {
         }
     ];
     
-    let getRecurringMessage = (type, createdDate) => {
+    const getRecurringMessage = (type, createdDate) => {
         const date = new Date(createdDate);
         
         switch (type) {

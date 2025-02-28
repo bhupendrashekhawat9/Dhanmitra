@@ -12,7 +12,7 @@ interface props {
     handleClose?:()=>void
 }
 const AddExpenditure = ({ handleClose }:props) => {
-      let {store, updateContextStore, refreshContextStore } = useContext(Context) as ContextType ;
+      const {store, updateContextStore, refreshContextStore } = useContext(Context) as ContextType ;
     
     const [expenditure, setExpenditure] = useState<Transactions>({
         amount: "0",
@@ -26,7 +26,7 @@ const AddExpenditure = ({ handleClose }:props) => {
         wallet:"CASH"
     })
     const [BudgetCategoryOptions, setBudgetCategoryOptions] = useState([])
-    let handleOnChange = (event) => {
+    const handleOnChange = (event) => {
         let value = event.target.value;
         setExpenditure(prev => {
             return {
@@ -35,17 +35,17 @@ const AddExpenditure = ({ handleClose }:props) => {
             }
         })
     }
-    let todaysQuote = savingsQuotes[(new Date()).getDate()]
-    let handleAddTransaction = async () => {
+    const todaysQuote = savingsQuotes[(new Date()).getDate()]
+    const handleAddTransaction = async () => {
         
         await addTransaction(expenditure)
         refreshContextStore("transactions")
         handleClose()
     }
 
-    let activeBudgets = store.budgets.activeBudget;
+    const activeBudgets = store.budgets.activeBudget;
 
-    let paymentType = [{
+    const paymentType = [{
         title:"Cash",
         value:"CASH"
     },
@@ -55,7 +55,7 @@ const AddExpenditure = ({ handleClose }:props) => {
     }
 ]  
 
- let handleUpdatePaymentSource = (val)=>{
+ const handleUpdatePaymentSource = (val)=>{
 
     setExpenditure(prev=>({
         ...prev,
@@ -63,7 +63,7 @@ const AddExpenditure = ({ handleClose }:props) => {
     }))
 }
 useEffect(()=>{
-    let budget = activeBudgets.find((i)=> i.id == expenditure.budgetId)??{categories:[]}
+    const budget = activeBudgets.find((i)=> i.id == expenditure.budgetId)??{categories:[]}
     setBudgetCategoryOptions(budget.categories??[]);
 },[expenditure.budgetId])
 

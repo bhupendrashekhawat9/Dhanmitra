@@ -3,20 +3,28 @@ import { ContextType, useContextv2 } from '../../../Context';
 import { Stack, Typography, LinearProgress } from '@mui/material';
 import { toLocal } from '../../../methods/adapters';
 import BudgetDetails from './BudgetDetails';
+import moment from 'moment';
 
 const BudgetSummary = () => {
-  let { store } = useContextv2() as ContextType;
+  const { store } = useContextv2() as ContextType;
   const [expandBudget, setExpandBudget] = useState(null)
-  let budgets = store.budgets.activeBudget;
-  let transactions = store.transactions;
-  let budgetGroupedTxn = transactions._groupBy("budgetId");
-  
+  const budgets = store.budgets.activeBudget;
+  const transactions = store.transactions;
+  const budgetGroupedTxn = transactions._groupBy("budgetId");
+  const [todaysBudget, setTodaysBudget] = useState([])
+  useState(() => {
+    const today = new Date().toISOString().split("T")[0]
+    const todaysBudget = store.budgets.activeBudget.filter(budget => {
+      return moment(budget.startDate).isSameOrBefore(today) && moment(budget.endDate).isSameOrAfter(today)
+    })
+    setTodaysBudget(todaysBudget)
+  },[store])
 
   return (
     <>
-      {budgets.map((budget) => {
+      {todaysBudget?.map((budget) => {
         console.log(budget)
-        let totalExpenditures = budgetGroupedTxn[budget.id]?.reduce((accu, next) => {
+        const totalExpenditures = budgetGroupedTxn[budget.id]?.reduce((accu, next) => {
           if(next.transactionType == "DEBIT" ){
             return accu + parseInt(next.amount)
           }

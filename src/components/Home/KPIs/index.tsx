@@ -60,7 +60,7 @@ const KPIs = () => {
         })
     }
     let getExpenditureOnCredits = (data: Transactions[])=>{
-        let filteredData = data.filter((i)=> i.wallet == "CREDIT")
+        let filteredData = data.filter((i)=> i.wallet == "LOAN")
         setexpenditureData((prev) => {
             return {
                 ...prev,

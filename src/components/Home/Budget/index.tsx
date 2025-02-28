@@ -8,10 +8,10 @@ import { ArrowForward, ExpandCircleDown, ExpandMore, ViewAgenda, ViewInAr } from
 import { useNavigate } from 'react-router'
 
 const Budget = () => {
-        let date = new Date()
-        let { store } = useContext(Context) as ContextType
-        let navigate = useNavigate()
-        const [expandBudget, setExpandBudget] = useState(false);
+        const date = new Date()
+        const { store } = useContext(Context) as ContextType
+        const navigate = useNavigate()
+        
   return (
     <div>
            <Stack boxShadow={"var(--box-shadow)"} borderRadius={'1rem'} padding={'1rem'} sx={{maxWidth:"80rem"}}>

@@ -58,7 +58,7 @@ interface ContextStore {
 
 
 export const useContextv2 = ()=>{
-        let ctx = useContext(Context) as ContextType
+        const ctx = useContext(Context) as ContextType
 
     return ctx
 }
@@ -89,7 +89,7 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
  interface inputTypes {
     path:string,data:unknown
 }
-    let updateContextStore= (arg:Array<[string,unknown]>)=>{
+    const updateContextStore= (arg:Array<[string,unknown]>)=>{
         if(arg){
             let clonedData = JSON.parse(JSON.stringify(store))
             arg.forEach((input)=>{
@@ -130,13 +130,13 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
         }
 
     }
-    let refreshContextStore= async(ref: ObjectNameType)=>{
+    const refreshContextStore= async(ref: ObjectNameType)=>{
         
         let data = await getAllData(ref) as unknown
         let tref = ref as string
         updateContextStore([[tref,data]])
     }
-    let fetchAllTransactions = async()=>{
+    const fetchAllTransactions = async()=>{
         let data = await getAllTransactions(store.startDate,store.endDate);
         setStore((prev)=>{
             return {
@@ -145,7 +145,7 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
             }
         })
     }
-    let fetchAllIncomes = async()=>{
+    const fetchAllIncomes = async()=>{
         let data = await getAllIncomes(store.startDate,store.endDate) as IncomeType[];
         setStore((prev)=>{
             return {
@@ -154,7 +154,7 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
             }
         })
     }
-    let fetchAllBudgets = async()=>{
+    const fetchAllBudgets = async()=>{
         let data = await getAllActiveBudgets(store.startDate,store.endDate);
         setStore((prev)=>{
             return {
@@ -165,7 +165,7 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
             }
         })
     }
-    let fetchUserData = async()=>{
+    const fetchUserData = async()=>{
         let data: userDataType = (await getAllData("user"))[0] as userDataType;
         setStore((prev)=>{
             return {
@@ -174,7 +174,7 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
             }
         })
     }
-    let methods = {
+    const methods = {
         fetchAllBudgets,
         fetchAllIncomes,
         fetchAllTransactions,
@@ -186,7 +186,7 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
         fetchAllIncomes();
         fetchUserData()
     }, [])
-    
+    console.log(store)
 
     return(
         <Context.Provider value={{store,updateContextStore,refreshContextStore,methods}} >
