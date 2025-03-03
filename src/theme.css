@@ -12,8 +12,6 @@
     --boxShadow:"1px 1px 1px 1px grey";
     --clr-0: #181C14;
     --clr-0-light: #f3f0e5;
-
-    --color-100:;
     --background-color: #ffffff ;
     --clr-2:#49243E
     --clr--1 : #7c2263;
@@ -28,6 +26,28 @@
     --color-75:#181c14b2;
     --color-50:#181c1479;
     --color-25:#181c142f;
+  }
+  :root {
+    --primary: #6366f1;
+    --primary-light: #818cf8;
+    --primary-lightest: #818df82d;
+
+    --primary-dark: #4f46e5;
+    --secondary: #64748b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --text: #334155;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --radius: 8px;
+    --radius-lg: 12px;
+    --spacing: 8px;
   }
   @font-face {
     font-family: "SF-PRO";

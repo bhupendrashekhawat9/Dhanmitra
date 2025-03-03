@@ -1,179 +1,232 @@
-import {
-    Button, Dialog, DialogContent, DialogTitle, FormControl, FormLabel,
-    IconButton, InputAdornment, Stack, TextField,
-    Typography
-} from "@mui/material";
-import { useState } from "react";
-import { parse, v4 as uuid } from "uuid";
-import { Delete as DeleteIcon, Close as CloseIcon } from "@mui/icons-material";
-import { red } from "@mui/material/colors";
-import { getCurrentMonthEndDate, getCurrentMonthStartDate, getRupeeSymbol } from "../../../methods/adapters";
-import { addData } from "../../../indexDB/database";
-import moment from "moment";
-import { BudgetsType } from "../../../types/Budgets";
-import { ContextType, useContextv2 } from "../../../Context";
+import React, { useState } from 'react';
+import './style.css'; // You would create this CSS file with the styles from the HTML version
+import { ContextType, useContextv2 } from '../../../Context';
+import { addData } from '../../../indexDB/database';
 
-interface props {
-    open?:boolean,
-    handleClose?:()=>void
-}
-const AddBudget = ({ open, handleClose }:props) => {
+const BudgetManagement = ({handleClose}) => {
     const {store,methods,refreshContextStore} = useContextv2() as ContextType
-    const [budget, setBudget] = useState({
-        name: "",
-        amount: "",
-        startDate: getCurrentMonthStartDate().toISOString().split("T")[0],
-        endDate: getCurrentMonthEndDate().toISOString().split("T")[0],
-        categories: [
-    
-        ],
-    });
+  const [budget, setBudget] = useState({
+    name: "",
+    amount: "",
+    startDate: new Date().toISOString().split("T")[0],
+    endDate: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split("T")[0],
+    categories: [
+      { id: "1", name: "Groceries", amount: "1500", amountType: "AMOUNT" },
+      { id: "2", name: "Entertainment", amount: "20", amountType: "PERCENTAGE" },
+      { id: "3", name: "Transportation", amount: "700", amountType: "AMOUNT" },
+    ],
+  });
 
-    // Handles main budget fields
-    const handleOnChange = (event) => {
-        const { name, value } = event.target;
-        
-        setBudget((prev) => ({ ...prev, [name]: value }));
-    };
+  // Handle main budget fields change
+  const handleOnChange = (event) => {
+    const { name, value } = event.target;
+    setBudget((prev) => ({ ...prev, [name]: value }));
+  };
 
-    // Handles individual budget division changes
-    const handleDivisionChange = (id, field, value) => {
-        setBudget((prev) => ({
-            ...prev,
-            categories: prev.categories.map((division) =>
-                division.id === id ? { ...division, [field]: value } : division
-            ),
-        }));
-    };
+  // Handle category field changes
+  const handleCategoryChange = (id, field, value) => {
+    setBudget((prev) => ({
+      ...prev,
+      categories: prev.categories.map((category) =>
+        category.id === id ? { ...category, [field]: value } : category
+      ),
+    }));
+  };
 
-    // Adds a new budget division
-    const handleAddcategories = () => {
-        setBudget((prev) => ({
-            ...prev,
-            categories: [
-                ...prev.categories,
-                { id: uuid(), name: "", amount: "", amountType: "AMOUNT" },
-            ],
-        }));
-    };
+  // Toggle between amount and percentage
+  const toggleAmountType = (id) => {
+    setBudget((prev) => ({
+      ...prev,
+      categories: prev.categories.map((category) =>
+        category.id === id 
+          ? { 
+              ...category, 
+              amountType: category.amountType === "AMOUNT" ? "PERCENTAGE" : "AMOUNT" 
+            } 
+          : category
+      ),
+    }));
+  };
 
-    // Deletes a budget division
-    const handleDelete = (id) => {
-        setBudget((prev) => ({
-            ...prev,
-            categories: prev.categories.filter((division) => division.id !== id),
-        }));
-    };
+  // Add a new category
+  const handleAddCategory = () => {
+    const newId = Math.random().toString(36).substring(2, 9);
+    setBudget((prev) => ({
+      ...prev,
+      categories: [
+        ...prev.categories,
+        { id: newId, name: "", amount: "", amountType: "AMOUNT" },
+      ],
+    }));
+  };
+
+  // Delete a category
+  const handleDeleteCategory = (id) => {
+    setBudget((prev) => ({
+      ...prev,
+      categories: prev.categories.filter((category) => category.id !== id),
+    }));
+  };
+
+  // Calculate total allocated amount
+  const calculateTotalAllocated = () => {
+    return budget.categories.reduce((total, category) => {
+      if (category.amountType === "AMOUNT") {
+        return total + (parseFloat(category.amount) || 0);
+      } else {
+        // If percentage, calculate based on total budget amount
+        const budgetAmount = parseFloat(budget.amount) || 0;
+        const percentage = parseFloat(category.amount) || 0;
+        return total + (budgetAmount * percentage / 100);
+      }
+    }, 0);
+  };
+
+  const totalAllocated = calculateTotalAllocated();
+  const budgetAmount = parseFloat(budget.amount) || 0;
+  const isExceeding = totalAllocated > budgetAmount && budgetAmount > 0;
+
+
     const handleSubmit = async ()=>{
-        await addData(budget,"budgets")
-        handleClose()
-        methods.fetchAllBudgets()
-    }
-    const getCategoryAmt = (category: BudgetsType["categories"][0],budgetAmt: number)=>{
-        if(category.amountType == "PERCENTAGE"){
-            return budgetAmt*(parseInt(category.amount)/100)
-        }
-        return parseInt(category.amount)
-    }
-    const isCategoryAmtExceeding = parseInt(budget.amount) < budget.categories.reduce((prev,next)=> prev+ (getCategoryAmt(next,parseInt(budget.amount))),0);
-      return (
       
-                <Stack spacing={2} width={'max-content'}>
-                    <FormControl>
-                        <FormLabel>Budget Name</FormLabel>
-                        <TextField size="small" name="name" value={budget.name} onChange={handleOnChange} />
-                    </FormControl>
-                    <FormControl>
-                        <FormLabel>Amount</FormLabel>
-                        <TextField size="small" name="amount" value={budget.amount} onChange={handleOnChange} />
-                    </FormControl>
-                    <Stack direction="row" spacing={2}>
-                        <FormControl fullWidth>
-                            <FormLabel>Valid From</FormLabel>
-                        
-                            <TextField size="small" type="date" name="startDate" value={budget.startDate} onChange={handleOnChange} />
-                        </FormControl>
-                        <FormControl fullWidth>
-                            <FormLabel>Valid Till</FormLabel>
-                            <TextField size="small" type="date" name="endDate" value={budget.endDate} onChange={handleOnChange} />
-                        </FormControl>
-                    </Stack>
+    await addData(budget,"budgets")
+    methods.fetchAllBudgets()
+    handleClose()
+}
 
-                    {/* Budget categories Section */}
-                    <Stack justifyContent={"space-between"} alignItems={"center"} sx={{marginTop:"2rem"}} direction={"row"}>
-                    <Typography color={red[900]} fontWeight={600}>
-                        {isCategoryAmtExceeding && "Amount exceeding the budget"}
-                    </Typography>
-                    <Button variant="contained" size="small" sx={{ maxWidth: "max-content", marginLeft: "auto", backgroundColor: "var(--clr-0)" }} onClick={handleAddcategories}>
-                        Add Categories
-                    </Button>
-                    </Stack>
-                    <Stack spacing={2}>
-                        {budget.categories.map((division) => (
-                            <Stack key={division.id} direction="row" spacing={2} alignItems="center">
-                                <TextField
-                                error={isCategoryAmtExceeding}
-                                    size="small"
-                                    placeholder="Name"
-                                    value={division.name}
-                                    onChange={(e) => handleDivisionChange(division.id, "name", e.target.value)}
-                                    fullWidth
-                                />
-                                <TextField
-                                error={isCategoryAmtExceeding}
 
-                                    size="small"
-                                    placeholder="Amount"
-                                    value={division.amount}
-                                    onChange={(e) => handleDivisionChange(division.id, "amount", e.target.value)}
-                                    fullWidth
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    sx={{ fontSize: "1rem" }}
-                                                    onClick={() =>
-                                                        handleDivisionChange(
-                                                            division.id,
-                                                            "amountType",
-                                                            division.amountType === "AMOUNT" ? "PERCENTAGE" : "AMOUNT"
-                                                        )
-                                                    }
-                                                >
-                                                    {division.amountType === "PERCENTAGE" ? "%" : getRupeeSymbol()}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-                                <IconButton onClick={() => handleDelete(division.id)}>
-                                    <DeleteIcon fontSize="small" sx={{ color: red[700] }} />
-                                </IconButton>
-                            </Stack>
-                        ))}
-                    </Stack>
-                        <Stack justifyContent={"end"}>
+  return (
 
-                    <Button onClick={handleSubmit} variant="contained" size="small" color="primary" sx={{ maxWidth: "max-content", marginLeft: "auto", backgroundColor: "var(--clr-0)" }} >
-                        Save Budget
-                    </Button>
-                        </Stack>
-                </Stack>
-         
-    );
+        <div className="form-content ">
+          <div className="form-content-header">
+            <h1 className="page-title">Create New Budget</h1>
+          </div>
+          
+          <div>
+            
+              <div className="form-control">
+                <label className="form-label">Budget Name</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  name="name"
+                  value={budget.name}
+                  onChange={handleOnChange}
+                  placeholder="e.g., Monthly Expenses"
+                />
+              </div>
+              
+              <div className="form-control">
+                <label className="form-label">Total Amount</label>
+                <input 
+                  type="text" 
+                  className="form-input" 
+                  name="amount"
+                  value={budget.amount}
+                  onChange={handleOnChange}
+                  placeholder="e.g., 5000"
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-col">
+                  <label className="form-label">Valid From</label>
+                  <input 
+                    type="date" 
+                    className="form-input"
+                    name="startDate"
+                    value={budget.startDate}
+                    onChange={handleOnChange}
+                  />
+                </div>
+                <div className="form-col">
+                  <label className="form-label">Valid Till</label>
+                  <input 
+                    type="date" 
+                    className="form-input"
+                    name="endDate"
+                    value={budget.endDate}
+                    onChange={handleOnChange}
+                  />
+                </div>
+              </div>
+              
+              <div className="section-header">
+                <div>
+                  <h2 className="section-title">Budget Categories</h2>
+                  {budget.amount && (
+                    <div className={`error-text ${isExceeding ? 'error' : ''}`}>
+                      Total allocated: ₹{totalAllocated.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} 
+                      {budget.amount && ` / ₹${parseFloat(budget.amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+                    </div>
+                  )}
+                </div>
+                <button 
+                  type="button" 
+                  className="button button-primary button-small"
+                  onClick={handleAddCategory}
+                >
+                  <span className="button-icon">+</span>
+                  <span>Add Category</span>
+                </button>
+              </div>
+              
+              {budget.categories.map((category) => (
+                <div className={`category-item ${isExceeding ? 'error' : ''}`} key={category.id}>
+                  <div style={{ flex: 2 }}>
+                    <input 
+                      type="text" 
+                      className="form-input" 
+                      placeholder="Category Name" 
+                      value={category.name}
+                      onChange={(e) => handleCategoryChange(category.id, 'name', e.target.value)}
+                    />
+                  </div>
+                  <div style={{ flex: 1, position: "relative" }}>
+                    <input 
+                      type="text" 
+                      className="form-input"
+                      placeholder="Amount" 
+                      value={category.amount}
+                      onChange={(e) => handleCategoryChange(category.id, 'amount', e.target.value)}
+                    />
+                    <div style={{ position: "absolute", right: "12px", top: "10px" }}>
+                      {category.amountType === "AMOUNT" ? "₹" : "%"}
+                    </div>
+                  </div>
+                  <button 
+                    type="button"
+                    className="button button-secondary button-small" 
+                    style={{ flex: "0 0 auto" }}
+                    onClick={() => toggleAmountType(category.id)}
+                  >
+                    <span>{category.amountType === "AMOUNT" ? "%" : "₹"}</span>
+                  </button>
+                  <button 
+                    type="button"
+                    className="button button-secondary button-small" 
+                    style={{ flex: "0 0 auto", color: "var(--error)" }}
+                    onClick={() => handleDeleteCategory(category.id)}
+                  >
+                    <span className="button-icon">🗑️</span>
+                  </button>
+                </div>
+              ))}
+              
+              <div className="form-actions">
+                <button type="button" className="button button-secondary">
+                  Cancel
+                </button>
+                <button onClick={handleSubmit} type="submit" className="button button-primary">
+                  Save Budget
+                </button>
+              </div>
+           
+          </div>
+        </div>
+    
+
+  );
 };
 
-export const AddBudgetPopUpScreen = ({ open, handleClose }:props)=>{
-   return <Dialog open={open} onClose={handleClose} fullWidth>
-    <DialogTitle>
-        Add Budget
-        <IconButton onClick={handleClose} sx={{ position: "absolute", right: 8, top: 8 }}>
-            <CloseIcon />
-        </IconButton>
-    </DialogTitle>
-    <DialogContent>
-        <AddBudget/>
-    </DialogContent>
-    </Dialog>
-}
-export default AddBudget;
+export default BudgetManagement;

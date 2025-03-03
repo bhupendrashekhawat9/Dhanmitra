@@ -8,7 +8,7 @@ export interface Transactions {
     budgetId:string;
     amount:string;
     transactionType:"DEBIT"|"CREDIT",
-    module:"EXPRNDITURE";
+    module:"EXPENDITURE";
     userId:number|string;
     wallet:"LOAN"|"CASH";
 

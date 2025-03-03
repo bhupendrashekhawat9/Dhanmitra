@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ContextType, useContextv2 } from '../../../Context';
 import { Stack, Typography, LinearProgress } from '@mui/material';
 import { toLocal } from '../../../methods/adapters';
@@ -12,7 +12,7 @@ const BudgetSummary = () => {
   const transactions = store.transactions;
   const budgetGroupedTxn = transactions._groupBy("budgetId");
   const [todaysBudget, setTodaysBudget] = useState([])
-  useState(() => {
+  useEffect(() => {
     const today = new Date().toISOString().split("T")[0]
     const todaysBudget = store.budgets.activeBudget.filter(budget => {
       return moment(budget.startDate).isSameOrBefore(today) && moment(budget.endDate).isSameOrAfter(today)

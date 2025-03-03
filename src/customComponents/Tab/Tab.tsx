@@ -14,19 +14,18 @@ const Tab = (props:props) => {
 
     }
   return (
-    <div {...props} className={`tab ${props.focused ? "focued":""}`}>
+    <div {...props} className={`tab ${props.focused ? "active":""}`}>
         <>
-        {
-            props.icon
-        }
-        {
-            props.focused &&(
+        
+          {  props.icon}
+       
+       
                 <Typography fontSize={".8rem"}>
                     {props.label}
                 </Typography>
-            ) 
+   
             
-        }
+        
         </>
     </div>
   )

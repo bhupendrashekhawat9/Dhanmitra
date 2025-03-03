@@ -4,8 +4,6 @@ import { Stack, Typography } from '@mui/material'
 import { toLocal } from '../../../methods/adapters'
 import { Context, ContextType } from '../../../Context'
 import "./index.css"
-import moment from 'moment'
-import { Transactions } from '../../../types/types'
 import { getExpenditureOnCredits, getTotalExpenditure, getTodaysExpenditure, getExpenditureLimit } from '../controller/controllers'
 const KPIs = () => {
     const date = new Date().getDate()
@@ -39,7 +37,7 @@ const KPIs = () => {
     const totalExpenditure = expenditureData.totalExpenditure
     const avgDailyExpenditure = toLocal((totalExpenditure / new Date().getDate()), "currency")
     const expenditureOnCredit = toLocal(expenditureData.expenditureOnCredit,'currency');
-    const todaysExpLimit = toLocal(((expenditureData.currentMonthExpenditureLimit - totalExpenditure) / (31 - date)), "number")
+    const todaysExpLimit = toLocal(((expenditureData.currentMonthExpenditure - totalExpenditure) / (31 - date)), "number")
 
     const kpis = [
         {

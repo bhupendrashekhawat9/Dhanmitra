@@ -135,7 +135,12 @@ const AddIncome = ({handleClose}:props) => {
         }
     };
     return (
-
+        <div className='form-content '>
+        
+    
+        <div className="form-content-header">
+                <h1 className="page-title">Add Income</h1>
+              </div>
         <Stack spacing={"1rem"}>
             <Stack justifyContent={'center'} alignItems={'center'}>
                 {/* <img src={'/savings-pig.svg'} width={'20%'}  /> */}
@@ -307,7 +312,7 @@ const AddIncome = ({handleClose}:props) => {
                 Add Income
             </Button>
         </Stack>
-
+                </div>
     )
 }
 
