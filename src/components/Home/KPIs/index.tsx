@@ -1,43 +1,57 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import KPICard from '../../../customComponents/KPICard'
 import { Stack, Typography } from '@mui/material'
 import { toLocal } from '../../../methods/adapters'
 import { Context, ContextType } from '../../../Context'
 import "./index.css"
-import { getExpenditureOnCredits, getTotalExpenditure, getTodaysExpenditure, getExpenditureLimit } from '../controller/controllers'
-const KPIs = () => {
+import { getExpenditureOnCredits, getTotalExpenditure, getTodaysExpenditure,  getBudgetExpenditureLimit } from '../controller/controllers'
+import moment from 'moment'
+import { BudgetsType } from '../../../types/Budgets'
+import Information from '../../Expenditure/Informations/Information'
+
+interface props {
+    activeBudget: BudgetsType|undefined
+}
+const KPIs = ({activeBudget}: props) => {
     const date = new Date().getDate()
 
     const [expenditureData, setExpenditureData] = useState({
         totalExpenditure: 0,
         currentMonthExpenditure: 0,
         todaysExpenditure: 0,
-        expenditureOnCredit:0
+        expenditureOnCredit:0,
+        currentBudgetExpenditureLimit:0
     })
     const { store } = useContext(Context) as ContextType;
-
+    let transactions = useMemo(()=> {
+        return store.transactions.filter((i)=> i.budgetId == activeBudget?.id)
+    },[activeBudget,store])
 
     // let totalExpenditure = toLocal(expenditureData.totalExpenditure,'currency') as string
     const todaysExpenditure = toLocal(expenditureData.todaysExpenditure, 'currency') as string
     
  
     useEffect(() => {
+        
         setExpenditureData((prev) => {
             return {
                 ...prev,
-                totalExpenditure: getTotalExpenditure(store.transactions),
-                currentMonthExpenditure: getTotalExpenditure(store.transactions),
-                todaysExpenditure: getTodaysExpenditure(store.transactions),
-                expenditureOnCredit: getExpenditureOnCredits(store.transactions),
-                currentMonthExpenditureLimit: getExpenditureLimit(store.budgets.activeBudget)
+                totalExpenditure: getTotalExpenditure(transactions),
+                currentMonthExpenditure: getTotalExpenditure(transactions),
+                todaysExpenditure: getTodaysExpenditure(transactions),
+                expenditureOnCredit: getExpenditureOnCredits(transactions),
+                currentBudgetExpenditureLimit: getBudgetExpenditureLimit(activeBudget)
             }
             })
-    }, [store])
+        }, [activeBudget,store])
 
+
+    let validDays = moment(activeBudget?.endDate).diff(activeBudget?.startDate,"days")
+    let completedDays = moment().diff(activeBudget?.startDate,"days")
     const totalExpenditure = expenditureData.totalExpenditure
     const avgDailyExpenditure = toLocal((totalExpenditure / new Date().getDate()), "currency")
     const expenditureOnCredit = toLocal(expenditureData.expenditureOnCredit,'currency');
-    const todaysExpLimit = toLocal(((expenditureData.currentMonthExpenditure - totalExpenditure) / (31 - date)), "number")
+    const todaysExpLimit = toLocal(((expenditureData.currentBudgetExpenditureLimit - totalExpenditure) / validDays - completedDays), "number")
 
     const kpis = [
         {
@@ -67,6 +81,7 @@ const KPIs = () => {
 
     ]
     return (
+        <>
         <div className='kpiContainer'>
             {
                 kpis.map((kpi, index) => {
@@ -95,6 +110,9 @@ const KPIs = () => {
 
 
         </div>
+         <Information data={{dayLimit:((expenditureData.currentBudgetExpenditureLimit - totalExpenditure) / validDays - completedDays),daySpent:expenditureData.todaysExpenditure}} />
+         </>
+
     )
 }
 

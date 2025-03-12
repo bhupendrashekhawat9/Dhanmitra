@@ -49,7 +49,7 @@ const ExpenditurePage = () => {
         <Typography variant='h6' fontWeight={600} sx={{padding:".5rem"}}>
           Todays Summary
         </Typography>
-         <KPIs/>
+         {/* <KPIs activeBudget={}/> */}
 
          <Information data={{dayLimit:0,daySpent:0}} />
 

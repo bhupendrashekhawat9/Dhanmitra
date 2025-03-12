@@ -5,7 +5,7 @@ import { SectionTypes, Transactions } from "./types/types";
 import { getAllData, ObjectNameType } from "./indexDB/database";
 import { BudgetsType } from "./types/Budgets";
 import { getCurrentMonthEndDate, getCurrentMonthStartDate } from "./methods/adapters";
-import { getAllActiveBudgets, getAllIncomes, getAllTransactions } from "./methods/fetchMethods";
+import { getAllActiveBudgets, getAllBudgets, getAllIncomes, getAllTransactions } from "./methods/fetchMethods";
 
 
 
@@ -33,7 +33,8 @@ interface applicationType{
     addTransactionModule:"EXPENDITURE"|"INCOME"|"BUDGET"|null
 }
 interface budgetsType{
-    activeBudget: BudgetsType[]
+    activeBudget: BudgetsType[];
+    allBudgets:BudgetsType[]
 }
 interface plansType{
     activePlans:[],
@@ -80,6 +81,7 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
         },
         budgets:{
             activeBudget:[],
+            allBudgets:[]
         },
         plans:{
             activePlans:[],
@@ -155,12 +157,14 @@ export const ContextProvider = ({children}:{children:ReactNode})=>{
         })
     }
     const fetchAllBudgets = async()=>{
-        let data = await getAllActiveBudgets(store.startDate,store.endDate);
+        let activeBudgets = await getAllActiveBudgets(store.startDate,store.endDate);
+        let allBudgets = await getAllBudgets(store.startDate,store.endDate)
         setStore((prev)=>{
             return {
                 ...prev,
                 budgets:{
-                    activeBudget: data
+                    activeBudget:activeBudgets,
+                    allBudgets
                 }
             }
         })

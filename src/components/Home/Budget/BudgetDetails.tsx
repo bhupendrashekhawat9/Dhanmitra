@@ -30,12 +30,13 @@ const BudgetDetails = ({ budgetData }: PropsType) => {
     const budgetMap: { [key: string]: {spent:number,limit:number} } = {};
 
     // Initialize categories with zero spending
-    budgetData.categories?.forEach(category => {
+    budgetData?.categories?.forEach(category => {
       budgetMap[category.id] = {spent:0,limit:getCategoryAmountOnType(category,budgetData)};
     });
 
     // Aggregate spending per category
-    transactions.forEach(transaction => {
+    
+    transactions.filter((i)=> i.budgetId == budgetData.id).forEach(transaction => {
       
       if (transaction.budgetCategoryId && budgetMap.hasOwnProperty(transaction.budgetCategoryId)) {
         let tCategory = budgetMap[transaction.budgetCategoryId]
@@ -44,14 +45,14 @@ const BudgetDetails = ({ budgetData }: PropsType) => {
         }
       }
     });
-    console.log(budgetMap,"Budgetmap")
+  
     setCategorySpending(budgetMap);
   }, [transactions, budgetData]);
  
   return (
     <Stack spacing={3} padding={2}>
 
-      {budgetData.categories.map((category) => {
+      {budgetData?.categories.map((category) => {
         const {spent=0,limit=0} = categorySpending[category.id] || {};
         const spentPercentage = Math.min((spent / limit) * 100, 100); // Ensures max 100%
         let getSpentValueJsx = ({spent,limit})=>{

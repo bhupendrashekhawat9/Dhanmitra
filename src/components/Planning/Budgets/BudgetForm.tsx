@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css'; // You would create this CSS file with the styles from the HTML version
 import { ContextType, useContextv2 } from '../../../Context';
-import { addData } from '../../../indexDB/database';
-
-const BudgetManagement = ({handleClose}) => {
-    const {store,methods,refreshContextStore} = useContextv2() as ContextType
+import { addData, updateData } from '../../../indexDB/database';
+import { BudgetsType } from '../../../types/Budgets';
+interface props {
+  handleClose?: () => void;
+  data?: BudgetsType|undefined|null;
+  scenario:"UPDATE"|"CREATE"
+}
+const BudgetManagement = ({handleClose,data,scenario="CREATE"}:props) => {
+  const {store,methods} = useContextv2() as ContextType
   const [budget, setBudget] = useState({
     name: "",
     amount: "",
@@ -85,21 +90,28 @@ const BudgetManagement = ({handleClose}) => {
   const totalAllocated = calculateTotalAllocated();
   const budgetAmount = parseFloat(budget.amount) || 0;
   const isExceeding = totalAllocated > budgetAmount && budgetAmount > 0;
-
-
     const handleSubmit = async ()=>{
-      
-    await addData(budget,"budgets")
+    if(scenario == "CREATE"){
+      await addData(budget,"budgets")
+    }else{
+      await updateData("budgets",budget)
+    }
     methods.fetchAllBudgets()
     handleClose()
 }
+useEffect(() => {
+  if(scenario == "UPDATE"){
+
+    setBudget(JSON.parse(JSON.stringify(data)))
+  }
+}, [data])
 
 
   return (
 
         <div className="form-content ">
           <div className="form-content-header">
-            <h1 className="page-title">Create New Budget</h1>
+            <h1 className="page-title">{ scenario == "CREATE" ? "Create New Budget":"Update Budget"}</h1>
           </div>
           
           <div>
@@ -214,11 +226,11 @@ const BudgetManagement = ({handleClose}) => {
               ))}
               
               <div className="form-actions">
-                <button type="button" className="button button-secondary">
+                <button onClick={handleClose} type="button" className="button button-secondary">
                   Cancel
                 </button>
                 <button onClick={handleSubmit} type="submit" className="button button-primary">
-                  Save Budget
+                 {scenario == "CREATE" ? "Create Budget":"Update Budget"}
                 </button>
               </div>
            

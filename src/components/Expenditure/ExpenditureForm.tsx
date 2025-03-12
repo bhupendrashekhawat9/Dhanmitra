@@ -5,12 +5,15 @@ import { capitalize } from '../../methods/adapters';
 import { Context, ContextType } from '../../Context';
 import { Transactions } from '../../types/types';
 import { addTransaction } from '../../methods/fetchMethods';
+import { updateData } from '../../indexDB/database';
 
 interface Props {
   handleClose?: () => void;
+  data?: Transactions|undefined|null;
+  scenario:"UPDATE"|"CREATE"
 }
 
-const AddExpenditure = ({ handleClose }: Props) => {
+const AddExpenditure = ({ handleClose,data ,scenario="CREATE"}: Props) => {
   const { store, refreshContextStore } = useContext(Context) as ContextType;
 
   const [expenditure, setExpenditure] = useState<Transactions>({
@@ -44,20 +47,23 @@ const AddExpenditure = ({ handleClose }: Props) => {
     setBudgetCategoryOptions(budget.categories ?? []);
   }, [expenditure.budgetId, activeBudgets]);
 
-  const handleOnChange = useCallback((event) => {
+  const handleOnChange = (event) => {
     const { name, value } = event.target;
     if (name) {
       setExpenditure(prev => ({ ...prev, [name]: value }));
     }
-  }, []);
-
+  };
   const handleUpdatePaymentSource = useCallback((value: "LOAN"|"CASH") => {
     setExpenditure(prev => ({ ...prev, wallet: value }));
   }, []);
 
   const handleAddTransaction = async () => {
     if (!expenditure.name || !expenditure.amount || !expenditure.budgetId) return;
-    await addTransaction(expenditure);
+    if(scenario == "UPDATE"){
+      await updateData("transactions",expenditure)
+    }else{
+      await addTransaction(expenditure);
+    }
     refreshContextStore('transactions');
     handleClose?.();
   };
@@ -68,13 +74,19 @@ const AddExpenditure = ({ handleClose }: Props) => {
     { title: 'Cash', value: 'CASH' },
     { title: 'Loan', value: 'LOAN' }
   ];
+useEffect(() => {
+  if(scenario == "UPDATE"){
+
+    setExpenditure({...data})
+  }
+}, [data])
 
   return (
         <div className='form-content '>
     <Stack spacing={2}>
 
     <div className="form-content-header">
-            <h1 className="page-title">Add New Spend</h1>
+            <h1 className="page-title">{scenario == "CREATE" ? "Add New Spend":"Update Expenditure"}</h1>
           </div>
       {/* Quote Section */}
       <Stack justifyContent="center" alignItems="center">
@@ -148,10 +160,15 @@ const AddExpenditure = ({ handleClose }: Props) => {
       </FormControl>
 
       {/* Submit Button */}
-      <Stack alignItems={'end'}>
+      <Stack  width={'100%'} direction={"row"} justifyContent={'end'}>
 
       <Button  onClick={handleAddTransaction} variant="contained" sx={{ backgroundColor: 'var(--primary)', width:"max-content", marginLeft:"auto" }} disabled={!expenditure.name || !expenditure.amount || !expenditure.budgetId}>
-        Add
+        {scenario == "CREATE" ?"Add": "Update"}
+      </Button>
+      <Button variant={"outlined"} sx={{
+        marginLeft:"1rem"
+      }} onClick={handleAddTransaction}>
+        Cancel
       </Button>
       </Stack>
 

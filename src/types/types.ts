@@ -2,6 +2,7 @@ import { ObjectNameType } from "../indexDB/database";
 
 export type SectionTypes = "ASSETS" | "PLANS" |"HOME"|"BUDGET"
 export interface Transactions {
+    id?:string,
     name: string;
     createdDate:string;
     budgetCategoryId:string;

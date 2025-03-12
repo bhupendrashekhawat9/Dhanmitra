@@ -118,7 +118,24 @@ export const updateData = async (objectName: ObjectNameType, updatedData: any)=>
         console.error("Error fetching data:", (event.target as IDBRequest).error);
       };
   }
-  
+  let getDatabaseObject = async (objectName,process)=>{
+    const db: IDBDatabase = await openDB() ;
+    const transaction:IDBTransaction = db.transaction(objectName, process);
+    const store:IDBObjectStore = transaction.objectStore(objectName);
+    return {store,transaction}
+  }
+  export const updateDataV2 = async(objectName,data)=>{
+    let {store,transaction} = await getDatabaseObject(objectName,"readWrite");
+    store.put(data);
+    return new Promise((res,rej)=>{
+        transaction.oncomplete = ()=>{
+            res("SUCCESS")
+        }
+        transaction.onerror = ()=>{
+            rej("ERROR")
+        }
+    })
+  } 
   
 // Add data to the store
 export const addData = async (data: unknown, objectName: ObjectNameType): Promise<Event> => {

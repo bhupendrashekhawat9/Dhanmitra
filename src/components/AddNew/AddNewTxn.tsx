@@ -2,8 +2,8 @@
     import React, { ReactNode, useEffect, useState } from 'react'
     import { useLocation } from 'react-router'
     import AddIncome from '../Assets & Income/AddIncome'
-    import AddExpenditure from '../Expenditure/AddExpenditure'
-    import AddBudget from '../Planning/Budgets/AddBudget'
+    import AddExpenditure from '../Expenditure/ExpenditureForm'
+    import AddBudget from '../Planning/Budgets/BudgetForm'
     import Tab from '../../customComponents/Tab/Tab'
     import { FaDivide } from 'react-icons/fa'
     import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -35,7 +35,7 @@
                 title: "Expense",
                 value: "EXPENDITURE",
                 path: "/",
-                component: <AddExpenditure handleClose={handleClose} />,
+                component: <AddExpenditure handleClose={handleClose} scenario='CREATE' />,
                 icon:<FaDivide/>
 
 
@@ -45,7 +45,7 @@
                 title: "Budget",
                 value: "BUDGET",
                 path: "/Budget",
-                component: <AddBudget handleClose={handleClose}/>,
+                component: <AddBudget handleClose={handleClose} scenario='CREATE'/>,
                 icon:<FaDivide/>
 
             }

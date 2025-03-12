@@ -1,9 +1,10 @@
 import { BudgetsType } from "../../../types/Budgets";
 import { Transactions } from "../../../types/types";
 
-   export const getExpenditureLimit = (budgets: BudgetsType[]) => {
-        const budget = budgets.reduce((acc, next) => acc += parseInt(next.amount), 0);
-        return budget;
+   export const getBudgetExpenditureLimit = (budget: BudgetsType) => {
+        // const budget = budgets.reduce((acc, next) => acc += parseInt(next.amount), 0);
+        const value = parseInt(budget?.amount)
+        return value;
     }
    export const getTodaysExpenditure = (transactions:Transactions[]) => {
         
@@ -16,12 +17,7 @@ import { Transactions } from "../../../types/types";
 
         })
         return data.reduce((acc, next) => acc += parseInt(next.amount), 0)
-        // setexpenditureData((prev) => {
-        //     return {
-        //         ...prev,
-        //         todaysExpenditure: 
-        //     }
-        // })
+       
     }
    export const getTotalExpenditure = (data:Transactions[])=>{
         const totalExpenditure = data.reduce((acc,next)=> {
@@ -42,3 +38,4 @@ import { Transactions } from "../../../types/types";
         //     }
         // })
     }
+    

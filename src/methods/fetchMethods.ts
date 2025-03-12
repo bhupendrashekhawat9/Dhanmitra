@@ -4,13 +4,17 @@ import { Transactions } from "../types/types"
 import { BudgetsType } from "../types/Budgets";
 import { IncomeType } from "../types/Income";
 
+
+export const getAllBudgets = async(startDate:Date|null,endDate:Date|null)=>{
+    const budgets:BudgetsType[] = await getAllData("budgets") as BudgetsType[];
+    return budgets
+}
 export const getAllActiveBudgets = async(startDate:Date|null,endDate:Date|null)=>{
     const budgets:BudgetsType[] = await getAllData("budgets") as BudgetsType[];
-    const filteredBUdgets= budgets
-    console.log(filteredBUdgets,"filteredbudget")
+    const filteredBUdgets= budgets.filter((i)=> moment(i.startDate).isSameOrBefore(moment()) && moment(i.endDate).isSameOrAfter(moment()))
+
     return filteredBUdgets
 }
-
 export const getUpcomingPlannedBudgets = async(startDate:Date|null,endDate:Date|null)=>{
     const budgets:BudgetsType[] = await getAllData("budgets") as BudgetsType[];
     const filteredBUdgets= budgets.filter(i=> {
@@ -60,6 +64,7 @@ export const getAllIncomes = async(startDate:Date|null,endDate:Date|null)=>{
     return filteredData;
 }
 export const addTransaction = async(data:Transactions)=>{
+    
     const response = addData(data,"transactions");
     console.log(response);
 

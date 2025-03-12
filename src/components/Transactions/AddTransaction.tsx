@@ -1,29 +1,19 @@
-import { Dialog, DialogContent, DialogTitle, Tabs, Tab } from '@mui/material';
-import React, { useState } from 'react';
-import AddExpenditure from '../Expenditure/AddExpenditure';
-import AddIncome from '../Assets & Income/AddIncome';
+import { Dialog, DialogContent } from '@mui/material';
+import AddExpenditure from '../Expenditure/ExpenditureForm';
 
 interface AddTransactionProps {
   open: boolean;
   handleClose: () => void;
+  data?: any
 }
 
-const AddTransaction = ({ open, handleClose }: AddTransactionProps) => {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
-  };
+const AddTransaction = ({ open, handleClose,data }: AddTransactionProps) => {
+  let scenario: "UPDATE"|"CREATE" = data ? "UPDATE":"CREATE"
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Add Transaction</DialogTitle>
-      <Tabs value={activeTab} onChange={handleChange} variant="fullWidth">
-        <Tab label="Expenditure" />
-        <Tab label="Income" />
-      </Tabs>
       <DialogContent>
-        {activeTab === 0 ? <AddExpenditure handleClose={handleClose} /> : <AddIncome handleClose={handleClose} />}
+        <AddExpenditure scenario={scenario} handleClose={handleClose} data ={data} /> 
       </DialogContent>
     </Dialog>
   );
