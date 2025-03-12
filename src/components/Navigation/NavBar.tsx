@@ -8,6 +8,13 @@ import { TbMoneybag } from "react-icons/tb";
 import { MdAdd } from "react-icons/md";
 import AddNewTxn from '../AddNew/AddNewTxn'
 import { RiHomeLine } from "react-icons/ri";
+import QrReader from 'react-qr-scanner'
+import { Button } from '@mui/material'
+import { QrScanner } from '@diningcity/capacitor-qr-scanner'
+
+import { Browser } from '@capacitor/browser';
+
+
 interface modulesType {
     displayName: string,
     icon: ReactNode,
@@ -41,8 +48,20 @@ const Navbar = () => {
     const { store } = useContextv2() as ContextType
     let navigate = useNavigate()
     const [openAddTransaction,setOpenAddTransaction] = useState(false);
+    const [Scanned, setScanned] = useState(true)
     let handleOpenAddTransaction = ()=>{
         setOpenAddTransaction(prev=> !prev)
+    }
+    let toggleScan = ()=>{
+        setScanned(prev=> !prev)
+    }
+    let handleScan = (data)=>{
+        if(data){
+            toggleScan()
+            console.log(data,"QR-Data")
+        }else{
+            console.log("No data")
+        }
     }
     let modules: modulesType[] = [
 
@@ -101,8 +120,37 @@ const Navbar = () => {
     }
     let path = store?.application?.path ?? ""
     let onFocus = store.application.path
+    const previewStyle = {
+        height: 240,
+        width: 320,
+      }
+    const handleError = ()=>{
+        
+    }
+    const scanQrCode = async () => {
+        
+        const { result } = await QrScanner.scanQrCode();
+        openPaymentApp()
+        console.log(result);
+        // Handle the scanned QR code data here
+      };
+
+      const openPaymentApp = async () => {
+        const url = 'phonepe://pay?pa=user123@upi&pn=User123&tn=Test_Payment&am=20&cu=INR&mc=1234&tr=01234';
+        await Browser.open({ url });
+      };
     return (
         <>
+        {!Scanned &&
+         <QrReader
+          delay={100}
+          style={previewStyle}
+          onError={handleError}
+          onScan={handleScan}
+          />}
+          <Button onClick={scanQrCode}>
+            scan
+          </Button>
          <AddNewTxn open={openAddTransaction} handleClose={handleOpenAddTransaction}/>
         <div className='navbar'>
            
