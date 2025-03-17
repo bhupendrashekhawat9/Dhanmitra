@@ -49,8 +49,7 @@ function App() {
     {
       !isUserRegistered && <RegisterUser/>
     }
-    
-
+  
     </>
 
   )
