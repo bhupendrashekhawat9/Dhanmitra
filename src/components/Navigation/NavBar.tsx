@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router'
 import { MdAdd } from "react-icons/md";
 import AddNewTxn from '../AddNew/AddNewTxn'
 import { QrScanner } from '@diningcity/capacitor-qr-scanner'
-import { Browser } from '@capacitor/browser';
+// import { Browser } from '@capacitor/browser';
 import { MdOutlineSavings } from "react-icons/md";
 import { GrHome, GrPieChart } from "react-icons/gr";
 interface modulesType {
