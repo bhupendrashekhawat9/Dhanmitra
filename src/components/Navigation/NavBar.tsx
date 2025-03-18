@@ -123,7 +123,7 @@ const Navbar = () => {
 
       const openPaymentApp = async () => {
         const url = 'phonepe://pay?pa=user123@upi&pn=User123&tn=Test_Payment&am=20&cu=INR&mc=1234&tr=01234';
-        await Browser.open({ url });
+        // await Browser.open({ url });
       };
     return (
         <>
